@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequestMapping("")
-public class HelloWorld {
+public class StatisticController {
 
     private final Logger LOGGER = log;
     private final StatisticService statisticService;
 
     @Autowired
-    public HelloWorld(StatisticService statisticService) {
+    public StatisticController(StatisticService statisticService) {
         this.statisticService = statisticService;
     }
 
