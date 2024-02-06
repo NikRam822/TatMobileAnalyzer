@@ -30,9 +30,6 @@ public class HelloWorld {
 
     @PostMapping("/repository")
     ResponseEntity getStatistic(@RequestBody RepositoryDto repositoryDto) {
-       return statisticService.getStatistic(repositoryDto.getRepositoryUrl());
-
-
-
+        return statisticService.getStatistic(repositoryDto.getRepositoryUrl());
     }
 }

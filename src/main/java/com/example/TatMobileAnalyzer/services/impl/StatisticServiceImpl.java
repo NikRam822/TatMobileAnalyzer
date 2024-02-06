@@ -22,6 +22,9 @@ public class StatisticServiceImpl implements StatisticService {
     @Override
     public ResponseEntity getStatistic(String repoUrl) {
         HttpResponse<String> response = getStatisticFromGit(repoUrl);
+        if (response.statusCode() != 200) {
+            return new ResponseEntity(response, HttpStatus.valueOf(response.statusCode()));
+        }
 
         String stats = statisticHandler(response.body());
 

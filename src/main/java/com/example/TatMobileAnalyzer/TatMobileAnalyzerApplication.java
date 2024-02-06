@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DataCollectionSubsystemApplication {
+public class TatMobileAnalyzerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DataCollectionSubsystemApplication.class, args);
+		SpringApplication.run(TatMobileAnalyzerApplication.class, args);
 	}
 
 }
