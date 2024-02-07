@@ -3,6 +3,7 @@ package com.example.TatMobileAnalyzer.services.impl;
 import com.example.TatMobileAnalyzer.services.StatisticService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,11 +20,15 @@ import java.util.Map;
 
 @Service
 public class StatisticServiceImpl implements StatisticService {
+
+    @Value("${access.token}")
+    private String accessToken;
+
     @Override
     public ResponseEntity getStatistic(String repoUrl) {
         HttpResponse<String> response = getStatisticFromGit(repoUrl);
         if (response.statusCode() != 200) {
-            return new ResponseEntity(response, HttpStatus.valueOf(response.statusCode()));
+            return new ResponseEntity(response.body(), HttpStatus.valueOf(response.statusCode()));
         }
 
         String stats = statisticHandler(response.body());
@@ -38,7 +43,7 @@ public class StatisticServiceImpl implements StatisticService {
                 "/stats/contributors";
 
         HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder(URI.create(apiUrl)).build();
+        HttpRequest request = HttpRequest.newBuilder().header("Authorization", "Bearer " + accessToken).uri(URI.create(apiUrl)).build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         return response;
     }
