@@ -1,11 +1,8 @@
 # TatMobileAnalyzer project start
-Spring: 2.7.0
-
-Pg
-
-Swagger
-
-Javadoc
+1) Spring: 2.7.0
+2) Pg
+3) Swagger
+4) Javadoc
 
 # SWAGGER
 You can use a swagger to send requests to the server.
