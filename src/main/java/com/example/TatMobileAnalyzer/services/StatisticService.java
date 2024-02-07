@@ -3,5 +3,5 @@ package com.example.TatMobileAnalyzer.services;
 import org.springframework.http.ResponseEntity;
 
 public interface StatisticService {
-    ResponseEntity getStatistic(String repoUrl);
+    ResponseEntity<String> getStatistic(String repoUrl);
 }
