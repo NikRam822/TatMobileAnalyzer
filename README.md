@@ -23,3 +23,16 @@ You can use a Javadoc
 2) mvn javadoc:javadoc
 3) Open target/site/apidocs/index.html
 
+# Configuration
+
+Before starting the project it is necessary to set up the configuration
+
+1) Create env.properties file in src/main/resources folder
+2) Specify the following parameters in the file:
+
+   - GITHUB_ACCESS_TOKEN=your_github_access_token
+   - DB_URL=your_database_url
+   - DB_USER=your_database_username
+   - DB_PASSWORD=your_database_password
+
+
