@@ -1,9 +1,8 @@
 package com.example.TatMobileAnalyzer.controllers;
 
-import com.example.TatMobileAnalyzer.dto.LocFilesDto;
 import com.example.TatMobileAnalyzer.dto.RepositoryDto;
-import com.example.TatMobileAnalyzer.services.StatisticService;
 import com.example.TatMobileAnalyzer.services.LocFilesService;
+import com.example.TatMobileAnalyzer.services.StatisticService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,12 +31,18 @@ public class StatisticController {
     }
 
     @PostMapping("/repository")
-    ResponseEntity<String> getStatistic(@RequestBody RepositoryDto repositoryDto) {
+    ResponseEntity<String> getCommitStatistic(@RequestBody RepositoryDto repositoryDto) {
         return statisticService.getStatistic(repositoryDto.getRepositoryUrl());
     }
 
     @PostMapping("/loc/statistic")
-    ResponseEntity<String> getStatisticLocFiles(@RequestBody LocFilesDto locFilesDto) {
-        return locFilesService.getStatisticLocFiles(locFilesDto.getRepositoryUrl(), locFilesDto.getSince(), locFilesDto.getUntil());
+    ResponseEntity<String> getStatisticLocFiles(@RequestParam String since,
+                                                @RequestParam String until,
+                                                @RequestBody RepositoryDto repositoryDto) {
+        if (!since.equals("") && !until.equals("")) {
+            since = "?since=" + since;
+            until = "&until=" + until;
+        }
+        return locFilesService.getStatisticLocFiles(repositoryDto.getRepositoryUrl(), since, until);
     }
 }
