@@ -1,17 +1,13 @@
 package com.example.TatMobileAnalyzer.services.impl;
 
+import com.example.TatMobileAnalyzer.services.GitHubService;
 import com.example.TatMobileAnalyzer.services.LocFilesService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,53 +16,31 @@ import java.util.Map;
 
 @Service
 public class LocFilesServiceImpl implements LocFilesService {
-    @Value("${access.token}")
-    private String accessToken;
+
+    private final GitHubService gitHubService;
+
+    @Autowired
+    public LocFilesServiceImpl(GitHubService gitHubService) {
+        this.gitHubService = gitHubService;
+    }
 
     @Override
     public ResponseEntity<String> getStatisticLocFiles(String repoUrl, String since, String until) {
-        HttpResponse<String> response = getCommitsPerTime(repoUrl, since, until);
+        String apiUrl = (repoUrl.substring(0, 8) + "api." + repoUrl.substring(8, 19) +
+                "repos" + repoUrl.substring(18)).replaceAll("/$", "") + "/commits?" + since + "&" + until;
+        HttpResponse<String> response = gitHubService.sendGetRequest(apiUrl);
         if (response.statusCode() != 200) {
             return new ResponseEntity(response.body(), HttpStatus.valueOf(response.statusCode()));
         }
-        List<Map<String, Object>> commitsJson = readJson(response.body());
-        List<Map<String, Object>> result = getCommitsStatisics(commitsJson);
+        List<Map<String, Object>> commitsJson = gitHubService.readJsonToList(response.body());
+        List<Map<String, Object>> result = getCommitsStatistic(commitsJson);
         return new ResponseEntity<>(result.toString(), HttpStatus.valueOf(response.statusCode()));
     }
 
-    @SneakyThrows
-    private HttpResponse<String> getCommitsPerTime(String repoUrl, String since, String until) {
-        String apiUrl = (repoUrl.substring(0, 8) + "api." + repoUrl.substring(8, 19) +
-                "repos" + repoUrl.substring(18)).replaceAll("/$", "") + "/commits?" + since + "&" + until;
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().header("Authorization", "Bearer " + accessToken).uri(URI.create(apiUrl)).build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        return response;
-    }
 
-    private List<Map<String, Object>> readJson(String data) {
-        List contributorsData = new ArrayList<>();
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            contributorsData = objectMapper.readValue(data, List.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return contributorsData;
-    }
 
-    private Map<String, Object> readJsonToMap(String data) {
-        Map<String, Object> contributorsData = new HashMap<>();
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            contributorsData = objectMapper.readValue(data, Map.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return contributorsData;
-    }
 
-    private List<Map<String, Object>> getCommitsStatisics(List<Map<String, Object>> commitsJson) {
+    private List<Map<String, Object>> getCommitsStatistic(List<Map<String, Object>> commitsJson) {
         List<Map<String, Object>> commitsData = new ArrayList<>();
         for (Map<String, Object> commitJson : commitsJson) {
             Map<String, Object> commitStatData = new HashMap<>();
@@ -83,10 +57,8 @@ public class LocFilesServiceImpl implements LocFilesService {
 
     @SneakyThrows
     private List<Map<String, Object>> getFilesStatistic(String commitUrl) {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().header("Authorization", "Bearer " + accessToken).uri(URI.create(commitUrl)).build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        Map<String, Object> filesJson = readJsonToMap(response.body());
+        HttpResponse<String> response = gitHubService.sendGetRequest(commitUrl);
+        Map<String, Object> filesJson = gitHubService.readJsonToMap(response.body());
         List<Map<String, Object>> files = (List<Map<String, Object>>) filesJson.get("files");
         List<Map<String, Object>> resultJson = new ArrayList<>();
         for (Map<String, Object> file : files) {
