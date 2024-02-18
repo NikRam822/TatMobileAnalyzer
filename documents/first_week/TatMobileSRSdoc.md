@@ -7,14 +7,18 @@
     - [Условные Обозначения](#agreements)
     - [Описание Проекта](#project-description)
     - [Ссылки](#links)
-2. [Общее Описание](#description)
+2. [Обзор Проекта](#description)
     - [Stakeholders](#stakeholders)
-3. [Функции Системы](#requirements)
     - [Анализ Решений](#solution-analysis)
     - [Метрики](#metrics)
+3. [Требования](#requirements)  
     - [User Stories & Интервью](#user-stories)
     - [Use Cases](#use-cases)
-    - [Архитектурные драйверы](#architectural-drives)
+    - [Quality Attributes](#quality-attributes)
+4. [Architectural_Views](#architectural-views)
+    - [Static](#static-perspective)
+    - [Dynamic](#dynamic-perspective)
+    - [Physical](#physical-perspective)
 
 ## Введение <a name="introduction"></a>
 
@@ -50,7 +54,7 @@
 Этот документ ссылается на следующие документы, стандарты и ресурсы:
 [TatMobileAnalyzer repository](https://github.com/NikRam822/TatMobileAnalyzer)
 
-## Общее Описание <a name="description"></a>
+## Обзор Проекта <a name="description"></a>
 ### Stakeholders <a name="stakeholders"></a>
 
 Ниже приведены некоторые потенциальные заинтересованные стороны и их интересы в
@@ -91,9 +95,7 @@
 прозрачные и точные показатели может иметь важное значение для обеспечения соответствия
 требованиям.
 
-## Функции Системы <a name="requirements"></a>
-
-Эта глава начинается с анализа существующих решений, как прямых, так и косвенных.
+### Анализ Решений <a name="solution-analysis"></a>
 Решением в данном контексте является репозиторий с кодом для анализа коммита,
 репозитория или кода. Поиск проводился на GitHub и GitLab с использованием запросов,
 содержащих слова (commit, code, metrics). Результаты доступны в разделе "Анализ Решений".
@@ -102,15 +104,6 @@
 программиста. В отдельной таблице представлен список метрик с описанием (цель
 использования метрики) и минусами/проблемами, связанными с этими метриками.
 
-После анализа метрик следует раздел требований, вытекающих из интервью с заказчиками.
-Этот список требований сформирован с учетом приоритетности метода MOSCOW. В этих
-требованиях учтены метрики, которые должны присутствовать в финальном продукте.
-
-Для более подробного определения деталей первоначальный список требований был описан в
-форме use case ов в секции “Use Cases”.
-
-
-### Анализ Решений <a name="solution-analysis"></a>
 Близкие решения:
 * [Code Quality Report Analyzer](https://github.com/roshni-joshi/code-quality-report-analyzer) (Good). It has a frontend and two servers in Python and Java.
 It provides options to analyze the code base.
@@ -189,6 +182,7 @@ halstead metrics, maintainability index, and basic ones [loc, sloc]).
 [Предложение](https://github.com/fidelfsd/github-contribution-metrics-calculator) по определению вклада:
 ![Alt text](URL or file path)
 
+## Требования <a name="requirements"></a>
 
 ### User Stories & Интервью <a name="user-stories"></a>
 
@@ -376,7 +370,7 @@ halstead metrics, maintainability index, and basic ones [loc, sloc]).
 | Основной поток событий:                       | 1. Разработчик интегрирует анализ эффективности работы в существующий пользовательский интерфейс.        |
 | Постусловия:                                     | Функционал анализа эффективности работы доступен в существующем пользовательском интерфейсе.        |
 
-### Архитектурные драйверы <a name="architectural-drives"></a>
+### Quality Attributes <a name="quality-attributes"></a>
 
 Ниже приведены архитектурные драйверы для системы оценки вклада разработчиков:
 ##### 1. Основные функции:
@@ -435,3 +429,14 @@ halstead metrics, maintainability index, and basic ones [loc, sloc]).
 ### Simple use case diagram: [diagram](https://www.plantuml.com/plantuml/uml/VL2nhi8m3Dpp5QTExT1VUEgRc88gaDYj9XIZaY372274lvEg0uKAHj-TxyvkafBevJIOmUyL6Y7S7nIEnNVACHX3dKQ1fK2z5r22DID7eHyy2aiSq6QgmDq0W4LTe_nt3cj_HIlncCNLI2tHBFr3kUCNXAsISbBkKcKUPfwqOiN6dsDYZNBBSRyyfsc-y6ct39oVyRtLvFzUi_71vHy-0G00)
 ![Alt text](URL or file path)
 
+## Architectural Views <a name="architectural-views"></a>
+
+### Static <a name="static-perspective"></a>
+![static](../media/static.svg)
+
+### Dynamic <a name="dynamic-perspective"></a>
+
+### Physical <a name="physical-perspective"></a>
+
+### Other
+![statuc](../media/ERdiagram.svg)
