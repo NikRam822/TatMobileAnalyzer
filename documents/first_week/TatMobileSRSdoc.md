@@ -416,6 +416,8 @@
 ### Static <a name="static-perspective"></a>
 ![static](../media/static.svg)
 
+![componenet](../media/component.svg)
+
 ### Dynamic <a name="dynamic-perspective"></a>
 
 ### Physical <a name="physical-perspective"></a>
