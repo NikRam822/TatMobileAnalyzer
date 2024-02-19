@@ -98,43 +98,29 @@
 ### Анализ Решений <a name="solution-analysis"></a>
 Решением в данном контексте является репозиторий с кодом для анализа коммита,
 репозитория или кода. Поиск проводился на GitHub и GitLab с использованием запросов,
-содержащих слова (commit, code, metrics). Результаты доступны в разделе "Анализ Решений".
+содержащих слова (commit, code, metrics, github, gitlab). В этом разделе представлена сравнительная таблица
+решений, которые нам удалось найти.
 
 В следующем разделе рассматривается проблема метрик для анализа продуктивности
 программиста. В отдельной таблице представлен список метрик с описанием (цель
 использования метрики) и минусами/проблемами, связанными с этими метриками.
 
-Близкие решения:
-* [Code Quality Report Analyzer](https://github.com/roshni-joshi/code-quality-report-analyzer) (Good). It has a frontend and two servers in Python and Java.
-It provides options to analyze the code base.
-* [GitLab Analytics](https://github.com/NDHWAlliance/gitlab-analytics) (Good). It gives analytics on commits, wikis, issues, comments,
-merge-requests.
-* [GitLab Commit Statics](https://github.com/ccbuildpro/GitLabCommitStatics/tree/master) (Сомнительно). It gives an example of gitlab api usage.
-
-Альтернативные решения.
-
-Поиск был выполнен на GitHub «gitlab metrics» (67 результатов):
-* [New Relic GitLab Exporter](https://github.com/newrelic-experimental/gitlab). It visualize GitLab pipeline metrics.
-* [GitLab Prometheus solution](https://github.com/owentl/gitlab-prometheus/tree/main) (Good) has tons of metrics on issues, time and bla-bla.
-* [DORA Metrics](https://about.gitlab.com/solutions/value-stream-management/dora/#overview), solution from GitLab. It measures software delivery velocity (uses several
-metrics). Managers can use that tool to accelerate planning time.
-* [GitLab DevOps Metrics on Go](https://github.com/denniskribl/gitlab-devops-metrics) collects commit metrics too. It uses GitLab API.
-* [Extract GitLab Merge Metrics](https://github.com/hadisfr/extract-gitlab-merge-metrics) (Good) on Python. It extracts branch name, merge commit
-hash, merge timestamp, number of added lines, number of removed lines, and number of
-touched files for each merge request.
-
-Поиск был выполнен на GitHub “commit metrics” (62 результатов):
-* [Git Commit Metrics](https://github.com/llbit/git-commit-metrics) provides number of commits, number of inserted and removed lines for
-the whole lifespan of a project.
-* [GH Metrics Collector](https://github.com/davelosert/gh-metrics-collector) does not provide useful metrics for commits, but collects some data for
-pull requests, which can be used to estimate time of pull request lifetime and so on.
-* [WHIP](https://github.com/slincastro/whip/tree/main) has commit metrics per user. Bad documentation.
-
-Поиск проводился по «метрикам кода» GitHub (2,6 тыс. результатов):
-* [Radon](https://github.com/rubik/radon) (Сомнительно) on Python. It calculates several code metrics (cyclomatic complexity,
-halstead metrics, maintainability index, and basic ones [loc, sloc]).
-* [CK](https://github.com/mauricioaniche/ck) (Hmmm) on Java. It calculates many metrics.
-* [DesigniteJava](https://github.com/tushartushar/DesigniteJava) (Hmmm) on Java. It calculates many metrics.
+|Название| Описание                                                                                                                                               | Метрики                                                                                                                                                                                                | Плюсы                                                                                                           | Минусы                                                           |
+|-|--------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------|
+|[Code Quality Report Analyzer](https://github.com/roshni-joshi/code-quality-report-analyzer)| Веб-приложение, разработанное в виде микросервисной архитектуры (React, Springboot и Python) для оценки и визуализации типов запахов в репозитории git | 1. Architecture, <br/>2. Design, <br/>3. Implementation, <br/>4. Test, and <br/>5. Testability Smells                                                                                                  | 1. Система имеет готовый UI с готовыми дашбордами. <br/>2. Есть подробная документация                          | Тяжело адаптировать под свое решение                             |
+|[GitLab Analytics](https://github.com/NDHWAlliance/gitlab-analytics)| Инструмент (система) для анализа активностей разработчиков GitLab репозиторий                                                                          | 1. commits <br/>2. wikis <br/>3. issues <br/>4. comments <br/>5. merge-request                                                                                                                         | Простой, понятный проект с инструкцией запуска                                                                  | Нету подробной документации, инструмент выдает ошибку при работе |
+|[GitLab Commit Statics](https://github.com/ccbuildpro/GitLabCommitStatics/tree/master)| Очень простой скрипт для сбора статистики по проекту в GitLab                                                                                          | метрики от GitLab API                                                                                                                                                                                  | Простой код                                                                                                     | На китайском языке                                               |
+|[New Relic GitLab Exporter](https://github.com/newrelic-experimental/gitlab)| Экспортер Gitlab, который отправляет метрики, журналы и трассировки в New Relic                                                                        | метрики CI/CD                                                                                                                                                                                          | Как пример интеграции пойдет                                                                                    | Плохая документация                                              |
+|[GitLab Prometheus solution](https://github.com/owentl/gitlab-prometheus/tree/main)| Генератор метрик Prometheus на основе gitlab issues                                                                                                    | issue_weight, issue_status, time_estimate, time_spent and other 21 values                                                                                                                              | Простой код, есть dockerfile                                                                                    | Нет                                                              |
+|[DORA Metrics](https://about.gitlab.com/solutions/value-stream-management/dora/#overview)| Решение для аналитиков и devops инженеров                                                                                                              | 1. частота развертывания, <br/>2. время выполнения изменений, <br/>3. среднее время восстановления <br/>4. частота отказов изменений и другие CI/CD метрики                                            | Коммерческое решение, легко подключаемое. API с большим кол-вом метрик                                          | Нет |
+|[GitLab DevOps Metrics on Go](https://github.com/denniskribl/gitlab-devops-metrics)| Инструмент для сбора метрик о CI/CD                                                                                                                    | commits & deployments                                                                                                                                                                                  | На GOLANG                                                                                                       | Мало кода |
+|[Extract GitLab Merge Metrics](https://github.com/hadisfr/extract-gitlab-merge-metrics)| Инструмент для сбора GitLab merge метрик                                                                                                               | merge (time, hash and so on)                                                                                                                                                                           | Есть пример использывания api (в коде)                                                                          | Pet project |
+|[Git Commit Metrics](https://github.com/llbit/git-commit-metrics)| Инструмент для подсчета коммитов и добавлений (GitHub)                                                                                                 | 1. Commit Count, <br/>2. Inserted, <br/>3. Removed.                                                                                                                                                    | Очень простой пример работы с GitHub                                                                            | Pet project|
+|[GH Metrics Collector](https://github.com/davelosert/gh-metrics-collector)| Соберите некоторые показатели Github Committer и Pull-Requests из API GitHub                                                                           | 1. commitDate, <br/>2. commitSHA, <br/>3. commitAuthor, <br/>4. repository, <br/>5. organisation.<br/>Same for pull-requests                                                                           | Выводит результат в csv файле, облегачая интеграцию с excel                                                     |Small project|
+|[WHIP](https://github.com/slincastro/whip/tree/main)| Собирает метрики GitHub по умолчанию                                                                                                                   | GitHub коммит информация                                                                                                                                                                               | Просто как пример - окей                                                                                        |Pet project|
+|[Radon](https://github.com/rubik/radon)| Парсер кода, который собирает разные Python метрики                                                                                                    | 1. cyclomatic complexity, <br/>2. raw metrics (these include SLOC, comment lines, blank lines, &c.)<br/>3. Halstead metrics (all of them)<br/>4. Maintainability Index (the one used in Visual Studio) | Очень хороший пример, как выполнить данный проект на Питоне. Также проект предоставляет нормальную документацию | Косвенное решение |
+|[CK](https://github.com/mauricioaniche/ck)| Статический парсер кода, который собирает Java метрики                                                                                                 | Около 36 метрик!                                                                                                                                                                                       | Открытый код, проект поддерживается сообществом                                                                 |Нет документации|
+|[DesigniteJava](https://github.com/tushartushar/DesigniteJava)| Статический парсер кода, который анализирует качество кода для Java                                                                                    | Собирает около 40 значений!                                                                                                                                                                            | Открытый код, есть документация                                                                                 |косвенное решение|
 
 ### Метрики <a name="metrics"></a>
 Оценка продуктивности программистов с использованием метрик кода и коммитов сталкивается
@@ -425,10 +411,6 @@ halstead metrics, maintainability index, and basic ones [loc, sloc]).
       - Меры защиты от потенциальных угроз безопасности и несанкционированного доступа
       к репозиториям конфиденциального кода.
 
-
-### Simple use case diagram: [diagram](https://www.plantuml.com/plantuml/uml/VL2nhi8m3Dpp5QTExT1VUEgRc88gaDYj9XIZaY372274lvEg0uKAHj-TxyvkafBevJIOmUyL6Y7S7nIEnNVACHX3dKQ1fK2z5r22DID7eHyy2aiSq6QgmDq0W4LTe_nt3cj_HIlncCNLI2tHBFr3kUCNXAsISbBkKcKUPfwqOiN6dsDYZNBBSRyyfsc-y6ct39oVyRtLvFzUi_71vHy-0G00)
-![Alt text](URL or file path)
-
 ## Architectural Views <a name="architectural-views"></a>
 
 ### Static <a name="static-perspective"></a>
@@ -437,6 +419,9 @@ halstead metrics, maintainability index, and basic ones [loc, sloc]).
 ### Dynamic <a name="dynamic-perspective"></a>
 
 ### Physical <a name="physical-perspective"></a>
+
+### Simple use case diagram: [diagram](https://www.plantuml.com/plantuml/uml/VL2nhi8m3Dpp5QTExT1VUEgRc88gaDYj9XIZaY372274lvEg0uKAHj-TxyvkafBevJIOmUyL6Y7S7nIEnNVACHX3dKQ1fK2z5r22DID7eHyy2aiSq6QgmDq0W4LTe_nt3cj_HIlncCNLI2tHBFr3kUCNXAsISbBkKcKUPfwqOiN6dsDYZNBBSRyyfsc-y6ct39oVyRtLvFzUi_71vHy-0G00)
+![use case diagram](../media/useCaseDiagram.svg)
 
 ### Other
 ![statuc](../media/ERdiagram.svg)
