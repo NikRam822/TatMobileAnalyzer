@@ -67,6 +67,5 @@ DB_USER=admin
 DB_PASSWORD=secret
 ````
 # License
-
-[MIT](https://choosealicense.com/licenses/mit/)
+The project is licensed under the [LICENCE](https://github.com/NikRam822/TatMobileAnalyzer/blob/master/LICENCE)
 
