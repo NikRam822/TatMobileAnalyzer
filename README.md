@@ -24,7 +24,7 @@ Planned metrics:
 
 # Development
 
-## TatMobileAnalyzer used
+## TatMobileAnalyzer uses
 1) Spring boot (version 2.7.4)
 2) PostgreSQL
 3) Swagger2 (version 2.7.0)
