@@ -51,8 +51,14 @@
 - Интеграция с внешними инструментами управления проектами
 
 ### Ссылки <a name="links"></a>
-Этот документ ссылается на следующие документы, стандарты и ресурсы:
-[TatMobileAnalyzer repository](https://github.com/NikRam822/TatMobileAnalyzer)
+Этот документ ссылается на следующие документы, прототипы и ресурсы:
+- [TatMobileAnalyzer repository](https://github.com/NikRam822/TatMobileAnalyzer)
+- [Figma Prototype](https://www.figma.com/file/OE0pQL3mn4wlcng6o10AK3/ServiceDesign?type=design&node-id=264%3A1251&mode=design&t=XG83iR2C8fcI6gXF-1)
+- [Toggle Report](https://track.toggl.com/shared-report/33a4e4c4755942c8ec8be3ea4c776dda)
+- [Artifacts of 1st meeting](https://drive.google.com/drive/folders/1vgXjxCtzi7MA1MaR5vUygWJd_Ts-4vJQ?usp=drive_link)
+- [Role Table](https://docs.google.com/spreadsheets/d/1XhRbq4rEerV7g63WXSJjuF9qFM0C1nxG2EsSbE144wI/edit?usp=sharing)
+- [Other Artifacts](https://drive.google.com/drive/folders/1RKxz5tozCQmqkwWamR1bCjz847XtSwqx?usp=sharing)
+
 
 ## Обзор Проекта <a name="description"></a>
 ### Stakeholders <a name="stakeholders"></a>
@@ -414,16 +420,16 @@
 ## Architectural Views <a name="architectural-views"></a>
 
 ### Static <a name="static-perspective"></a>
-![static](../media/static.svg)
+![static](media/static.svg)
 
-![componenet](../media/component.svg)
+![componenet](media/component.svg)
 
 ### Dynamic <a name="dynamic-perspective"></a>
 
 ### Physical <a name="physical-perspective"></a>
 
 ### Simple use case diagram: [diagram](https://www.plantuml.com/plantuml/uml/VL2nhi8m3Dpp5QTExT1VUEgRc88gaDYj9XIZaY372274lvEg0uKAHj-TxyvkafBevJIOmUyL6Y7S7nIEnNVACHX3dKQ1fK2z5r22DID7eHyy2aiSq6QgmDq0W4LTe_nt3cj_HIlncCNLI2tHBFr3kUCNXAsISbBkKcKUPfwqOiN6dsDYZNBBSRyyfsc-y6ct39oVyRtLvFzUi_71vHy-0G00)
-![use case diagram](../media/useCaseDiagram.svg)
+![use case diagram](media/useCaseDiagram.svg)
 
 ### Other
-![statuc](../media/ERdiagram.svg)
+![statuc](media/ERdiagram.svg)
