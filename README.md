@@ -4,7 +4,7 @@
 
 # What is TatMobileAnalyzer?
 TatMobileAnalyzer is a comprehensive solution for analysing the work of developers within one or several projects. This solution is aimed primarily at managers and product owners and is an tool that provides statistics on project contributors. 
-For more information visit our [Software Requirement Specification document](./documents/README.md). 
+For more information visit our [Software Requirement Specification document](docs/SPECIFICATION.md). 
 
 ## Meteics represented in our system
 <details>
