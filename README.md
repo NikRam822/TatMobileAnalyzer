@@ -6,6 +6,10 @@
 TatMobileAnalyzer is a comprehensive solution for analysing the work of developers within one or several projects. This solution is aimed primarily at managers and product owners and is an tool that provides statistics on project contributors. 
 For more information visit our [Software Requirement Specification document](./documents/README.md). 
 
+## Meteics represented in our system
+<details>
+<summary>Click to see more</summary>
+
 Currently, the following metrics are available:
 ### Quantitative metrics:
  - Number of developer commits over a given time period
@@ -22,6 +26,8 @@ Planned metrics:
  - Number of syntactically unique lines of code over a period of time
  - Number of duplicated lines of code for a certain period of time 
  - Cyclomatic complexity
+</details>
+
 # Practice Areas
 - [Context & requirements](https://docs.google.com/presentation/d/1FC4H93kaKhvJftJA3swXIBELiwyPy0hwgioDYYgdEBg/edit#slide=id.g2bf4626b8f0_2_54)
 - [Planning & Tracking](https://docs.google.com/presentation/d/1p4QMpHhTr4u8h0By7N6_j5zaN4A9W5axFmwGpzpU-yo/edit#slide=id.g2ba85e3c481_0_18)
