@@ -19,6 +19,7 @@
     - [Static](#static-perspective)
     - [Dynamic](#dynamic-perspective)
     - [Physical](#physical-perspective)
+5. [Researches](#researches)
 
 ## Введение <a name="introduction"></a>
 
@@ -418,7 +419,7 @@
       к репозиториям конфиденциального кода.
 
 ## Architectural Views <a name="architectural-views"></a>
-
+    
 ### Static <a name="static-perspective"></a>
 ![static](media/static.svg)
 
@@ -431,5 +432,8 @@ Soon
 ### USECASE diagram: 
 ![use case diagram](media/useCaseDiagram.svg)
 
-### ERD (Model of DATABASE)
+### ERD (database model based on multitenant architecture)
 ![statuc](media/ERdiagram.svg)
+
+## The following reserches were conducted <a name="researches"></a>
+- [GitHub API Research](https://docs.google.com/document/d/15Igu6dCziBG-8ZnpGVz-e2CEmNE1FiWU-ww2rb4NJPs/edit?usp=drive_link)
