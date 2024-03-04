@@ -422,13 +422,13 @@
 ### Static <a name="static-perspective"></a>
 ![static](media/static.svg)
 
+### Dynamic <a name="dynamic-perspective"></a>
 ![componenet](media/component.svg)
 
-### Dynamic <a name="dynamic-perspective"></a>
-
 ### Physical <a name="physical-perspective"></a>
+Soon
 
-### Simple use case diagram: [diagram](https://www.plantuml.com/plantuml/uml/VL2nhi8m3Dpp5QTExT1VUEgRc88gaDYj9XIZaY372274lvEg0uKAHj-TxyvkafBevJIOmUyL6Y7S7nIEnNVACHX3dKQ1fK2z5r22DID7eHyy2aiSq6QgmDq0W4LTe_nt3cj_HIlncCNLI2tHBFr3kUCNXAsISbBkKcKUPfwqOiN6dsDYZNBBSRyyfsc-y6ct39oVyRtLvFzUi_71vHy-0G00)
+### Simple use case diagram: 
 ![use case diagram](media/useCaseDiagram.svg)
 
 ### Other
