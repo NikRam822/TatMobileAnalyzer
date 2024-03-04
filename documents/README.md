@@ -428,8 +428,8 @@
 ### Physical <a name="physical-perspective"></a>
 Soon
 
-### Simple use case diagram: 
+### USECASE diagram: 
 ![use case diagram](media/useCaseDiagram.svg)
 
-### Other
+### ERD (Model of DATABASE)
 ![statuc](media/ERdiagram.svg)
