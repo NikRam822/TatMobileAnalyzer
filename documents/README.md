@@ -435,5 +435,6 @@ Soon
 ### ERD (database model based on multitenant architecture)
 ![statuc](media/ERdiagram.svg)
 
-## The following reserches were conducted <a name="researches"></a>
+## Researches <a name="researches"></a>
+#### The following reserches were conducted:
 - [GitHub API Research](https://docs.google.com/document/d/15Igu6dCziBG-8ZnpGVz-e2CEmNE1FiWU-ww2rb4NJPs/edit?usp=drive_link)
