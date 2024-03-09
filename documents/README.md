@@ -19,6 +19,8 @@
     - [Static](#static-perspective)
     - [Dynamic](#dynamic-perspective)
     - [Physical](#physical-perspective)
+    - [Use-case diagram:](#use-case-diagram)
+    - [Entity relationship diagram](#entity-relationship-diagram)
 5. [Researches](#researches)
 
 ## Введение <a name="introduction"></a>
@@ -438,10 +440,11 @@
 ### Physical <a name="physical-perspective"></a>
 Soon
 
-### USECASE diagram: 
+### Use-case diagram <a name="use-case-diagram"></a>
 ![use case diagram](media/useCaseDiagram.svg)
 
-### ERD (database model based on multitenant architecture)
+### Entity relationship diagram <a name="entity-relationship-diagram"></a>
+Database model based on multitenant architecture
 ![statuc](media/ERdiagram.svg)
 
 ## Researches <a name="researches"></a>
