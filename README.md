@@ -32,7 +32,7 @@ Planned metrics:
 - [Context & requirements](https://docs.google.com/presentation/d/10LQMEnqjGyXT6bjqqwgGLAqfKdvsYcUmTSZ4ySaXE68/edit#slide=id.g2bf4626b8f0_2_45)
 - [Planning & Tracking](https://docs.google.com/presentation/d/1RxE21MRGgMtd_o3Fw0LY9T-XuaTw2wiYoiNQLlVQlvc/edit#slide=id.g2c145daf49c_0_0)
 - [Quality](https://docs.google.com/presentation/d/1sNMJkVtir0d8Xq8AJtGDbrwqm9qHnfdOJVQe_QdA53w/edit#slide=id.g2c145daf49c_0_0)
-- [Architectural Design](https://github.com/NikRam822/TatMobileAnalyzer/tree/master/documents#architectural-views-)
+- [Architectural Design](https://docs.google.com/presentation/d/16PEuTRjsOlHsv0-apAT97AWRIrPep4iuqRi0tT9V_aY/edit#slide=id.g2c145daf49c_0_0)
 - Risk management
 - [Configuration Management](https://docs.google.com/presentation/d/1Wk-InlpgL0icAYJueJ1qFql3nSrkVW1gjorKV-aPb8s/edit#slide=id.g2bf447eed3b_3_45)
 # Development
