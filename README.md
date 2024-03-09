@@ -29,7 +29,7 @@ Planned metrics:
 </details>
 
 # Practice Areas
-- [Context & requirements](https://docs.google.com/presentation/d/1FC4H93kaKhvJftJA3swXIBELiwyPy0hwgioDYYgdEBg/edit#slide=id.g2bf4626b8f0_2_54)
+- [Context & requirements](https://docs.google.com/presentation/d/10LQMEnqjGyXT6bjqqwgGLAqfKdvsYcUmTSZ4ySaXE68/edit#slide=id.g2bf4626b8f0_2_45)
 - [Planning & Tracking](https://docs.google.com/presentation/d/1p4QMpHhTr4u8h0By7N6_j5zaN4A9W5axFmwGpzpU-yo/edit#slide=id.g2ba85e3c481_0_18)
 - [Quality](https://docs.google.com/document/d/1U3pW2kL2HF2AqptJ4wXCCW_zRgI5KmIvhEtcVKFEVB4/edit)
 - [Architectural Design](https://github.com/NikRam822/TatMobileAnalyzer/tree/master/documents#architectural-views-)
