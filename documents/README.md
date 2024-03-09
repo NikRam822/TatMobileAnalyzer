@@ -421,10 +421,19 @@
 ## Architectural Views <a name="architectural-views"></a>
     
 ### Static <a name="static-perspective"></a>
+
+#### Module diagram
 ![static](media/static.svg)
 
 ### Dynamic <a name="dynamic-perspective"></a>
+
+#### General models diagram
 ![componenet](media/component.svg)
+
+#### Sequence diagram
+[PlantUML code](https://www.plantuml.com/plantuml/uml/NPB1JiCm343l_Gfhz_q01pHA1UA6XlW0gtM5nHgNs1lYxt5AQ9fU4iljiv-jdDGmsdMwDDYRH7XNYitiAUvvnc3m52KOXQ5AjjX_xdE7PpPuU7qv02fux67zlKD39vMMFxgsQL8pEDwlFUxWpKyOq33fy0sDYi1_u4GMSE1CNrTIgvdLBzzEPAC2c40MBbYs_hlWkEspo8zHffKQQCzjkdMjpu8tsddvq5rR5twKC7ASq5W2o0ZgbDVU8ALkjQepwIn12RxPFfO-MomnzT8SJllsKLZd2_xiaRBean_fHVm2)
+
+![sequence diagram](media/sequence_diagram.png)
 
 ### Physical <a name="physical-perspective"></a>
 Soon
