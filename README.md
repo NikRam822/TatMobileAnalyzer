@@ -33,7 +33,7 @@ Planned metrics:
 - [Planning & Tracking](https://docs.google.com/presentation/d/1RxE21MRGgMtd_o3Fw0LY9T-XuaTw2wiYoiNQLlVQlvc/edit#slide=id.g2c145daf49c_0_0)
 - [Quality](https://docs.google.com/presentation/d/1sNMJkVtir0d8Xq8AJtGDbrwqm9qHnfdOJVQe_QdA53w/edit#slide=id.g2c145daf49c_0_0)
 - [Architectural Design](https://docs.google.com/presentation/d/16PEuTRjsOlHsv0-apAT97AWRIrPep4iuqRi0tT9V_aY/edit#slide=id.g2c145daf49c_0_0)
-- Risk management
+- [Risk management](https://docs.google.com/presentation/d/1OFszMaOglWX0m5Tn667dteWtcb8elPTsDsy8pZfYMdM/edit#slide=id.g2c16c5cf016_0_0)
 - [Configuration Management](https://docs.google.com/presentation/d/1p8p3ND9ekFV0kQYP5uz2qg-jBIxjGlojWWQ-190fW6c/edit#slide=id.g2bf447eed3b_3_45)
 # Development
 
