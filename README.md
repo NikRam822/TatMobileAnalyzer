@@ -4,7 +4,7 @@
 
 # What is TatMobileAnalyzer?
 TatMobileAnalyzer is a comprehensive solution for analysing the work of developers within one or several projects. This solution is aimed primarily at managers and product owners and is an tool that provides statistics on project contributors. 
-For more information visit our [Software Requirement Specification document](./documents/README.md). 
+For more information visit our [Software Requirement Specification document](docs/SPECIFICATION.md). 
 
 ## Meteics represented in our system
 <details>
@@ -79,6 +79,16 @@ DB_URL=jdbc:postgresql://localhost:5433/postgres
 DB_USER=admin
 DB_PASSWORD=secret
 ````
+
+## Other links
+
+- [Tat Mobile Specification](./docs/SPECIFICATION.md)
+- [GitHub Workflow Rules](./docs/WORKFLOW.md)
+- [Figma Prototype](https://www.figma.com/file/OE0pQL3mn4wlcng6o10AK3/ServiceDesign?type=design&node-id=264%3A1251&mode=design&t=XG83iR2C8fcI6gXF-1)
+- [Toggle Report](https://track.toggl.com/shared-report/33a4e4c4755942c8ec8be3ea4c776dda)
+- [Other Artifacts](https://drive.google.com/drive/folders/1RKxz5tozCQmqkwWamR1bCjz847XtSwqx?usp=sharing)
+
+
 # License
 The project is licensed under the [LICENCE](https://github.com/NikRam822/TatMobileAnalyzer/blob/master/LICENCE)
 
