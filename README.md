@@ -1,6 +1,6 @@
 # TatMobileAnalyzer
 
-![Logo](https://github.com/NikRam822/TatMobileAnalyzer/blob/master/documents/media/Logo.svg) 
+![Logo](https://github.com/NikRam822/TatMobileAnalyzer/blob/master/docs/media/Logo.svg) 
 
 # What is TatMobileAnalyzer?
 TatMobileAnalyzer is a comprehensive solution for analysing the work of developers within one or several projects. This solution is aimed primarily at managers and product owners and is an tool that provides statistics on project contributors. 
