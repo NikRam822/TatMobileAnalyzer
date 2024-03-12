@@ -32,7 +32,8 @@ public class Statistic {
     @Column(name = "commit_numbers")
     private int commitNumber;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "project_id", referencedColumnName = "id", nullable = false)
     private Project project;
 
 }

@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @Table(name = "projects")
@@ -24,8 +25,7 @@ public class Project {
     @Column(name = "project_name")
     private String projectName;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "statistic_id", referencedColumnName = "id")
-    private Statistic statisticId;
+    @OneToMany(mappedBy="project", cascade = CascadeType.ALL)
+    private Collection<Statistic> statistic;
 
 }
