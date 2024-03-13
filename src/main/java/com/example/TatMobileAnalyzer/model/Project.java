@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -15,7 +14,6 @@ import java.util.Collection;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@SQLDelete(sql="UPDATE users SET status = 'DELETED' where id=?")
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
