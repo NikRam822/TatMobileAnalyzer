@@ -4,11 +4,15 @@ import com.example.TatMobileAnalyzer.dto.RepositoryDto;
 import com.example.TatMobileAnalyzer.services.LocFilesService;
 import com.example.TatMobileAnalyzer.services.PatchScanService;
 import com.example.TatMobileAnalyzer.services.StatisticService;
+import com.example.TatMobileAnalyzer.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.ParseException;
+import java.util.Date;
 
 @CrossOrigin
 @Slf4j
@@ -42,32 +46,25 @@ public class StatisticController {
     ResponseEntity<String> getStatisticLocFiles(@RequestParam(required = false) String since,
                                                 @RequestParam(required = false) String until,
                                                 @RequestBody RepositoryDto repositoryDto) {
-        String period;
-        if (since != null || until != null) {
-            if (since == null) {
-                period = "?until=" + until;
-            } else if (until == null) {
-                period = "?since=" + since;
-            } else {
-                period = "?since=" + since + "&until=" + until;
-            }
-        } else {
-            period = "";
-        }
-        return locFilesService.getStatisticLocFiles(repositoryDto.getRepositoryUrl(), period);
-    }
-    @PostMapping("/patch/statistic")
-    ResponseEntity<String> getStatisticPatchScan(@RequestParam(required = false) String since,
-                                                @RequestParam(required = false) String until,
-                                                @RequestBody RepositoryDto repositoryDto) {
         String period = "";
-
         if (since != null || until != null) {
             period = (since == null) ? "?until=" + until :
                     (until == null) ? "?since=" + since :
                             "?since=" + since + "&until=" + until;
         }
+        return locFilesService.getStatisticLocFiles(repositoryDto.getRepositoryUrl(), period);
+    }
 
-        return patchScanService.getStatisticPatchScan(repositoryDto.getRepositoryUrl(), period);
+    @PostMapping("/patch/statistic")
+    ResponseEntity<String> getStatisticPatchScan(@RequestParam(required = false) String since,
+                                                 @RequestParam(required = false) String until,
+                                                 @RequestBody RepositoryDto repositoryDto) throws ParseException {
+
+
+        Date startDate = DateUtils.parseDate(since, "yyyy-MM-dd");
+        Date endDate = DateUtils.parseDate(until, "yyyy-MM-dd");
+
+
+        return patchScanService.getStatisticPatchScan(repositoryDto.getRepositoryUrl(), startDate, endDate);
     }
 }
