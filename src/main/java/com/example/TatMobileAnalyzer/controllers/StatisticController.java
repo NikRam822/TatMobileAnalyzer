@@ -60,18 +60,14 @@ public class StatisticController {
     ResponseEntity<String> getStatisticPatchScan(@RequestParam(required = false) String since,
                                                 @RequestParam(required = false) String until,
                                                 @RequestBody RepositoryDto repositoryDto) {
-        String period;
+        String period = "";
+
         if (since != null || until != null) {
-            if (since == null) {
-                period = "?until=" + until;
-            } else if (until == null) {
-                period = "?since=" + since;
-            } else {
-                period = "?since=" + since + "&until=" + until;
-            }
-        } else {
-            period = "";
+            period = (since == null) ? "?until=" + until :
+                    (until == null) ? "?since=" + since :
+                            "?since=" + since + "&until=" + until;
         }
+
         return patchScanService.getStatisticPatchScan(repositoryDto.getRepositoryUrl(), period);
     }
 }
