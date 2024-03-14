@@ -3,6 +3,7 @@ package com.example.TatMobileAnalyzer.controllers;
 import com.example.TatMobileAnalyzer.dto.RepositoryDto;
 import com.example.TatMobileAnalyzer.services.LocFilesService;
 import com.example.TatMobileAnalyzer.services.StatisticService;
+import com.example.TatMobileAnalyzer.services.FileStatService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,11 +19,16 @@ public class StatisticController {
     private final StatisticService statisticService;
     private final LocFilesService locFilesService;
 
+    private final FileStatService fileStatService;
+
 
     @Autowired
-    public StatisticController(StatisticService statisticService, LocFilesService locFilesService) {
+    public StatisticController(StatisticService statisticService,
+                               LocFilesService locFilesService,
+                               FileStatService fileStatService) {
         this.statisticService = statisticService;
         this.locFilesService = locFilesService;
+        this.fileStatService = fileStatService;
     }
 
     @GetMapping("/")
@@ -44,5 +50,10 @@ public class StatisticController {
             until = "&until=" + until;
         }
         return locFilesService.getStatisticLocFiles(repositoryDto.getRepositoryUrl(), since, until);
+    }
+
+    @PostMapping("/files/statistics")
+    ResponseEntity<String> getFileStatistic(@RequestBody RepositoryDto repositoryDto) {
+        return fileStatService.getContributorsByFiles(repositoryDto.getRepositoryUrl());
     }
 }
