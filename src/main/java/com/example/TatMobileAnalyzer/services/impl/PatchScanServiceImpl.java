@@ -38,6 +38,9 @@ public class PatchScanServiceImpl implements PatchScanService {
         List<GHCommit> commitsPerPeriod = Lists.reverse(commitQueryBuilder.list().toList());
 
         Map<String, List<Map<String, Object>>> authorStats = new LinkedHashMap<>();
+        Map<String, Integer> overall = new HashMap<>();
+        Map<String, Map<Integer, String>> general = new HashMap<>();
+        Map<String, Double> churn = new HashMap<>();
 
         for (GHCommit commit : commitsPerPeriod) {
             String author = commit.getAuthor().getLogin();
@@ -47,7 +50,6 @@ public class PatchScanServiceImpl implements PatchScanService {
             List<Map<String, Object>> fileStats = new ArrayList<>();
 
             for (GHCommit.File file : files) {
-
                 String patch = file.getPatch();
                 PatchReader.PatchInfo patchInfo = PatchReader.readPatch(patch);
 
@@ -61,6 +63,17 @@ public class PatchScanServiceImpl implements PatchScanService {
                 fileStat.put("del", patchInfo.getDel());
 
                 fileStats.add(fileStat);
+
+                // Обновление статистики overall
+                overall.put(author, overall.getOrDefault(author, 0) + patchInfo.getAdd().size());
+
+                // Обновление статистики general
+                Map<Integer, String> fileLines = general.getOrDefault(file.getFileName(), new HashMap<>());
+                for (String addedLine : patchInfo.getAdd()) {
+                    int lineNumber = Integer.parseInt(addedLine.split(". ")[0]);
+                    fileLines.put(lineNumber, author);
+                }
+                general.put(file.getFileName(), fileLines);
             }
 
             Map<String, Object> commitStat = new HashMap<>();
@@ -75,9 +88,30 @@ public class PatchScanServiceImpl implements PatchScanService {
             authorStats.put(author, authorCommits);
         }
 
-        ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(authorStats);
+        // Расчет статистики churn
+        for (Map.Entry<String, Map<Integer, String>> entry : general.entrySet()) {
+            String author = entry.getKey();
+            Integer totalLines = overall.get(author);
+            int addedLines = entry.getValue().size();
+            if (totalLines != null && totalLines != 0) {
+                churn.put(author, (double) addedLines / totalLines);
+            } else {
+                // Обработка ситуации, когда totalLines равно null или 0
+                // Например, можно присвоить churn значение 0 или добавить в лог сообщение об ошибке
+                churn.put(author, 0.0);
+            }
+        }
 
+
+        // Добавление новой статистики в итоговый JSON
+        Map<String, Object> finalStats = new HashMap<>();
+        finalStats.put("authorStats", authorStats);
+        finalStats.put("overall", overall);
+        finalStats.put("general", general);
+        finalStats.put("churn", churn);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(finalStats);
 
         return ResponseEntity.ok(json);
     }
