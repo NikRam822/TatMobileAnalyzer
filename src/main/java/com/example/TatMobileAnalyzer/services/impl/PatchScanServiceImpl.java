@@ -1,6 +1,7 @@
 package com.example.TatMobileAnalyzer.services.impl;
 
 import com.example.TatMobileAnalyzer.services.PatchScanService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import lombok.SneakyThrows;
 import org.kohsuke.github.GHCommit;
@@ -11,8 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class PatchScanServiceImpl implements PatchScanService {
@@ -28,32 +28,57 @@ public class PatchScanServiceImpl implements PatchScanService {
         String owner = pathParts[1];
         String repositoryName = pathParts[2];
 
-
         GitHub github = GitHub.connectUsingOAuth(accessToken);
 
         GHCommitQueryBuilder commitQueryBuilder = github.getRepository(owner + "/" + repositoryName).queryCommits();
 
-
         commitQueryBuilder = (since != null) ? commitQueryBuilder.since(since) : commitQueryBuilder;
-
         commitQueryBuilder = (until != null) ? commitQueryBuilder.until(until) : commitQueryBuilder;
 
+        List<GHCommit> commitsPerPeriod = Lists.reverse(commitQueryBuilder.list().toList());
 
-        List<GHCommit> commitsPerPeriod = commitQueryBuilder.list().toList();
-
-        commitsPerPeriod = Lists.reverse(commitsPerPeriod);
+        Map<String, List<Map<String, Object>>> authorStats = new LinkedHashMap<>();
 
         for (GHCommit commit : commitsPerPeriod) {
-            System.out.println(commit.getCommitDate());
+            String author = commit.getAuthor().getLogin();
+            List<Map<String, Object>> authorCommits = authorStats.getOrDefault(author, new ArrayList<>());
 
             List<GHCommit.File> files = commit.listFiles().toList();
+            List<Map<String, Object>> fileStats = new ArrayList<>();
 
             for (GHCommit.File file : files) {
-                System.out.println(file.getFileName() + ": " );
+
+                String patch = file.getPatch();
+                PatchReader.PatchInfo patchInfo = PatchReader.readPatch(patch);
+
+                Map<String, Object> fileStat = new HashMap<>();
+                fileStat.put("filename", file.getFileName());
+                fileStat.put("add all", file.getLinesAdded());
+                fileStat.put("del all", file.getLinesDeleted());
+                fileStat.put("path", file.getPatch());
+
+                fileStat.put("add", patchInfo.getAdd());
+                fileStat.put("del", patchInfo.getDel());
+
+                fileStats.add(fileStat);
             }
+
+            Map<String, Object> commitStat = new HashMap<>();
+            commitStat.put("sha", commit.getSHA1());
+            commitStat.put("date", commit.getCommitDate().toString());
+            commitStat.put("linesDifference", commit.getLinesChanged());
+            commitStat.put("totalAdditions", commit.getLinesAdded());
+            commitStat.put("totalDeletions", commit.getLinesDeleted());
+            commitStat.put("files", fileStats);
+
+            authorCommits.add(commitStat);
+            authorStats.put(author, authorCommits);
         }
-        return null;
+
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(authorStats);
+
+
+        return ResponseEntity.ok(json);
     }
-
-
 }
