@@ -24,9 +24,9 @@ public class LocFilesServiceImpl implements LocFilesService {
     }
 
     @Override
-    public ResponseEntity<String> getStatisticLocFiles(String repoUrl, String since, String until) {
+    public ResponseEntity<String> getStatisticLocFiles(String repoUrl, String period) {
         String apiUrl = (repoUrl.substring(0, 8) + "api." + repoUrl.substring(8, 19) +
-                "repos" + repoUrl.substring(18)).replaceAll("/$", "") + "/commits" + since + until;
+                "repos" + repoUrl.substring(18)).replaceAll("/$", "") + "/commits" + period;
         HttpResponse<String> response = gitHubService.sendGetRequest(apiUrl);
         if (response.statusCode() != 200) {
             return new ResponseEntity(response.body(), HttpStatus.valueOf(response.statusCode()));
