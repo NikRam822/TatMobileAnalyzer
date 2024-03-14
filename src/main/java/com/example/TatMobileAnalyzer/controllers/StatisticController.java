@@ -24,7 +24,7 @@ public class StatisticController {
     @Autowired
     public StatisticController(StatisticService statisticService, LocFilesService locFilesService, PatchScanService patchScanService) {
         this.statisticService = statisticService;
-        this.locFilesService = locFilesService;;
+        this.locFilesService = locFilesService;
         this.patchScanService = patchScanService;
     }
 
