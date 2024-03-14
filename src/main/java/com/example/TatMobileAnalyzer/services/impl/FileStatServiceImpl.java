@@ -2,6 +2,7 @@ package com.example.TatMobileAnalyzer.services.impl;
 
 import com.example.TatMobileAnalyzer.services.FileStatService;
 import com.example.TatMobileAnalyzer.services.GitHubService;
+import com.example.TatMobileAnalyzer.utils.MapToCsvConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,11 @@ public class FileStatServiceImpl implements FileStatService {
             return new ResponseEntity(response.body(), HttpStatus.valueOf(response.statusCode()));
         }
 
-        Map<String, List<Object>> fileContributorsMap = processCommits(response.body());
+//        Map<String, List<Object>> fileContributorsMap = processCommits(response.body());
+        Map<String, List<Map<String, Object>>> fileContributorsMap = processCommits(response.body());
+
+        String outputPath = "output.csv";
+        MapToCsvConverter.mapToCsv(fileContributorsMap, outputPath);
 
         return new ResponseEntity<>(fileContributorsMap, HttpStatus.OK);
     }
@@ -43,9 +48,9 @@ public class FileStatServiceImpl implements FileStatService {
                 "/commits";
     }
 
-    private Map<String, List<Object>> processCommits(String responseData) {
+    private Map<String, List<Map<String, Object>>> processCommits(String responseData) {
         List<Map<String, Object>> commitData = gitHubService.readJsonToList(responseData);
-        Map<String, List<Object>> fileContributorsMap = new HashMap<>();
+        Map<String, List<Map<String, Object>>> fileContributorsMap = new HashMap<>();
 
         for (Map<String, Object> commit : commitData) {
             String commitUrl = (String) commit.get("url");
@@ -72,7 +77,7 @@ public class FileStatServiceImpl implements FileStatService {
                     fileStats.put("deletions", file.get("deletions"));
                     fileStats.put("changes", file.get("changes"));
 
-                    List<Object> contributors = fileContributorsMap.getOrDefault(filename, new ArrayList<>());
+                    List<Map<String, Object>> contributors = fileContributorsMap.getOrDefault(filename, new ArrayList<Map<String, Object>>());
                     boolean contributorExists = false;
                     for (Object contributor : contributors) {
                         if (contributor instanceof Map) {
