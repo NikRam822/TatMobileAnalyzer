@@ -38,7 +38,6 @@ public class FileStatServiceImpl implements FileStatService {
     }
 
     private String constructApiUrl(String repoUrl) {
-        // Примерная реализация формирования URL для получения информации о коммитах по репозиторию
         return (repoUrl.substring(0, 8) + "api." + repoUrl.substring(8, 19) +
                 "repos" + repoUrl.substring(18)).replaceAll("/$", "") +
                 "/commits";
@@ -66,9 +65,6 @@ public class FileStatServiceImpl implements FileStatService {
 
                 for (Map<String, Object> file : filesChanged) {
                     String filename = (String) file.get("filename");
-                    // fileContributorsMap {Filename: []}
-                    // {Filename: [{Author: [{SHA, Date, add, del, changes}]}]}
-                    Map<String, List<Map<String, Object>>> changesByAuthor = new HashMap<>();
                     Map<String, Object> fileStats = new HashMap<>();
                     fileStats.put("commitSHA", commitSHA);
                     fileStats.put("commitDate", commitDate);
@@ -83,7 +79,6 @@ public class FileStatServiceImpl implements FileStatService {
                             Map<String, Object> contributorInfo = (Map<String, Object>) contributor;
                             String contributorName = contributorInfo.keySet().iterator().next(); // Получаем имя автора из ключа Map
                             if (contributorName.equals(authorLogin)) {
-                                // Обновляем существующего контрибьютера
                                 contributorExists = true;
                                 List<Map<String, Object>> changes = (List<Map<String, Object>>) contributorInfo.getOrDefault(authorLogin, new ArrayList<>());
                                 changes.add(fileStats);
@@ -101,15 +96,6 @@ public class FileStatServiceImpl implements FileStatService {
                     }
 
                     fileContributorsMap.put(filename, contributors);
-//
-//                    List<Map<String, Object>> changes = changesByAuthor.getOrDefault(authorLogin, new ArrayList<>());
-//                    changes.add(fileStats);
-//                    changesByAuthor.put(authorLogin, changes);
-//
-//                    // Добавляем автора в список редакторов файла
-//                    List<Object> contributors = fileContributorsMap.getOrDefault(filename, new ArrayList<>());
-//                    contributors.add(changesByAuthor);
-//                    fileContributorsMap.put(filename, contributors);
                 }
             }
         }
