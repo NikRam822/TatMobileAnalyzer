@@ -1,25 +1,20 @@
 package com.example.TatMobileAnalyzer.services.impl;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class PatchReader {
 
+    @Getter
     public static class PatchInfo {
-        private List<String> add;
-        private List<String> del;
+        private final List<String> add;
+        private final List<String> del;
 
         public PatchInfo() {
             this.add = new ArrayList<>();
             this.del = new ArrayList<>();
-        }
-
-        public List<String> getAdd() {
-            return add;
-        }
-
-        public List<String> getDel() {
-            return del;
         }
 
     }
@@ -33,22 +28,17 @@ public class PatchReader {
         int delIndexOffset = 0;
 
         for (String line : lines) {
-            boolean inAddition = false;
             if (line.startsWith("@@")) {
-                inAddition = false;
                 String[] parts = line.split(" ");
-                String[] numbers = parts[1].split(",");
+                String[] numbers = parts[2].split(",");
                 currentIndex = Integer.parseInt(numbers[0].substring(1));
                 addIndexOffset = 0;
                 delIndexOffset = 0;
             } else if (line.startsWith("+")) {
-                inAddition = true;
+
                 patchInfo.getAdd().add((currentIndex + addIndexOffset) + ". " + line.substring(1));
                 addIndexOffset++;
             } else if (line.startsWith("-")) {
-                if (inAddition) {
-                    continue;
-                }
                 patchInfo.getDel().add((currentIndex + delIndexOffset) + ". " + line.substring(1));
                 delIndexOffset++;
             } else {
