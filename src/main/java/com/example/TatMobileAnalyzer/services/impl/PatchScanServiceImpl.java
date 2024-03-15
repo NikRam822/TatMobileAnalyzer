@@ -92,18 +92,23 @@ public class PatchScanServiceImpl implements PatchScanService {
         for (Map.Entry<String, List<Map<String, Object>>> entry : authorStats.entrySet()) {
             String author = entry.getKey();
             Integer totalLines = overall.get(author);
-            int addedLines = entry.getValue().size();
+            var ref = new Object() {
+                int addLines = 0;
+            };
+            general.forEach((key1, value1) -> value1.forEach((key, value) -> {
+                if (value.equals(author)) {
+                    ref.addLines = ref.addLines + 1;
+                }
+            }));
             if (totalLines != null && totalLines != 0) {
-                churn.put(author, ((double) addedLines / totalLines));
+                churn.put(author, 100 - ((double) ref.addLines / totalLines) * 100);
             } else {
-                // Обработка ситуации, когда totalLines равно null или 0
-                // Например, можно присвоить churn значение 0 или добавить в лог сообщение об ошибке
+
                 churn.put(author, 0.0);
             }
         }
 
 
-        // Добавление новой статистики в итоговый JSON
         Map<String, Object> finalStats = new HashMap<>();
         finalStats.put("authorStats", authorStats);
         finalStats.put("overall", overall);
