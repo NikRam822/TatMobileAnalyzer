@@ -89,12 +89,12 @@ public class PatchScanServiceImpl implements PatchScanService {
         }
 
         // Расчет статистики churn
-        for (Map.Entry<String, Map<Integer, String>> entry : general.entrySet()) {
+        for (Map.Entry<String, List<Map<String, Object>>> entry : authorStats.entrySet()) {
             String author = entry.getKey();
             Integer totalLines = overall.get(author);
             int addedLines = entry.getValue().size();
             if (totalLines != null && totalLines != 0) {
-                churn.put(author, (double) addedLines / totalLines);
+                churn.put(author, ((double) addedLines / totalLines));
             } else {
                 // Обработка ситуации, когда totalLines равно null или 0
                 // Например, можно присвоить churn значение 0 или добавить в лог сообщение об ошибке
