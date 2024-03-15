@@ -95,13 +95,13 @@ public class PatchScanServiceImpl implements PatchScanService {
             var ref = new Object() {
                 int addLines = 0;
             };
-            general.forEach((key1, value1) -> value1.forEach((key, value) -> {
-                if (value.equals(author)) {
+            general.forEach((files, mapOfAdds) -> mapOfAdds.forEach((numberOfAdds, authorOfAdd) -> {
+                if (authorOfAdd.equals(author)) {
                     ref.addLines = ref.addLines + 1;
                 }
             }));
             if (totalLines != null && totalLines != 0) {
-                churn.put(author, 100 - ((double) ref.addLines / totalLines) * 100);
+                churn.put(author, 100 - (((double) ref.addLines / totalLines) * 100));
             } else {
 
                 churn.put(author, 0.0);
