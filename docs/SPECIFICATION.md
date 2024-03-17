@@ -445,9 +445,12 @@ Soon
 
 ### Entity relationship diagram <a name="entity-relationship-diagram"></a>
 Database model based on multitenant architecture
-![statuc](media/ERdiagram.svg)
+
+![statuc](media/ERdiagram.png))
 
 ## Researches <a name="researches"></a>
 #### The following reserches were conducted:
 - [GitHub API Research](https://docs.google.com/document/d/15Igu6dCziBG-8ZnpGVz-e2CEmNE1FiWU-ww2rb4NJPs/edit?usp=drive_link)
 - [GitHub Research on data Pagination](https://docs.google.com/document/d/1ru0m5S0KVRK0qL7OHI5eUc1Yw4FrYyxgCsc_vPG6FXU/edit#heading=h.bm8wzw7ge9v9)
+- [Data Storage Analysis](https://docs.google.com/document/d/1ru0m5S0KVRK0qL7OHI5eUc1Yw4FrYyxgCsc_vPG6FXU/edit?usp=drive_link)
+- [!IN PROGRESS! Risk cases to the system](https://docs.google.com/document/d/1TSd8iSaXevZByvwJCiV5CzDeVhR6sPA-QrsVgDPzbu8/edit?usp=drive_link)
