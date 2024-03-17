@@ -29,12 +29,27 @@ Planned metrics:
 </details>
 
 # Practice Areas
-- [Context & requirements](https://docs.google.com/presentation/d/10LQMEnqjGyXT6bjqqwgGLAqfKdvsYcUmTSZ4ySaXE68/edit#slide=id.g2bf4626b8f0_2_45)
-- [Planning & Tracking](https://docs.google.com/presentation/d/1RxE21MRGgMtd_o3Fw0LY9T-XuaTw2wiYoiNQLlVQlvc/edit#slide=id.g2c145daf49c_0_0)
-- [Quality](https://docs.google.com/presentation/d/1sNMJkVtir0d8Xq8AJtGDbrwqm9qHnfdOJVQe_QdA53w/edit#slide=id.g2c145daf49c_0_0)
-- [Architectural Design](https://docs.google.com/presentation/d/16PEuTRjsOlHsv0-apAT97AWRIrPep4iuqRi0tT9V_aY/edit#slide=id.g2c145daf49c_0_0)
-- [Risk management](https://docs.google.com/presentation/d/1OFszMaOglWX0m5Tn667dteWtcb8elPTsDsy8pZfYMdM/edit#slide=id.g2c16c5cf016_0_0)
-- [Configuration Management](https://docs.google.com/presentation/d/1p8p3ND9ekFV0kQYP5uz2qg-jBIxjGlojWWQ-190fW6c/edit#slide=id.g2bf447eed3b_3_45)
+
+We have prepared presentations for each practice area, focusing primarily on our activities, tools, and artifacts:
+
+### [Context & requirements](https://docs.google.com/presentation/d/10LQMEnqjGyXT6bjqqwgGLAqfKdvsYcUmTSZ4ySaXE68/edit#slide=id.g2bf4626b8f0_2_45):
+![context and reqs](./docs/media/context_and_reqs.png)
+
+### [Planning & Tracking](https://docs.google.com/presentation/d/1RxE21MRGgMtd_o3Fw0LY9T-XuaTw2wiYoiNQLlVQlvc/edit#slide=id.g2c145daf49c_0_0)
+![planning and tracking](./docs/media/planning_and_tracking.png)
+
+### [Quality](https://docs.google.com/presentation/d/1sNMJkVtir0d8Xq8AJtGDbrwqm9qHnfdOJVQe_QdA53w/edit#slide=id.g2c145daf49c_0_0)
+![quality](./docs/media/quality.png)
+
+### [Architectural Design](https://docs.google.com/presentation/d/16PEuTRjsOlHsv0-apAT97AWRIrPep4iuqRi0tT9V_aY/edit#slide=id.g2c145daf49c_0_0)
+![architecture](./docs/media/architecture.png)
+
+### [Risk management](https://docs.google.com/presentation/d/1OFszMaOglWX0m5Tn667dteWtcb8elPTsDsy8pZfYMdM/edit#slide=id.g2c16c5cf016_0_0)
+![risk](./docs/media/risk.png)
+
+### [Configuration Management](https://docs.google.com/presentation/d/1p8p3ND9ekFV0kQYP5uz2qg-jBIxjGlojWWQ-190fW6c/edit#slide=id.g2bf447eed3b_3_45)
+![configuration](./docs/media/configuration.png)
+
 # Development
 
 ## TatMobileAnalyzer uses
