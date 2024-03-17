@@ -29,6 +29,9 @@ Planned metrics:
 </details>
 
 # Practice Areas
+
+We have prepared presentations for each practice area, focusing primarily on our activities, tools, and artifacts:
+
 ### [Context & requirements](https://docs.google.com/presentation/d/10LQMEnqjGyXT6bjqqwgGLAqfKdvsYcUmTSZ4ySaXE68/edit#slide=id.g2bf4626b8f0_2_45):
 ![context and reqs](./docs/media/context_and_reqs.png)
 
