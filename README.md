@@ -100,7 +100,7 @@ DB_PASSWORD=secret
 - [Tat Mobile Specification](./docs/SPECIFICATION.md)
 - [GitHub Workflow Rules](./docs/WORKFLOW.md)
 - [Figma Prototype](https://www.figma.com/file/OE0pQL3mn4wlcng6o10AK3/ServiceDesign?type=design&node-id=264%3A1251&mode=design&t=XG83iR2C8fcI6gXF-1)
-- [Toggle Report](https://track.toggl.com/shared-report/33a4e4c4755942c8ec8be3ea4c776dda)
+- [Toggle Report](https://docs.google.com/document/d/1K6aZL5N1QduP5FQHXYm_HEbrKH27j5Ctd6gg3J50kU0/edit#heading=h.sv8ku27k1igh)
 - [Other Artifacts](https://drive.google.com/drive/folders/1RKxz5tozCQmqkwWamR1bCjz847XtSwqx?usp=sharing)
 
 
