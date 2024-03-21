@@ -1,5 +1,8 @@
 # TatMobile Software Requirements Specification Doc
-
+## Authors:
+- Amir Khuzin: a.khuzin@innopolis.university
+- Timur Akhmatov: t.akhmatov@innopolis.university
+- Nikita Ramzin: n.ramzin@innopolis.university
 
 ## Table of contents
 
