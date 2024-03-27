@@ -40,6 +40,7 @@ public class PatchScanServiceImpl implements PatchScanService {
         Map<String, List<Map<String, Object>>> authorStats = new LinkedHashMap<>();
         Map<String, Integer> overall = new HashMap<>();
         Map<String, Map<Integer, String>> general = new HashMap<>();
+        Map<String, Map<String, Integer>> generalResult = new HashMap<>();
         Map<String, Double> churn = new HashMap<>();
 
         for (GHCommit commit : commitsPerPeriod) {
@@ -59,8 +60,8 @@ public class PatchScanServiceImpl implements PatchScanService {
                 fileStat.put("del all", file.getLinesDeleted());
                 fileStat.put("path", file.getPatch());
 
-                fileStat.put("add", patchInfo.getAdd());
-                fileStat.put("del", patchInfo.getDel());
+                // fileStat.put("add", patchInfo.getAdd());
+                // fileStat.put("del", patchInfo.getDel());
 
                 fileStats.add(fileStat);
 
@@ -100,6 +101,15 @@ public class PatchScanServiceImpl implements PatchScanService {
                     ref.addLines = ref.addLines + 1;
                 }
             }));
+
+
+            for (String fileName : general.keySet()) {
+                Map<String, Integer> generalStats = new HashMap<>();
+                general.get(fileName).forEach((lineNumber, authorOfAdd) -> {
+                    generalStats.merge(authorOfAdd, 1, Integer::sum);
+                });
+                generalResult.put(fileName, generalStats);
+            }
             if (totalLines != null && totalLines != 0) {
                 churn.put(author, 100 - (((double) ref.addLines / totalLines) * 100));
             } else {
@@ -112,7 +122,7 @@ public class PatchScanServiceImpl implements PatchScanService {
         Map<String, Object> finalStats = new HashMap<>();
         finalStats.put("authorStats", authorStats);
         finalStats.put("overall", overall);
-        finalStats.put("general", general);
+        finalStats.put("general", generalResult);
         finalStats.put("churn", churn);
 
         ObjectMapper mapper = new ObjectMapper();
