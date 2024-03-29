@@ -44,7 +44,7 @@ public class PatchScanServiceImpl implements PatchScanService {
         Map<String, Double> churn = new HashMap<>();
 
         for (GHCommit commit : commitsPerPeriod) {
-            String author = commit.getAuthor().getLogin();
+            String author = commit.getCommitShortInfo().getAuthor().getName();
             List<Map<String, Object>> authorCommits = authorStats.getOrDefault(author, new ArrayList<>());
 
             List<GHCommit.File> files = commit.listFiles().toList();
@@ -58,7 +58,7 @@ public class PatchScanServiceImpl implements PatchScanService {
                 fileStat.put("filename", file.getFileName());
                 fileStat.put("add all", file.getLinesAdded());
                 fileStat.put("del all", file.getLinesDeleted());
-                fileStat.put("path", file.getPatch());
+                //fileStat.put("path", file.getPatch());
 
                 // fileStat.put("add", patchInfo.getAdd());
                 // fileStat.put("del", patchInfo.getDel());

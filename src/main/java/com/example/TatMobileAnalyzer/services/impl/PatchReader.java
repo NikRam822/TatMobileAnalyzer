@@ -21,7 +21,9 @@ public class PatchReader {
 
     public static PatchInfo readPatch(String patch) {
         PatchInfo patchInfo = new PatchInfo();
-
+        if (patch == null) {
+            return patchInfo;
+        }
         String[] lines = patch.split("\n");
         int currentIndex = 0;
         int addIndexOffset = 0;
