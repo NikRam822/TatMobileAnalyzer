@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Map;
 
 @CrossOrigin
 @Slf4j
@@ -56,9 +57,9 @@ public class StatisticController {
     }
 
     @PostMapping("/patch/statistic")
-    ResponseEntity<String> getStatisticPatchScan(@RequestParam(required = false) String since,
-                                                 @RequestParam(required = false) String until,
-                                                 @RequestBody RepositoryDto repositoryDto) throws ParseException {
+    ResponseEntity<Map<String, Object>> getStatisticPatchScan(@RequestParam(required = false) String since,
+                                                              @RequestParam(required = false) String until,
+                                                              @RequestBody RepositoryDto repositoryDto) throws ParseException {
 
 
         Date startDate = DateUtils.parseDate(since, "yyyy-MM-dd");

@@ -1,7 +1,6 @@
 package com.example.TatMobileAnalyzer.services.impl;
 
 import com.example.TatMobileAnalyzer.services.PatchScanService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import lombok.SneakyThrows;
 import org.kohsuke.github.GHCommit;
@@ -22,7 +21,7 @@ public class PatchScanServiceImpl implements PatchScanService {
 
     @SneakyThrows
     @Override
-    public ResponseEntity<String> getStatisticPatchScan(String repositoryUrl, Date since, Date until) {
+    public ResponseEntity<Map<String, Object>> getStatisticPatchScan(String repositoryUrl, Date since, Date until) {
         URI uri = new URI(repositoryUrl);
         String[] pathParts = uri.getPath().split("/");
         String owner = pathParts[1];
@@ -125,9 +124,6 @@ public class PatchScanServiceImpl implements PatchScanService {
         finalStats.put("general", generalResult);
         finalStats.put("churn", churn);
 
-        ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(finalStats);
-
-        return ResponseEntity.ok(json);
+        return ResponseEntity.ok(finalStats);
     }
 }
