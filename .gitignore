@@ -35,26 +35,26 @@ build/
 ### properties ###
 src/main/resources/env.properties
 
-# front
-*/tat-mobile-front/.DS_Store
-*/tat-mobile-front/node_modules
-*/tat-mobile-front/dist
+#Front
+*/.DS_Store
+*/node_modules
+*/dist
 
 # local env files
-*/tat-mobile-front/.env.local
-*/tat-mobile-front/.env.*.local
+*/.env.local
+*/.env.*.local
 
 # Log files
-*/tat-mobile-front/npm-debug.log*
-*/tat-mobile-front/yarn-debug.log*
-*/tat-mobile-front/yarn-error.log*
-*/tat-mobile-front/pnpm-debug.log*
+*/npm-debug.log*
+*/yarn-debug.log*
+*/yarn-error.log*
+*/pnpm-debug.log*
 
 # Editor directories and files
-*/tat-mobile-front/.idea
-*/tat-mobile-front/.vscode
-*/tat-mobile-front/*.suo
-*/tat-mobile-front/*.ntvs*
-*/tat-mobile-front/*.njsproj
-*/tat-mobile-front/*.sln
-*/tat-mobile-front/*.sw?
+*/.idea
+*/.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
