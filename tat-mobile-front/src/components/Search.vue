@@ -22,7 +22,6 @@
 import axios from 'axios'
 export default {
     data: () => ({
-        hostadress: "http://localhost:8080/patch/statistic",
         repo: "",
         start: "",
         end: "",
@@ -37,17 +36,19 @@ export default {
     }),
     methods: {
         async getRepos() {
+            let hostadress = "http://localhost:8080/patch/statistic"
             this.switch = true
             if (this.start && this.end) {
-                this.hostadress += "?since=" + this.start + "&until=" + this.end
-            } else if (this.start){
-                this.hostadress += "?since=" + this.start
+                hostadress += "?since=" + this.start + "&until=" + this.end
+            } else if (this.start) {
+                hostadress += "?since=" + this.start
             } else if (this.end) {
-                this.hostadress += "?until=" + this.end
+                hostadress += "?until=" + this.end
             }
+
             console.log(this.hostadress)
             try {
-                const response = await axios.post(this.hostadress, {
+                const response = await axios.post(hostadress, {
                     repositoryUrl: this.repo,
                 });
                 this.$store.dispatch('updateResult', response.data);
@@ -55,7 +56,6 @@ export default {
                 console.error('Error fetching repositories:', error);
             }
             this.switch = false
-            this.hostadress = "http://localhost:8080/patch/statistic"
         }
     }
 }
