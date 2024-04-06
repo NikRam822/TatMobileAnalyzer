@@ -13,19 +13,15 @@
                 </v-container>
             </v-col>
         </v-row>
-        <v-btn size="x-large" @click="getRepos" type="submit"> Search </v-btn>
-        <v-progress-circular v-if="switch" indeterminate size="50" width="10"
-            color="grey-darken-3"></v-progress-circular>
+        <v-btn size="x-large" @click="getResult" type="submit"> Search </v-btn>
     </v-form>
 </template>
 <script>
-import axios from 'axios'
-export default {
-    data: () => ({
+    export default {
+        data: () => ({
         repo: "",
         start: "",
         end: "",
-        switch: false,
         rules: [
             value => {
                 if (value) return true
@@ -35,28 +31,9 @@ export default {
         ]
     }),
     methods: {
-        async getRepos() {
-            let hostadress = "http://localhost:8080/patch/statistic"
-            this.switch = true
-            if (this.start && this.end) {
-                hostadress += "?since=" + this.start + "&until=" + this.end
-            } else if (this.start) {
-                hostadress += "?since=" + this.start
-            } else if (this.end) {
-                hostadress += "?until=" + this.end
-            }
-
-            console.log(this.hostadress)
-            try {
-                const response = await axios.post(hostadress, {
-                    repositoryUrl: this.repo,
-                });
-                this.$store.dispatch('updateResult', response.data);
-            } catch (error) {
-                console.error('Error fetching repositories:', error);
-            }
-            this.switch = false
+        getResult() {
+            this.$emit('get-result', this.repo, this.start, this.end)
         }
     }
-}
+    }
 </script>

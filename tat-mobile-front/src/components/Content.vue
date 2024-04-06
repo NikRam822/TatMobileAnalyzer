@@ -1,4 +1,5 @@
 <template>
+  <v-progress-circular v-if="loader" indeterminate size="50" width="10" color="grey-darken-3"></v-progress-circular>
   <v-container>
     <h2>Churn</h2>
     <v-list v-for="val, item in result.churn">
@@ -13,14 +14,10 @@
   </v-container>
 </template>
 <script>
-import { mapGetters } from 'vuex';
-
 export default {
-  computed: {
-    ...mapGetters(['getResult']),
-    result() {
-      return this.getResult;
-    }
+  props: {
+    result: [],
+    loader: false
   }
 }
 </script>
