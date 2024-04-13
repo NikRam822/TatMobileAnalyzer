@@ -32,8 +32,8 @@ public class StatisticController {
     @Autowired
     public StatisticController(StatisticService statisticService,
                                LocFilesService locFilesService,
-                               FileStatService fileStatService) {
-    public StatisticController(StatisticService statisticService, LocFilesService locFilesService, PatchScanService patchScanService) {
+                               FileStatService fileStatService,
+                               PatchScanService patchScanService) {
         this.statisticService = statisticService;
         this.locFilesService = locFilesService;
         this.fileStatService = fileStatService;
