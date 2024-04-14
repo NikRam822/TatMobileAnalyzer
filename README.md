@@ -36,6 +36,36 @@ Planned metrics:
 3) Swagger2 (version 2.7.0)
 4) Javadoc (version 3.0.0)
 
+## Build
+
+Below are the instructions for running `docker-compose` with changes to `application.properties` and `env.properties`:
+
+1. Ensure that you have Docker and `docker-compose` installed on your system.
+
+2. Edit Configuration Files:
+   - Locate the `env.properties` file in your project directory.
+   - Adjust variables like database URLs, secret keys, or any other environment-specific values:
+   ```
+   GITHUB_ACCESS_TOKEN=YOUR_GITHUB_TOKEN
+   
+   DB_URL=jdbc:postgresql://postgres_db:5432/some_database
+   DB_USER=your_user
+   DB_PASSWORD=your_password
+   ````
+   - If you change these variables, do not forget changing `docker-compose.yml` accordingly.
+   - Then change `application.properties` file by adding this line:
+   ```
+   spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+   ```
+
+3. Run Docker Compose:
+   - Navigate to your project directory where the `docker-compose.yml` file is located.
+   - Run `docker-compose up -d` which should start your containers in detached mode.
+
+4. Verify:
+   - Check if your services are up and running `docker-compose ps`
+   - Access your application via the specified port (e.g., http://localhost:8080/swagger-ui.html).
+
 ## SWAGGER
 You can use a swagger to send requests to the server.
 

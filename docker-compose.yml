@@ -15,7 +15,7 @@ services:
       GITHUB_ACCESS_TOKEN: some_token
       DB_USER: some_user
       DB_PASSWORD: some_password
-      DB_URL: jdbc:postgresql://postgres_db:5432/some_user  # Updated DB_URL
+      DB_URL: jdbc:postgresql://postgres_db:5432/some_database  # Updated DB_URL
     ports:
       - "8080:8080"
     networks:
