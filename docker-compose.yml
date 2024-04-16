@@ -12,10 +12,10 @@ services:
     links:
       - postgres_db:postgres_db
     environment:
-      GITHUB_ACCESS_TOKEN: some_token
-      DB_USER: some_user
-      DB_PASSWORD: some_password
-      DB_URL: jdbc:postgresql://postgres_db:5432/some_database  # Updated DB_URL
+      GITHUB_ACCESS_TOKEN: ${GITHUB_ACCESS_TOKEN}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_URL: ${DB_URL}
     ports:
       - "8080:8080"
     networks:
@@ -25,9 +25,9 @@ services:
     image: postgres:latest
     container_name: postgres_db
     environment:
-      POSTGRES_USER: some_user
-      POSTGRES_PASSWORD: some_password
-      POSTGRES_DB: some_database
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_HOST_AUTH_METHOD: trust
     networks:
       - javaapp
