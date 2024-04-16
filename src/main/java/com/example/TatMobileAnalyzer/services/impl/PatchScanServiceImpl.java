@@ -85,6 +85,10 @@ public class PatchScanServiceImpl implements PatchScanService {
 
         List<GHCommit.File> files = commit.listFiles().toList();
         for (GHCommit.File file : files) {
+            //TODO: filter is here
+            if(file.getFileName().startsWith("go-open-source-front/node_modules/")) {
+                continue;
+            }
             String patch = file.getPatch();
             PatchReader.PatchInfo patchInfo = PatchReader.readPatch(patch);
 
@@ -98,7 +102,6 @@ public class PatchScanServiceImpl implements PatchScanService {
             // fileStat.put("del", patchInfo.getDel());
 
             fileStats.add(fileStat);
-
             overall.put(author, overall.getOrDefault(author, 0) + patchInfo.getAdd().size());
 
             updateGeneralStatistics(file, patchInfo, general, author);
