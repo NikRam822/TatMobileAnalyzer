@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  java_app:
+    image: andromir/tatmobile:features-ci-docker
+    container_name: java_app
+    restart: always
+    depends_on:
+      - postgres_db
+    links:
+      - postgres_db:postgres_db
+    environment:
+      GITHUB_ACCESS_TOKEN: some_token
+      DB_USER: some_user
+      DB_PASSWORD: some_password
+      DB_URL: jdbc:postgresql://postgres_db:5432/some_database  # Updated DB_URL
+    ports:
+      - "8080:8080"
+    networks:
+      - javaapp
+
+  postgres_db:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: some_user
+      POSTGRES_PASSWORD: some_password
+      POSTGRES_DB: some_database
+      POSTGRES_HOST_AUTH_METHOD: trust
+    networks:
+      - javaapp
+
+networks:
+  javaapp:
+    driver: bridge
+
+volumes:
+  postgres_data:
