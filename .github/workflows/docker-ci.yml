@@ -37,24 +37,17 @@ jobs:
 
       - name: Connect to VM via SSH
         uses: appleboy/ssh-action@master
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_DATABASE: ${{ secrets.DB_DATABASE }}
+          DB_URL: ${{ secrets.DB_URL }}
         with:
           host: ${{ secrets.CLOUD_ADDRESS }}
           username: amir
           key: ${{ secrets.SSH_KEY }}
-
-      - name: Clone repository
-        run: git clone https://github.com/NikRam822/TatMobileAnalyzer.git
-
-      - name: Change directory
-        run: cd TatMobileAnalyzer
-
-      - name: Create .env file
-        run: |
-          echo "GITHUB_ACCESS_TOKEN=${{ secrets.GITHUB_ACCESS_TOKEN }}" > .env
-          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
-          echo "DB_URL=${{ secrets.DB_URL }}" >> .env
-
-      - name: Run docker-compose
-        run: docker-compose -f docker-compose.fast.yml up -d
+          script: |
+            git clone https://github.com/NikRam822/TatMobileAnalyzer.git
+            cd TatMobileAnalyzer
+            docker-compose -f docker-compose.fast.yml up -d
