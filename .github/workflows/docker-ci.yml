@@ -57,4 +57,4 @@ jobs:
           echo "DB_URL=${{ secrets.DB_URL }}" >> .env
 
       - name: Run docker-compose
-        run: docker-compose -f docker-compose.fast.yml up
+        run: docker-compose -f docker-compose.fast.yml up -d
