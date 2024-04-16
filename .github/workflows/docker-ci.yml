@@ -48,6 +48,7 @@ jobs:
           username: amir
           key: ${{ secrets.SSH_KEY }}
           script: |
-            git clone https://github.com/NikRam822/TatMobileAnalyzer.git;
             cd TatMobileAnalyzer;
+            git checkout features/ci-docker;
+            git pull;
             docker-compose -f "docker-compose.fast.yml" up -d;
