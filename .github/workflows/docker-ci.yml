@@ -48,6 +48,6 @@ jobs:
           username: amir
           key: ${{ secrets.SSH_KEY }}
           script: |
-            git clone https://github.com/NikRam822/TatMobileAnalyzer.git
-            cd TatMobileAnalyzer
-            docker-compose -f docker-compose.fast.yml up -d
+            git clone https://github.com/NikRam822/TatMobileAnalyzer.git;
+            cd TatMobileAnalyzer;
+            docker-compose -f "docker-compose.fast.yml" up -d;
