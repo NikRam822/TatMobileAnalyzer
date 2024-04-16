@@ -33,7 +33,7 @@ build/
 .vscode/
 
 ### properties ###
-src/main/resources/env.properties
+#src/main/resources/env.properties
 
 #Front
 */.DS_Store
