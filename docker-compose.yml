@@ -1,6 +1,20 @@
 version: '3'
 
 services:
+  frontend:
+    build:
+      context: ./tat-mobile-front
+      dockerfile: Dockerfile
+    container_name: frontend
+    depends_on:
+      - java_app
+    links:
+      - java_app:java_app
+    ports:
+      - "3000:3000"
+    networks:
+      - javaapp
+
   java_app:
     build:
       context: .

@@ -11,6 +11,9 @@
 
 <script>
 import axios from 'axios'
+import dotenv from 'dotenv'
+
+dotenv.config()
 export default {
     data: () => ({
         result: [],
@@ -19,7 +22,7 @@ export default {
     }),
     methods: {
         async getRepos(repo, start, end) {
-            let hostadress = "http://localhost:8080/patch/statistic"
+            let hostadress = process.env.VUE_APP_HOST_ADDRESS;
             this.loader = true
             this.showContent = false
             if (start && end) {
