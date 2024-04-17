@@ -16,9 +16,7 @@ services:
       - javaapp
 
   java_app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: andromir/tatmobile:features-ci-docker
     container_name: java_app
     restart: always
     depends_on:
