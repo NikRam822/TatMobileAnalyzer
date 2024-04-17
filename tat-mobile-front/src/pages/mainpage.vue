@@ -1,12 +1,21 @@
 <template>
-    <v-row>
-        <v-col>
-            <Search @get-result="getRepos" />
-        </v-col>
-        <v-col>
-            <Content :result="result" :loader="loader" :showContent="showContent" />
-        </v-col>
-    </v-row>
+    <v-layout>
+      <v-app-bar>
+        <v-app-bar-nav-icon color="lime-accent-3">
+        </v-app-bar-nav-icon>
+        <v-app-bar-title class="text-lime-accent-3">Dashboard</v-app-bar-title>
+      </v-app-bar>
+      <v-main>
+        <v-row>
+            <v-col>
+                <Search @get-result="getRepos" />
+            </v-col>
+            <v-col>
+                <Content :result="result" :loader="loader" :showContent="showContent" />
+            </v-col>
+        </v-row>
+      </v-main>
+    </v-layout>
 </template>
 
 <script>
