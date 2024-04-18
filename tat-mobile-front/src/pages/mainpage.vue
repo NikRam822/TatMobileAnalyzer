@@ -27,8 +27,9 @@
                                 </v-col>
                             </v-card>
                             <v-card v-else rounded="xl" height="200" width="400" border="md">
-                                <v-form @submit.prevent="repositories.push(rep)">
-                                    <v-text-field v-model="rep" label="Enter reposytory URL" type="url"></v-text-field>
+                                <v-form @submit.prevent="addCard()">
+                                    <v-text-field required :rules="[re.test(rep) || 'Wrong URL']" v-model="rep"
+                                        label="Enter reposytory URL" type="url"></v-text-field>
                                     <v-col align="center">
                                         <v-btn :disabled="!rep" type="submit" icon="mdi-plus-circle-outline"></v-btn>
                                     </v-col>
@@ -54,6 +55,7 @@
 import axios from 'axios'
 export default {
     data: () => ({
+        re: new RegExp("^https://github.com/([^/]+)/([^/]+)$"),
         cardAppend: true,
         rep: '',
         repositories: [],
@@ -62,6 +64,13 @@ export default {
         // showContent: false
     }),
     methods: {
+        addCard() {
+            if (this.re.test(this.rep)) {
+                this.repositories.push(this.rep)
+            } else {
+                alert('URl should be: https://github.com/AUTOR/REPO')
+            }
+        }
         // async getRepos(repo, start, end) {
         //     let hostadress = "http://localhost:8080/patch/statistic"
         //     this.loader = true
