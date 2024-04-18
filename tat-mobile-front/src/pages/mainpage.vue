@@ -6,14 +6,16 @@
         <v-app-bar-title class="text-lime-accent-3">Dashboard</v-app-bar-title>
       </v-app-bar>
       <v-main>
-        <v-row>
-            <v-col>
-                <Search @get-result="getRepos" />
-            </v-col>
-            <v-col>
-                <Content :result="result" :loader="loader" :showContent="showContent" />
-            </v-col>
-        </v-row>
+        <div class="ma-5">
+          <v-row>
+              <v-col>
+                    <Search @get-result="getRepos" />
+              </v-col>
+              <v-col>
+                    <Content :result="result" :loader="loader" :showContent="showContent" />
+              </v-col>
+          </v-row>
+        </div>
       </v-main>
     </v-layout>
 </template>
