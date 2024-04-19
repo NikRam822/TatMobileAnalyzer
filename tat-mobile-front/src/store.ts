@@ -1,4 +1,5 @@
 import { createStore } from 'vuex'
+import createPersistedState from 'vuex-persistedstate';
 
 export default createStore ({
     state: {
@@ -8,5 +9,9 @@ export default createStore ({
         addRepos (state, repos) {
             state.repositories.push(repos)
         },
-    }
+        delRepos (state) {
+            state.repositories.pop()
+        }
+    },
+    plugins: [createPersistedState()]
 })
