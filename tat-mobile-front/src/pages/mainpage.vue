@@ -7,7 +7,7 @@
       <v-icon icon="mdi-account" size="40px" class="mr-10"></v-icon>
     </v-app-bar>
     <v-main>
-      <v-sheet class="pa-6 ma-4" rounded="xl" elevation="4">
+      <v-sheet height="100%">
         <v-container>
           <v-row>
             <v-col v-for="val, url in this.$store.state.repositories" cols="auto">
