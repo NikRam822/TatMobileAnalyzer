@@ -1,11 +1,14 @@
 package com.example.TatMobileAnalyzer.services.impl;
 
+import com.example.TatMobileAnalyzer.model.Filter;
+import com.example.TatMobileAnalyzer.services.FilterService;
 import com.example.TatMobileAnalyzer.services.PatchScanService;
 import com.google.common.collect.Lists;
 import lombok.SneakyThrows;
 import org.kohsuke.github.GHCommit;
 import org.kohsuke.github.GHCommitQueryBuilder;
 import org.kohsuke.github.GitHub;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,9 +22,16 @@ public class PatchScanServiceImpl implements PatchScanService {
     @Value("${access.token}")
     private String accessToken;
 
+    FilterService filterService;
+
+    @Autowired
+    public void setFilterService(FilterService filterService) {
+        this.filterService = filterService;
+    }
+
     @SneakyThrows
     @Override
-    public ResponseEntity<Map<String, Object>> getStatisticPatchScan(String repositoryUrl, Date since, Date until) {
+    public ResponseEntity<Map<String, Object>> getStatisticPatchScan(String repositoryUrl, Date since, Date until, Long projectId) {
         URI uri = new URI(repositoryUrl);
         String[] pathParts = uri.getPath().split("/");
         String owner = pathParts[1];
@@ -42,7 +52,7 @@ public class PatchScanServiceImpl implements PatchScanService {
         Map<String, Map<String, Integer>> generalResult = new HashMap<>();
         Map<String, Double> churn = new HashMap<>();
 
-        processCommits(commitsPerPeriod, authorStats, overall, general, generalResult, churn);
+        processCommits(commitsPerPeriod, authorStats, overall, general, generalResult, churn, projectId);
 
         Map<String, Object> finalStats = new HashMap<>();
         finalStats.put("authorStats", authorStats);
@@ -56,12 +66,12 @@ public class PatchScanServiceImpl implements PatchScanService {
     @SneakyThrows
     private void processCommits(List<GHCommit> commitsPerPeriod, Map<String, List<Map<String, Object>>> authorStats,
                                 Map<String, Integer> overall, Map<String, Map<Integer, String>> general,
-                                Map<String, Map<String, Integer>> generalResult, Map<String, Double> churn) {
+                                Map<String, Map<String, Integer>> generalResult, Map<String, Double> churn, Long projectId) {
         for (GHCommit commit : commitsPerPeriod) {
             String author = commit.getCommitShortInfo().getAuthor().getName();
             List<Map<String, Object>> authorCommits = authorStats.getOrDefault(author, new ArrayList<>());
 
-            List<Map<String, Object>> fileStats = processCommitFiles(commit, general, overall, author);
+            List<Map<String, Object>> fileStats = processCommitFiles(commit, general, overall, author, projectId);
 
             Map<String, Object> commitStat = new HashMap<>();
             commitStat.put("sha", commit.getSHA1());
@@ -80,13 +90,22 @@ public class PatchScanServiceImpl implements PatchScanService {
 
     @SneakyThrows
     private List<Map<String, Object>> processCommitFiles(GHCommit commit, Map<String, Map<Integer, String>> general,
-                                                         Map<String, Integer> overall, String author) {
+                                                         Map<String, Integer> overall, String author, Long projectId) {
         List<Map<String, Object>> fileStats = new ArrayList<>();
 
         List<GHCommit.File> files = commit.listFiles().toList();
+        Filter filter = filterService.getFiltersByProjectId(projectId);
+
+        if(filter == null) {
+            filter = new Filter();
+        }
         for (GHCommit.File file : files) {
-            //TODO: filter is here
-            if(file.getFileName().startsWith("go-open-source-front/node_modules/")) {
+
+            // Check if the file name begins with one of the lines in the filter.getGenerated() or filter.getTest() arrays
+            boolean matchesGenerated = filter.getGenerated().stream().anyMatch(file.getFileName()::startsWith);
+            boolean matchesTest = filter.getTest().stream().anyMatch(file.getFileName()::startsWith);
+
+            if (matchesGenerated || matchesTest) {
                 continue;
             }
             String patch = file.getPatch();

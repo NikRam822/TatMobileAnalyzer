@@ -1,10 +1,11 @@
 package com.example.TatMobileAnalyzer.controllers;
 
+import com.example.TatMobileAnalyzer.dto.ProjectDto;
 import com.example.TatMobileAnalyzer.dto.RepositoryDto;
+import com.example.TatMobileAnalyzer.services.FileStatService;
 import com.example.TatMobileAnalyzer.services.LocFilesService;
 import com.example.TatMobileAnalyzer.services.PatchScanService;
 import com.example.TatMobileAnalyzer.services.StatisticService;
-import com.example.TatMobileAnalyzer.services.FileStatService;
 import com.example.TatMobileAnalyzer.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,17 +41,17 @@ public class StatisticController {
         this.patchScanService = patchScanService;
     }
 
-    @GetMapping("/")
+    @GetMapping("/api/")
     ResponseEntity<String> getAll() {
         return new ResponseEntity<>("Hello World!", HttpStatus.OK);
     }
 
-    @PostMapping("/repository")
+    @PostMapping("/api/repository")
     ResponseEntity<String> getCommitStatistic(@RequestBody RepositoryDto repositoryDto) {
         return statisticService.getStatistic(repositoryDto.getRepositoryUrl());
     }
 
-    @PostMapping("/loc/statistic")
+    @PostMapping("/api/loc/statistic")
     ResponseEntity<String> getStatisticLocFiles(@RequestParam(required = false) String since,
                                                 @RequestParam(required = false) String until,
                                                 @RequestBody RepositoryDto repositoryDto) {
@@ -63,18 +64,19 @@ public class StatisticController {
         return locFilesService.getStatisticLocFiles(repositoryDto.getRepositoryUrl(), period);
     }
 
-    @PostMapping("/patch/statistic")
+    @PostMapping("api/patch/statistic")
     ResponseEntity<Map<String, Object>> getStatisticPatchScan(@RequestParam(required = false) String since,
                                                               @RequestParam(required = false) String until,
-                                                              @RequestBody RepositoryDto repositoryDto) throws ParseException {
+                                                              @RequestBody ProjectDto projectDto) throws ParseException {
         Date startDate = DateUtils.parseDate(since, "yyyy-MM-dd");
         Date endDate = DateUtils.parseDate(until, "yyyy-MM-dd");
 
-        return patchScanService.getStatisticPatchScan(repositoryDto.getRepositoryUrl(), startDate, endDate);
+        return patchScanService.getStatisticPatchScan(projectDto.getProjectLink(), startDate, endDate, projectDto.getProjectId());
     }
 
-    @PostMapping("/files/statistics")
+    @PostMapping("api/files/statistics")
     ResponseEntity<String> getFileStatistic(@RequestBody RepositoryDto repositoryDto) {
         return fileStatService.getContributorsByFiles(repositoryDto.getRepositoryUrl());
     }
+
 }
