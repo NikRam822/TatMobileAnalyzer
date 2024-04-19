@@ -14,7 +14,7 @@
         <v-container fluid="true">
           <v-row>
             <v-col v-for="val, url in this.$store.state.repositories" cols="auto">
-              <v-card rounded="xl" height="150" width="400" border="md">
+              <v-card @click="navigateToOtherPage(url)" rounded="xl" height="150" width="400" border="md">
                 <v-card-title class="ma-5">
                   <v-row>
                     {{ url.slice(url.lastIndexOf('/') + 1) }}
