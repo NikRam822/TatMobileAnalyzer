@@ -16,6 +16,7 @@
             <v-col v-for="val, url in this.$store.state.repositories" cols="auto">
               <v-card rounded="xl" height="200" width="400" border="md">
                 <v-card-subtitle>{{ url }}</v-card-subtitle>
+                <v-btn @click="navigateToOtherPage(url)" class="ma-5">See more</v-btn>
               </v-card>
             </v-col>
             <v-col>
@@ -85,6 +86,9 @@ export default {
         console.error('Error fetching repositories:', error);
       }
       this.loader = false
+    },
+    navigateToOtherPage(repoName) {
+      this.$router.push({ path: '/project-review', query: { repoName: repoName } });
     }
   }
 }
