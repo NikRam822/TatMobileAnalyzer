@@ -14,7 +14,8 @@
     "roboto-fontface": "*",
     "vue": "^3.4.21",
     "vuetify": "^3.5.8",
-    "vuex": "^4.1.0"
+    "vuex": "^4.1.0",
+    "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
     "@babel/types": "^7.24.0",
