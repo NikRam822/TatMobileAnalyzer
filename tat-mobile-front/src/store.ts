@@ -9,6 +9,9 @@ export default createStore({
     addRepos(state, repos) {
       state.repositories[repos[0]] = repos[1];
     },
+    delRepos(state, repos) {
+      delete state.repositories[repos];
+    },
   },
   plugins: [createPersistedState()],
 });
