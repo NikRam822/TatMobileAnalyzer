@@ -13,7 +13,7 @@
             <v-sheet class="pa-6 ma-4" rounded="xl" elevation="4">
                 <v-container fluid="true">
                     <v-row>
-                        <v-col v-for="rep in repositories" cols="auto">
+                        <v-col v-for="rep in this.$store.state.repositories" cols="auto">
                             <v-card rounded="xl" height="200" width="400" border="md">
                                 <v-card-subtitle>{{ rep }}</v-card-subtitle>
                             </v-card>
@@ -58,7 +58,6 @@ export default {
         re: new RegExp("^https://github.com/([^/]+)/([^/]+)$"),
         cardAppend: true,
         rep: '',
-        repositories: [],
         // result: [],
         // loader: false,
         // showContent: false
@@ -66,7 +65,7 @@ export default {
     methods: {
         addCard() {
             if (this.re.test(this.rep)) {
-                this.repositories.push(this.rep)
+                this.$store.commit('addRepos', this.rep)
             } else {
                 alert('URl should be: https://github.com/AUTOR/REPO')
             }
