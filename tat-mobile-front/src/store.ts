@@ -1,17 +1,14 @@
-import { createStore } from 'vuex'
-import createPersistedState from 'vuex-persistedstate';
+import { createStore } from "vuex";
+import createPersistedState from "vuex-persistedstate";
 
-export default createStore ({
-    state: {
-        repositories: []
+export default createStore({
+  state: {
+    repositories: {},
+  },
+  mutations: {
+    addRepos(state, repos) {
+      state.repositories[repos[0]] = repos[1];
     },
-    mutations: {
-        addRepos (state, repos) {
-            state.repositories.push(repos)
-        },
-        delRepos (state) {
-            state.repositories.pop()
-        }
-    },
-    plugins: [createPersistedState()]
-})
+  },
+  plugins: [createPersistedState()],
+});
