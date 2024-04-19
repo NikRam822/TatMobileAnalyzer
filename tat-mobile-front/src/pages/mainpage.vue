@@ -7,8 +7,8 @@
       <v-icon icon="mdi-account" size="40px" class="mr-10"></v-icon>
     </v-app-bar>
     <v-main>
-      <v-sheet height="100%">
-        <v-container>
+      <v-sheet class="pa-6 ma-4" rounded="xl" elevation="4">
+        <v-container fluid>
           <v-row>
             <v-col v-for="val, url in this.$store.state.repositories" cols="auto">
               <v-card @click="navigateToOtherPage(url)" rounded="xl" height="150" width="400" border="md">
@@ -23,7 +23,7 @@
                 <v-card-subtitle class="ma-3">{{ url }}</v-card-subtitle>
               </v-card>
             </v-col>
-            <v-col>
+            <v-col cols="auto">
 
               <v-card @click="cardAppend = !cardAppend" v-if="cardAppend" rounded="xl" height="150" width="400"
                 border="md">
@@ -84,6 +84,7 @@ export default {
         console.error('Error fetching repositories:', error);
       }
       this.rep = ''
+      this.cardAppend = true
       this.loader = false
     },
     navigateToOtherPage(repoName) {
