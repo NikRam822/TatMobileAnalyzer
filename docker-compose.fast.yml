@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+  frontend:
+    build:
+      context: ./tat-mobile-front
+      dockerfile: Dockerfile
+    container_name: frontend
+    depends_on:
+      - java_app
+    links:
+      - java_app:java_app
+    ports:
+      - "3000:3000"
+    networks:
+      - javaapp
+
+  java_app:
+    image: andromir/tatmobile:features-ci-docker
+    container_name: java_app
+    restart: always
+    depends_on:
+      - postgres_db
+    links:
+      - postgres_db:postgres_db
+    environment:
+      GITHUB_ACCESS_TOKEN: ${GITHUB_ACCESS_TOKEN}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_URL: ${DB_URL}
+    ports:
+      - "8080:8080"
+    networks:
+      - javaapp
+
+  postgres_db:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_HOST_AUTH_METHOD: trust
+    networks:
+      - javaapp
+
+networks:
+  javaapp:
+    driver: bridge
+
+volumes:
+  postgres_data:
