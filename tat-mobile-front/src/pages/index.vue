@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row>
       <v-col v-for="val, url in this.$store.state.repositories" cols="auto">
-        <v-card to="/project-review" :title="url.slice(url.lastIndexOf('/') + 1)" :subtitle="url" rounded="xl"
+        <v-card @click="navigateToProjectReview(url)" :title="url.slice(url.lastIndexOf('/') + 1)" :subtitle="url" rounded="xl"
           height="165" width="400" border="md">
           <template v-slot:append>
             <v-btn flat @click.stop="this.$store.commit('delRepos', url)" icon="mdi-trash-can-outline">
@@ -72,6 +72,10 @@ export default {
       this.cardAppend = true
       this.loader = false
     },
+    navigateToProjectReview(url) {
+      this.$store.commit("changeCurrentRepo", url);
+      this.$router.push('/project-review')
+    }
   }
 }
 </script>

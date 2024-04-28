@@ -1,13 +1,7 @@
 <template>
-  <p> {{ repos }}</p>
+  {{ this.$store.state.repositories[this.$store.state.currentRepo] }}
 </template>
 
 <script>
-export default {
-  data: () => ({
-  }),
-  created() {
-    this.repos = this.$route.query.repoName;
-  }
-}
+
 </script>

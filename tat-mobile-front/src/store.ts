@@ -4,6 +4,7 @@ import createPersistedState from "vuex-persistedstate";
 export default createStore({
   state: {
     repositories: {},
+    currentRepo: "Error parsing name",
   },
   mutations: {
     addRepos(state, repos) {
@@ -12,6 +13,9 @@ export default createStore({
     delRepos(state, repos) {
       delete state.repositories[repos];
     },
+    changeCurrentRepo (state, payload) {
+      state.currentRepo = payload
+    }
   },
   plugins: [createPersistedState()],
 });
