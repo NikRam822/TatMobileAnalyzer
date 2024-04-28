@@ -3,28 +3,28 @@
         <v-container fluid>
             <v-row>
                 <v-col v-for="val, url in this.$store.state.repositories" cols="auto">
-                    <v-card @click="navigateToOtherPage(url)" rounded="xl" height="150" width="400" border="md">
-                        <v-card-title class="ma-5">
-                            <v-row>
-                                {{ url.slice(url.lastIndexOf('/') + 1) }}
-                                <v-spacer />
-                                <v-btn flat @click.stop="this.$store.commit('delRepos', url)"
-                                    icon="mdi-trash-can-outline">
-                                </v-btn>
-                            </v-row>
-                        </v-card-title>
-                        <v-card-subtitle class="ma-3">{{ url }}</v-card-subtitle>
+                    <v-card @click="navigateToOtherPage(url)" :title="url.slice(url.lastIndexOf('/') + 1)"
+                        :subtitle="url" rounded="xl" height="165" width="400" border="md">
+                        <template v-slot:append>
+                            <v-btn flat @click.stop="this.$store.commit('delRepos', url)" icon="mdi-trash-can-outline">
+                            </v-btn>
+                        </template>
+                        <v-card-text class="d-flex flex-wrap">
+                            <v-sheet style="background-color: rgb(92, 99, 106);"
+                                v-for="val, name in this.$store.state.repositories[url].churn" class="ma-1 px-1">{{ name
+                                }}</v-sheet>
+                        </v-card-text>
                     </v-card>
                 </v-col>
                 <v-col cols="auto">
 
-                    <v-card @click="cardAppend = !cardAppend" v-if="cardAppend" rounded="xl" height="150" width="400"
+                    <v-card @click="cardAppend = !cardAppend" v-if="cardAppend" rounded="xl" height="165" width="400"
                         border="md" class="d-flex justify-center">
                         <v-icon icon="mdi-plus-circle-outline" size="130" color="rgb(92, 99, 106)"
                             class="align-self-center"></v-icon>
                     </v-card>
 
-                    <v-card v-else rounded="xl" height="150" width="400" border="md">
+                    <v-card v-else rounded="xl" height="165" width="400" border="md">
                         <v-form @submit.prevent="addCard()" class="d-flex flex-column">
                             <v-text-field required :rules="[re.test(rep) || 'Wrong URL']" v-model="rep"
                                 label="Enter reposytory URL" type="url"></v-text-field>
