@@ -26,7 +26,7 @@ public class ProjectController {
 
 
     @PostMapping("/create")
-    ResponseEntity<String> createProject(@RequestBody ProjectDto projectDto) {
+    ResponseEntity createProject(@RequestBody ProjectDto projectDto) {
 
         Project project = projectService.findByProjectLink(projectDto.getProjectLink());
         if (project != null) {
@@ -36,9 +36,9 @@ public class ProjectController {
         project = new Project();
         project.setProjectName(projectDto.getProjectName());
         project.setProjectLink(projectDto.getProjectLink());
-        projectService.createProject(project);
+        Project createdProject = projectService.createProject(project);
 
-        return new ResponseEntity<>("Project has been created", HttpStatus.CREATED);
+        return new ResponseEntity<>(ProjectDto.toProjectDto(createdProject), HttpStatus.CREATED);
     }
 
     @GetMapping("/get-projects")
