@@ -9,12 +9,29 @@
       </v-app-bar>
       <v-main class="d-flex align-center justify-center">
         <v-sheet height="94%" width="100dvw" class="pa-4 ma-5" rounded="xl" elevation="4">
-          <router-view />
+          <router-view @get-repos="getRepos" />
         </v-sheet>
       </v-main>
     </v-layout>
   </v-app>
 </template>
 
-<script lang="ts" setup>
+<script>
+import axios from 'axios'
+export default {
+  methods: {
+    async getRepos() {
+      let hostadress = "http://localhost:8080/project/get-projects"
+      try {
+        const repositories = await axios.get(hostadress);
+        this.$store.commit('refreshRepos', repositories.data)
+      } catch (error) {
+        console.error('Error fetching repositories:', error);
+      }
+    }
+  },
+  created() {
+    this.getRepos()
+  }
+}
 </script>

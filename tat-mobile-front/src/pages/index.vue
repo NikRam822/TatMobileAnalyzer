@@ -1,18 +1,12 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col v-for="val, url in this.$store.state.repositories" cols="auto">
-        <v-card @click="navigateToProjectReview(url)" :title="url.slice(url.lastIndexOf('/') + 1)" :subtitle="url" rounded="xl"
-          height="165" width="400" border="md">
+      <v-col v-for="rep in this.$store.state.repositories" cols="auto">
+        <v-card @click="navigateToProjectReview(rep.projectLink)" :title="rep.projectName" :subtitle="rep.projectLink"
+          rounded="xl" height="165" width="400" border="md">
           <template v-slot:append>
-            <v-btn flat @click.stop="this.$store.commit('delRepos', url)" icon="mdi-trash-can-outline">
-            </v-btn>
+            <v-btn flat icon="mdi-trash-can-outline"></v-btn>
           </template>
-          <v-card-text class="d-flex flex-wrap">
-            <v-sheet style="background-color: rgb(92, 99, 106);"
-              v-for="val, name in this.$store.state.repositories[url].churn" class="ma-1 px-1">{{ name
-              }}</v-sheet>
-          </v-card-text>
         </v-card>
       </v-col>
       <v-col cols="auto">
@@ -58,16 +52,18 @@ export default {
       } else {
         alert('URl should be: https://github.com/AUTOR/REPO')
       }
-      let hostadress = "http://localhost:8080/patch/statistic"
+      let hostadress = "http://localhost:8080/project/create"
       try {
-        const response = await axios.post(hostadress, {
-          repositoryUrl: this.rep,
+        await axios.post(hostadress, {
+          projectId: 0,
+          projectLink: this.rep,
+          projectName: this.rep.slice(this.rep.lastIndexOf('/') + 1)
         });
-        this.result = response.data
-        this.$store.commit('addRepos', [this.rep, this.result])
       } catch (error) {
+        alert("This repo already exists")
         console.error('Error fetching repositories:', error);
       }
+      this.$emit('get-repos')
       this.rep = ''
       this.cardAppend = true
       this.loader = false
