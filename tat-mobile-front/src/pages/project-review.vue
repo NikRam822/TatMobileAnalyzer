@@ -1,5 +1,4 @@
 <template>
-  <ListOfStats />
   <ChurnStatistics />
 </template>
 

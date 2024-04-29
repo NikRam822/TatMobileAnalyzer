@@ -2,7 +2,6 @@
     <v-btn @click="getChurnStatistic()">
         Churn statistic
     </v-btn>
-    <p>{{ stats }}</p>
 </template>
 <script>
 export default {
