@@ -1,5 +1,6 @@
 <template>
-  {{ this.$store.state.repositories[this.$store.state.currentRepo] }}
+  <ListOfStats />
+  <ChurnStatistics />
 </template>
 
 <script>

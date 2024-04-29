@@ -2,8 +2,8 @@
   <v-container fluid>
     <v-row>
       <v-col v-for="rep in this.$store.state.repositories" cols="auto">
-        <v-card @click="navigateToProjectReview(rep.projectLink)" :title="rep.projectName" :subtitle="rep.projectLink"
-          rounded="xl" height="165" width="400" border="md">
+        <v-card @click="navigateToProjectReview(rep)" :title="rep.projectName" :subtitle="rep.projectLink" rounded="xl"
+          height="165" width="400" border="md">
           <template v-slot:append>
             <v-btn flat icon="mdi-trash-can-outline"></v-btn>
           </template>
@@ -68,8 +68,8 @@ export default {
       this.cardAppend = true
       this.loader = false
     },
-    navigateToProjectReview(url) {
-      this.$store.commit("changeCurrentRepo", url);
+    navigateToProjectReview(repo) {
+      this.$store.commit("changeCurrentRepo", repo);
       this.$router.push('/project-review')
     }
   }
