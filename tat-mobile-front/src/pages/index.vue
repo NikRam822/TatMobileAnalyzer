@@ -7,6 +7,10 @@
           <template v-slot:append>
             <v-btn flat icon="mdi-trash-can-outline"></v-btn>
           </template>
+          <v-container v-show="loaderStats">
+            <v-progress-linear color="rgb(92, 99, 106)" height="6" indeterminate rounded></v-progress-linear>
+            <p> Analyzing reposytory </p>
+          </v-container>
         </v-card>
       </v-col>
       <v-col cols="auto">
@@ -23,7 +27,7 @@
             <v-container v-show="loader" class="mt-2">
               <v-row justify="center">
                 <v-progress-linear color="rgb(92, 99, 106)" height="6" indeterminate rounded></v-progress-linear>
-                <p> Analyzing reposytory </p>
+                <p> Adding reposytory </p>
               </v-row>
             </v-container>
             <v-btn v-show="!loader" elevation="2" :disabled="!rep" type="submit" icon="mdi-plus-circle-outline"
@@ -44,6 +48,7 @@ export default {
     rep: '',
     result: [],
     loader: false,
+    loaderStats: false,
   }),
   methods: {
     async addCard() {
@@ -68,7 +73,24 @@ export default {
       this.cardAppend = true
       this.loader = false
     },
-    navigateToProjectReview(repo) {
+    async navigateToProjectReview(repo) {
+      if (!this.$store.state.RepoSatistic[repo.projectLink]) {
+        this.loaderStats = true
+        let hostadress = "http://localhost:8080/api/patch/statistic"
+        try {
+          const statistic = await axios.post(hostadress, {
+            projectId: repo.projectId,
+            projectLink: repo.projectLink,
+            projectName: repo.projectName,
+          });
+          this.$store.commit("addStatistc", [repo.projectLink, statistic])
+        } catch (error) {
+          console.error("Error " + error.message);
+          this.loaderStats = false
+          return
+        }
+        this.loaderStats = false
+      }
       this.$store.commit("changeCurrentRepo", repo);
       this.$router.push('/project-review')
     }

@@ -5,14 +5,12 @@ export default createStore({
   state: {
     repositories: [],
     currentRepo: "Error parsing name",
+    RepoSatistic: {},
   },
   mutations: {
-    // addRepos(state, repos) {
-    //   state.repositories[repos[0]] = repos[1];
-    // },
-    // delRepos(state, repos) {
-    //   delete state.repositories[repos];
-    // },
+    addStatistc(state, rep) {
+      state.RepoSatistic[rep[0]] = rep[1];
+    },
     refreshRepos(state, repos) {
       state.repositories = repos;
     },
