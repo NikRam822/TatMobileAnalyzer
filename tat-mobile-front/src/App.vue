@@ -7,11 +7,11 @@
         <v-spacer></v-spacer>
         <v-icon icon="mdi-account" size="40px" class="mr-10"></v-icon>
       </v-app-bar>
-      <v-navigation-drawer v-if="currentPage == '/project-review'">
+      <v-navigation-drawer v-if="currentPage == '/project-review'" width="400">
         <ListOfStats />
       </v-navigation-drawer>
       <v-main class="d-flex">
-        <v-sheet height="94%" width="100dvw" class="pa-4 ma-5" rounded="xl" elevation="4">
+        <v-sheet height="94%" width="100%" class="pa-4 ma-5" rounded="xl" elevation="4">
           <router-view @get-repos="getRepos" />
         </v-sheet>
       </v-main>
