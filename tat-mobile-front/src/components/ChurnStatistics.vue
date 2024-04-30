@@ -1,5 +1,6 @@
 <template>
-    <v-table>
+    <Bar/>
+    <!-- <v-table>
         <thead>
             <tr>
                 <th> Name </th>
@@ -16,9 +17,10 @@
                 <td>{{ autor.total }}</td>
             </tr>
         </tbody>
-    </v-table>
+    </v-table> -->
 </template>
 <script>
+
 export default {
     data: () => ({
         stats: []
