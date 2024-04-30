@@ -70,15 +70,18 @@ export default {
             backgroundColor: '#C3FFA5',
             color: '#000',
             data: [],
-            borderRadius: 10,
+            borderRadius: 5,
             borderSkipped: false,
+            barPercentage: 0.5
           },
           {
             label: 'Not value',
             backgroundColor: '#F2A582',
             data: [],
-            borderRadius: 10,
+            borderRadius: 5,
+            barPercentage: 0.5
           },
+          
         ],
       },
       options: {
