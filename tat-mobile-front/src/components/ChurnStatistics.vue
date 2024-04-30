@@ -4,11 +4,11 @@
             <v-table>
                 <thead>
                     <tr>
-                        <th> Name </th>
-                        <th> Overall </th>
-                        <th> Churn </th>
-                        <th> Value </th>
-                        <th> Not value</th>
+                        <th><v-card id="name" @click="sortStatistic($event)"> Name</v-card> </th>
+                        <th><v-card id="overall" @click="sortStatistic($event)"> Overall</v-card> </th>
+                        <th> <v-card id="churn" @click="sortStatistic($event)">Churn</v-card> </th>
+                        <th> <v-card id="value" @click="sortStatistic($event)">Value</v-card> </th>
+                        <th> <v-card id="notValue" @click="sortStatistic($event)">Not value</v-card></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,7 +45,28 @@ export default {
                 statsForGraph[statsForGraph.length - 1].notValue = Math.round(overall * churn / 100)
             }
             this.$store.commit("changestatsForGraph", statsForGraph);
-        }
+        },
+        sortStatistic(event) {
+            switch (event.target.id) {
+                case "name":
+                    this.$store.commit("changestatsForGraph", this.statsForGraph.sort(function (a, b) { return b.name.localeCompare(a.name) }))
+                    break;
+                case "overall":
+                    this.$store.commit("changestatsForGraph", this.statsForGraph.sort(function (a, b) { return b.overall - a.overall }))
+                    break;
+                case "churn":
+                    this.$store.commit("changestatsForGraph", this.statsForGraph.sort(function (a, b) { return b.churn - a.churn }))
+                    break;
+                case "value":
+                    this.$store.commit("changestatsForGraph", this.statsForGraph.sort(function (a, b) { return b.value - a.value }))
+                    break;
+                case "notValue":
+                    this.$store.commit("changestatsForGraph", this.statsForGraph.sort(function (a, b) { return b.notValue - a.notValue }))
+                    break;
+                default:
+                    break;
+            }
+        },
     },
     created() {
         this.getChurnStatistic()
