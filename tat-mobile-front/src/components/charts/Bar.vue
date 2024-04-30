@@ -7,7 +7,7 @@
 import { Bar } from 'vue-chartjs';
 import { mapState } from 'vuex';
 import {
-  Chart as ChartJS,
+  Chart,
   Title,
   Tooltip,
   Legend,
@@ -16,7 +16,7 @@ import {
   LinearScale,
 } from 'chart.js';
 
-ChartJS.register(
+Chart.register(
   Title,
   Tooltip,
   Legend,
@@ -24,7 +24,7 @@ ChartJS.register(
   CategoryScale,
   LinearScale
 );
-
+Chart.defaults.color = "#FFF"
 export default {
   name: 'BarChart',
   components: {
