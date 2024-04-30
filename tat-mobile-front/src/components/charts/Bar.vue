@@ -104,7 +104,6 @@ export default {
       this.param.datasets[0].data.push(author.value)
       this.param.datasets[1].data.push(author.notValue)
     }
-    console.log(this.param.labels)
   },
 };
 </script>
