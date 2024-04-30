@@ -1,7 +1,7 @@
 <template>
     <v-card>
         <v-list>
-            <v-list-item v-for="(val, key) in statistics" @click='executeFunction(val)'> {{ key
+            <v-list-item v-for="(val) in statistics" @click='executeFunction(val)'> {{ val
                 }} <v-divider></v-divider></v-list-item>
         </v-list>
     </v-card>
@@ -11,7 +11,7 @@
 export default {
     data: () => ({
         // Это список содержащий различные статистики (Пока что одна только раьботает)
-        statistics: { Churn: "<ChurnStatistics />", BlaBLALFA: "das", Statistica: "dadsdgdf" }
+        statistics: ["Churn Statistics", "BlaBLALFA", "Statistica"]
     }),
     methods: {
         executeFunction(val) {

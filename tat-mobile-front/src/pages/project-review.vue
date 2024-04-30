@@ -1,4 +1,4 @@
-<template v-if="this.$store.state.currentStatistic == ' <ChurnStatistics />'">
+<template v-if="this.$store.state.currentStatistic == 'Churn Statistics'">
   <ChurnStatistics />
 </template>
 
