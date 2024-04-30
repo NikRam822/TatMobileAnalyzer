@@ -1,19 +1,11 @@
 <template>
-  <Bar
-    :data="data"
-    :options="options"
-    :chart-id="chartId"
-    :dataset-id-key="datasetIdKey"
-    :plugins="plugins"
-    :css-classes="cssClasses"
-    :styles="styles"
-    :width="width"
-    :height="height"
-  />
+  <Bar :data="param" :options="options" :chart-id="chartId" :dataset-id-key="datasetIdKey" :plugins="plugins"
+    :css-classes="cssClasses" :styles="styles" :width="width" :height="height" />
 </template>
 
 <script>
 import { Bar } from 'vue-chartjs';
+import { mapState } from 'vuex';
 import {
   Chart as ChartJS,
   Title,
@@ -70,33 +62,21 @@ export default {
   },
   data() {
     return {
-      data: {
-        labels: [
-          'January',
-          'February',
-          'March',
-          'April',
-          'May',
-          'June',
-          'July',
-          'August',
-          'September',
-          'October',
-          'November',
-          'December',
-        ],
+      param: {
+        labels: [],
         datasets: [
           {
-            label: 'Data One',
+            label: 'Value',
             backgroundColor: '#C3FFA5',
-            data: [15, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11],
+            color: '#000',
+            data: [],
             borderRadius: 10,
             borderSkipped: false,
           },
           {
-            label: 'Data Two',
+            label: 'Not value',
             backgroundColor: '#F2A582',
-            data: [10, 40, 30, 20, 50, 15, 30, 20, 10, 30, 40, 20],
+            data: [],
             borderRadius: 10,
           },
         ],
@@ -114,6 +94,17 @@ export default {
         },
       },
     };
+  },
+  computed: {
+    ...mapState(['statsForGraph']),
+  },
+  created() {
+    for (let author of this.statsForGraph) {
+      this.param.labels.push(author.name)
+      this.param.datasets[0].data.push(author.value)
+      this.param.datasets[1].data.push(author.notValue)
+    }
+    console.log(this.param.labels)
   },
 };
 </script>

@@ -20,6 +20,6 @@ export default {
     },
     created() {
         this.$store.commit("changeCurrentStatistic", "");
-    }
+    },
 }
 </script>

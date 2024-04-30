@@ -7,8 +7,12 @@ export default createStore({
     currentStatistic: "",
     currentRepo: "Error parsing name",
     RepoSatistic: {},
+    statsForGraph: {},
   },
   mutations: {
+    changestatsForGraph(state, payload) {
+      state.statsForGraph = payload;
+    },
     addStatistc(state, rep) {
       state.RepoSatistic[rep[0]] = rep[1];
     },
