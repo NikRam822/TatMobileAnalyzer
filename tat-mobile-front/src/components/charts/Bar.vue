@@ -103,9 +103,11 @@ export default {
       data.datasets[0].data = []
       data.datasets[1].data = []
       for (let author of this.$store.state.statsForGraph) {
-        data.labels.push(author.name)
-        data.datasets[0].data.push(author.value)
-        data.datasets[1].data.push(author.notValue)
+        if (author.enable) {
+          data.labels.push(author.name)
+          data.datasets[0].data.push(author.value)
+          data.datasets[1].data.push(author.notValue)
+        }
       }
       return data
     }

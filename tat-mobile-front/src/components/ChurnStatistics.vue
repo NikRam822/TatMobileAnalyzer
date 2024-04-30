@@ -1,7 +1,7 @@
 <template>
-    <v-row style="height: 150px;">
+    <v-row>
         <v-col cols="4">
-            <v-table>
+            <v-table height="80vh">
                 <thead>
                     <tr>
                         <th><v-card id="name" @click="sortStatistic($event)"> Name</v-card> </th>
@@ -13,7 +13,8 @@
                 </thead>
                 <tbody>
                     <tr v-for="autor in statsForGraph">
-                        <td>{{ autor.name }}</td>
+                        <td> <v-checkbox true-icon="mdi-eye" false-icon="mdi-eye-off" :label="autor.name"
+                                v-model="autor.enable"></v-checkbox></td>
                         <td>{{ autor.overall }}</td>
                         <td>{{ autor.churn }}%</td>
                         <td>{{ autor.value }}</td>
@@ -23,7 +24,9 @@
             </v-table>
         </v-col>
         <v-col cols="8">
-            <Bar />
+            <div>
+                <Bar />
+            </div>
         </v-col>
     </v-row>
 </template>
@@ -43,6 +46,7 @@ export default {
                 statsForGraph[statsForGraph.length - 1].overall = overall
                 statsForGraph[statsForGraph.length - 1].value = Math.round(overall * (100 - churn) / 100)
                 statsForGraph[statsForGraph.length - 1].notValue = Math.round(overall * churn / 100)
+                statsForGraph[statsForGraph.length - 1].enable = true
             }
             this.$store.commit("changestatsForGraph", statsForGraph);
         },
