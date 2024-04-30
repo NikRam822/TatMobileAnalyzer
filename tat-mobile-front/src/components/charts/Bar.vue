@@ -81,7 +81,6 @@ export default {
             borderRadius: 5,
             barPercentage: 0.5
           },
-          
         ],
       },
       options: {
@@ -99,14 +98,31 @@ export default {
     };
   },
   computed: {
-    ...mapState(['statsForGraph']),
+    ...mapState(['statsForGraph'])
   },
-  created() {
-    for (let author of this.statsForGraph) {
-      this.param.labels.push(author.name)
-      this.param.datasets[0].data.push(author.value)
-      this.param.datasets[1].data.push(author.notValue)
+  methods: {
+    updateChart() {
+      this.param.labels = []
+      this.param.datasets[0].data = []
+      this.param.datasets[1].data = []
+      for (let author of this.statsForGraph) {
+        this.param.labels.push(author.name)
+        this.param.datasets[0].data.push(author.value)
+        this.param.datasets[1].data.push(author.notValue)
+      }
     }
   },
-};
+  created() {
+    this.updateChart()
+  },
+  watch: {
+    statsForGraph: {
+      handler() {
+        this.updateChart();
+      },
+      deep: true,
+    },
+
+  }
+}
 </script>
