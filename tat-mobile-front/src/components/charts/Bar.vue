@@ -1,5 +1,5 @@
 <template>
-  <Bar :data="param" :options="options" :chart-id="chartId" :dataset-id-key="datasetIdKey" :plugins="plugins"
+  <Bar :data="updateChart" :options="options" :chart-id="chartId" :dataset-id-key="datasetIdKey" :plugins="plugins"
     :css-classes="cssClasses" :styles="styles" :width="width" :height="height" />
 </template>
 
@@ -62,7 +62,23 @@ export default {
   },
   data() {
     return {
-      param: {
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            stacked: true,
+          },
+          y: {
+            stacked: true,
+          },
+        },
+      },
+    };
+  },
+  computed: {
+    updateChart() {
+      let data = {
         labels: [],
         datasets: [
           {
@@ -82,47 +98,17 @@ export default {
             barPercentage: 0.5
           },
         ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          x: {
-            stacked: true,
-          },
-          y: {
-            stacked: true,
-          },
-        },
-      },
-    };
-  },
-  computed: {
-    ...mapState(['statsForGraph'])
-  },
-  methods: {
-    updateChart() {
-      this.param.labels = []
-      this.param.datasets[0].data = []
-      this.param.datasets[1].data = []
-      for (let author of this.statsForGraph) {
-        this.param.labels.push(author.name)
-        this.param.datasets[0].data.push(author.value)
-        this.param.datasets[1].data.push(author.notValue)
       }
+      data.labels = []
+      data.datasets[0].data = []
+      data.datasets[1].data = []
+      for (let author of this.$store.state.statsForGraph) {
+        data.labels.push(author.name)
+        data.datasets[0].data.push(author.value)
+        data.datasets[1].data.push(author.notValue)
+      }
+      return data
     }
-  },
-  created() {
-    this.updateChart()
-  },
-  watch: {
-    statsForGraph: {
-      handler() {
-        this.updateChart();
-      },
-      deep: true,
-    },
-
   }
 }
 </script>
