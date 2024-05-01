@@ -29,9 +29,9 @@
                                 <v-overlay activator="parent">
                                     <v-card class="ma-10" width="400px">
                                         <v-form @submit.prevent="addFile(filter)">
-                                            <v-text-field required label="Enter file path"
-                                                v-model="path"></v-text-field>
-                                            <v-btn width="100%"> Add file </v-btn>
+                                            <v-autocomplete required label="Enter file path" v-model="path"
+                                                :items="Object.getOwnPropertyNames(this.$store.state.RepoSatistic[this.$store.state.currentRepo.projectLink].data.general)"></v-autocomplete>
+                                            <v-btn type="submit" width="100%"> Add file </v-btn>
                                         </v-form>
                                     </v-card>
                                 </v-overlay>
@@ -80,6 +80,7 @@ export default {
             } catch (error) {
                 console.error("Error " + error.message);
             }
+            this.getChurnStatistic()
             this.loader = false
         },
         async addFile(filt) {
@@ -104,10 +105,26 @@ export default {
             } catch (error) {
                 console.error("Error " + error.message);
             }
-        }
+        },
+        getChurnStatistic() {
+            const statsRepo = this.$store.state.RepoSatistic[this.$store.state.currentRepo.projectLink].data
+            let statsForGraph = []
+            for (let name in statsRepo.churn) {
+                let churn = statsRepo.churn[name]
+                let overall = statsRepo.overall[name]
+                statsForGraph.push({ name: name })
+                statsForGraph[statsForGraph.length - 1].churn = Math.round(churn)
+                statsForGraph[statsForGraph.length - 1].overall = overall
+                statsForGraph[statsForGraph.length - 1].value = Math.round(overall * (100 - churn) / 100)
+                statsForGraph[statsForGraph.length - 1].notValue = Math.round(overall * churn / 100)
+                statsForGraph[statsForGraph.length - 1].enable = true
+            }
+            this.$store.commit("changestatsForGraph", statsForGraph);
+        },
     },
     created() {
         this.updateFilters()
+        this.getChurnStatistic()
     }
 }
 </script>

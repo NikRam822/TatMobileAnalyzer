@@ -40,21 +40,6 @@ export default {
         prevCol: ''
     }),
     methods: {
-        getChurnStatistic() {
-            const statsRepo = this.$store.state.RepoSatistic[this.$store.state.currentRepo.projectLink].data
-            let statsForGraph = []
-            for (let name in statsRepo.churn) {
-                let churn = statsRepo.churn[name]
-                let overall = statsRepo.overall[name]
-                statsForGraph.push({ name: name })
-                statsForGraph[statsForGraph.length - 1].churn = Math.round(churn)
-                statsForGraph[statsForGraph.length - 1].overall = overall
-                statsForGraph[statsForGraph.length - 1].value = Math.round(overall * (100 - churn) / 100)
-                statsForGraph[statsForGraph.length - 1].notValue = Math.round(overall * churn / 100)
-                statsForGraph[statsForGraph.length - 1].enable = true
-            }
-            this.$store.commit("changestatsForGraph", statsForGraph);
-        },
         sortStatistic(dataStat, sortParam) {
             if (this.prevCol != sortParam) {
                 if (typeof dataStat[0][sortParam] == "string") {
@@ -67,9 +52,6 @@ export default {
             }
             this.prevCol = sortParam
         },
-    },
-    created() {
-        this.getChurnStatistic()
     },
     computed: {
         ...mapState(['statsForGraph']),
