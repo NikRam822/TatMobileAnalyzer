@@ -29,9 +29,7 @@
             </v-table>
         </v-col>
         <v-col cols="8">
-            <div>
-                <Bar />
-            </div>
+            <Bar />
         </v-col>
     </v-row>
 </template>

@@ -1,11 +1,20 @@
 <template>
-  <Bar :data="updateChart" :options="options" :chart-id="chartId" :dataset-id-key="datasetIdKey" :plugins="plugins"
-    :css-classes="cssClasses" :styles="styles" :width="width" :height="height" />
+  <!-- Как работает скролл:
+  Параметр responsive в options задает размер графика в зависимости от родителя
+По этому создаем div вокруг Bar и задаем ему ширину
+В даннром случае это widthOfOneBar умножить на количество столбцов. Параметр widthOfOneBar я добавл в data
+Вокруг этого div создаем еще один уже правильного размера в рамках страницы и ставим overflow-x, который добавляет скролл-->
+  <div style="overflow-x: auto;">
+    <div
+      :style="{ width: widthOfOneBar * Object.getOwnPropertyNames(this.$store.state.statsForGraph).length - 1 + 'px' }">
+      <Bar :data="updateChart" :options="options" :chart-id="chartId" :dataset-id-key="datasetIdKey" :plugins="plugins"
+        :css-classes="cssClasses" :styles="styles" :width="width" :height="height" />
+    </div>
+  </div>
 </template>
 
 <script>
 import { Bar } from 'vue-chartjs';
-import { mapState } from 'vuex';
 import {
   Chart,
   Title,
@@ -62,6 +71,7 @@ export default {
   },
   data() {
     return {
+      widthOfOneBar: 100,
       options: {
         responsive: true,
         maintainAspectRatio: false,

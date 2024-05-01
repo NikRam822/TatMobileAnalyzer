@@ -1,6 +1,12 @@
 <template>
   <v-container fluid>
     <v-row>
+      <!-- Карточка для тестов -->
+      <v-col cols="auto">
+        <v-card @click="testStats()" title="test" rounded="xl" height="165" width="400" border="md">
+        </v-card>
+      </v-col>
+
       <v-col v-for="rep in this.$store.state.repositories" cols="auto">
         <v-card @click="navigateToProjectReview(rep)" :title="rep.projectName" :subtitle="rep.projectLink" rounded="xl"
           height="165" width="400" border="md">
@@ -51,6 +57,23 @@ export default {
     loaderStats: [],
   }),
   methods: {
+    // функция для тестовой карточки
+    testStats() {
+      this.$store.commit("changeCurrentRepo", { projectLink: 'test' });
+      this.$store.commit("addStatistc", ["test", {
+        "data": {
+          "general": {
+            "FirststFile": { "Olmecsandr": 7, "Nikita Ramzin": 4 },
+          },
+          "churn": {
+            "Olmecsandr0": 50, "Olmecsandr1": 50, "Olmecsandr2": 50, "Olmecsandr3": 50, "Olmecsandr4": 50, "Olmecsandr5": 50, "Olmecsandr6": 50, "Olmecsandr7": 50, "Olmecsandr8": 50, "Olmecsandr9": 50, "Olmecsandr10": 50, "Olmecsandr11": 50, "Olmecsandr12": 50, "Olmecsandr13": 50, "Olmecsandr14": 50, "Olmecsandr15": 50, "Olmecsandr16": 50
+          },
+          "overall": { "Olmecsandr0": 100, "Olmecsandr1": 100, "Olmecsandr2": 100, "Olmecsandr3": 100, "Olmecsandr4": 100, "Olmecsandr5": 100, "Olmecsandr6": 100, "Olmecsandr7": 100, "Olmecsandr8": 100, "Olmecsandr9": 100, "Olmecsandr10": 100, "Olmecsandr11": 100, "Olmecsandr12": 100, "Olmecsandr13": 100, "Olmecsandr14": 100, "Olmecsandr15": 100, "Olmecsandr16": 100, }
+        }
+      }]),
+
+        this.$router.push('/project-review')
+    },
     async addCard() {
       this.loader = true
       if (this.re.test(this.rep)) {
@@ -94,11 +117,11 @@ export default {
         console.log(this.loaderStats)
       }
       else {
-      this.$store.commit("changeCurrentRepo", repo);
-      this.$router.push('/project-review')
+        this.$store.commit("changeCurrentRepo", repo);
+        this.$router.push('/project-review')
       }
     },
-    cleanStats(){
+    cleanStats() {
       this.$store.commit("deleteStatistic")
     }
   }
