@@ -4,11 +4,16 @@
             <v-table height="80vh">
                 <thead>
                     <tr>
-                        <th><v-card id="name" @click="sortStatistic($event)"> Name</v-card> </th>
-                        <th><v-card id="overall" @click="sortStatistic($event)"> Overall</v-card> </th>
-                        <th> <v-card id="churn" @click="sortStatistic($event)">Churn</v-card> </th>
-                        <th> <v-card id="value" @click="sortStatistic($event)">Value</v-card> </th>
-                        <th> <v-card id="notValue" @click="sortStatistic($event)">Not value</v-card></th>
+                        <th><v-card id="name" @click="sortStatistic(statsForGraph, $event.target.id)"> Name</v-card>
+                        </th>
+                        <th><v-card id="overall" @click="sortStatistic(statsForGraph, $event.target.id)">
+                                Overall</v-card> </th>
+                        <th> <v-card id="churn" @click="sortStatistic(statsForGraph, $event.target.id)">Churn</v-card>
+                        </th>
+                        <th> <v-card id="value" @click="sortStatistic(statsForGraph, $event.target.id)">Value</v-card>
+                        </th>
+                        <th> <v-card id="notValue" @click="sortStatistic(statsForGraph, $event.target.id)">Not
+                                value</v-card></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,7 +38,9 @@
 <script>
 import { mapState } from 'vuex';
 export default {
-
+    data: () => ({
+        prevCol: ''
+    }),
     methods: {
         getChurnStatistic() {
             const statsRepo = this.$store.state.RepoSatistic[this.$store.state.currentRepo.projectLink].data
@@ -50,26 +57,17 @@ export default {
             }
             this.$store.commit("changestatsForGraph", statsForGraph);
         },
-        sortStatistic(event) {
-            switch (event.target.id) {
-                case "name":
-                    this.$store.commit("changestatsForGraph", this.statsForGraph.sort(function (a, b) { return b.name.localeCompare(a.name) }))
-                    break;
-                case "overall":
-                    this.$store.commit("changestatsForGraph", this.statsForGraph.sort(function (a, b) { return b.overall - a.overall }))
-                    break;
-                case "churn":
-                    this.$store.commit("changestatsForGraph", this.statsForGraph.sort(function (a, b) { return b.churn - a.churn }))
-                    break;
-                case "value":
-                    this.$store.commit("changestatsForGraph", this.statsForGraph.sort(function (a, b) { return b.value - a.value }))
-                    break;
-                case "notValue":
-                    this.$store.commit("changestatsForGraph", this.statsForGraph.sort(function (a, b) { return b.notValue - a.notValue }))
-                    break;
-                default:
-                    break;
+        sortStatistic(dataStat, sortParam) {
+            if (this.prevCol != sortParam) {
+                if (typeof dataStat[0][sortParam] == "string") {
+                    dataStat.sort(function (a, b) { return b[sortParam].localeCompare(a[sortParam]) })
+                } else if (typeof dataStat[0][sortParam] == "number") {
+                    dataStat.sort(function (a, b) { return b[sortParam] - a[sortParam] })
+                }
+            } else {
+                dataStat.reverse()
             }
+            this.prevCol = sortParam
         },
     },
     created() {
