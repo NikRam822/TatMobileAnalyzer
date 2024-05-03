@@ -27,7 +27,7 @@
                             <v-btn width="100%">
                                 <v-icon icon="mdi-plus"></v-icon>
                                 <v-overlay activator="parent">
-                                    <v-card class="ma-10" width="400px">
+                                    <v-card class="ma-10" width="1000px">
                                         <v-form @submit.prevent="addFile(filter)">
                                             <v-autocomplete required label="Enter file path" v-model="path"
                                                 :items="Object.getOwnPropertyNames(this.$store.state.RepoSatistic[this.$store.state.currentRepo.projectLink].data.general)"></v-autocomplete>

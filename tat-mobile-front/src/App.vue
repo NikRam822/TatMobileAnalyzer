@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app style="height: 100vh;">
     <v-layout>
       <v-app-bar>
         <v-img src="./assets/Logo.svg" height="40" max-width="64"></v-img>
@@ -13,8 +13,8 @@
       <v-navigation-drawer v-if="currentPage == '/project-review'" width="400">
         <ListOfStats />
       </v-navigation-drawer>
-      <v-main class="d-flex">
-        <v-sheet height="94%" width="100%" class="pa-4 ma-5" rounded="xl" elevation="4">
+      <v-main style="height: 100%">
+        <v-sheet style="height: 96%;" class="pa-4 ma-5" rounded="xl" elevation="4">
           <router-view @get-repos="getRepos" />
         </v-sheet>
       </v-main>
