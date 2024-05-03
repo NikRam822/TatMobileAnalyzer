@@ -1,7 +1,7 @@
 <template>
     <v-row>
         <v-col cols="4">
-            <v-table height="80vh">
+            <v-table height="80vh" fixed-header>
                 <thead>
                     <tr>
                         <th><v-card id="name" @click="sortStatistic(statsForGraph, $event.target.id)"> Name</v-card>
@@ -18,8 +18,16 @@
                 </thead>
                 <tbody>
                     <tr v-for="autor in statsForGraph">
-                        <td> <v-checkbox true-icon="mdi-eye" false-icon="mdi-eye-off" :label="autor.name"
-                                v-model="autor.enable"></v-checkbox></td>
+                        <td>
+                            <div class="d-flex flex-row">
+                                <div class="align-self-center">
+                                    <v-checkbox-btn density="compact" true-icon="mdi-eye" false-icon="mdi-eye-off"
+                                        v-model="autor.enable">
+                                    </v-checkbox-btn>
+                                </div class=align-self-center>
+                                <div class="align-self-center">{{ autor.name }}</div>
+                            </div>
+                        </td>
                         <td>{{ autor.overall }}</td>
                         <td>{{ autor.churn }}%</td>
                         <td>{{ autor.value }}</td>
