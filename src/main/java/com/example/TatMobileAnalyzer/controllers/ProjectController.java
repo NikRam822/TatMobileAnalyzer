@@ -1,6 +1,7 @@
 package com.example.TatMobileAnalyzer.controllers;
 
 import com.example.TatMobileAnalyzer.dto.ProjectDto;
+import com.example.TatMobileAnalyzer.dto.ProjectIdDto;
 import com.example.TatMobileAnalyzer.model.Project;
 import com.example.TatMobileAnalyzer.services.ProjectService;
 import lombok.extern.slf4j.Slf4j;
@@ -46,5 +47,16 @@ public class ProjectController {
         List<Project> projects = projectService.getAllProjects();
         List<ProjectDto> projectsDto = projects.stream().map(ProjectDto::toProjectDto).toList();
         return new ResponseEntity<>(projectsDto, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete-project")
+    ResponseEntity<String> getProjects(@RequestBody ProjectIdDto projectIdDto) {
+        try {
+            projectService.deleteProject(projectIdDto.getProjectId());
+            return new ResponseEntity<>("Project with id: " + projectIdDto.getProjectId() + " is deleted", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("The project with the id: " + projectIdDto.getProjectId() + "has not been deleted", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 }
