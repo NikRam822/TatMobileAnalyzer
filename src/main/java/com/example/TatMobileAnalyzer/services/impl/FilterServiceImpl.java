@@ -59,7 +59,11 @@ public class FilterServiceImpl implements FilterService {
 
     public Filter getFiltersByProjectId(Long projectId) {
         Filter filter = filterRepository.findByProjectId(projectId);
-        log.info("Found {} filter", filter.getId());
+        if (filter != null) {
+            log.info("Found {} filter", filter.getId());
+        } else {
+            log.warn("Filter with id {} not found", projectId);
+        }
         return filter;
     }
 
