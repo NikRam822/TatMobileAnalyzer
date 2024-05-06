@@ -7,9 +7,12 @@
             <v-img src="./assets/Logo.svg"></v-img>
           </v-icon>
         </v-btn>
-        <v-app-bar-title style="color: rgb(197, 226, 21)">{{ currentPage }}</v-app-bar-title>
+        <v-app-bar-title v-show="!this.$vuetify.display.xs" style="color: rgb(197, 226, 21)">{{
+          currentPage
+        }}</v-app-bar-title>
         <v-spacer></v-spacer>
         <v-text-field
+          style="min-width: 200px"
           hide-details="true"
           density="compact"
           prepend-inner-icon="mdi-magnify"

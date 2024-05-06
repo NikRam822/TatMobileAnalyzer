@@ -4,7 +4,7 @@
       :style="{
         width: widthOfOneBar * statsForGraph.reduce((sum, curr) => sum + curr.enable, 0) + 'px',
       }"
-      style="height: 400px"
+      style="height: 100%"
     >
       <Bar
         :data="updateChart"

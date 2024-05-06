@@ -1,6 +1,6 @@
 <template>
-  <div class="d-flex">
-    <v-table fixed-header height="400">
+  <div class="d-flex flex-column flex-sm-row" style="overflow-y: false; min-hight: 100%">
+    <v-table fixed-header>
       <thead>
         <tr>
           <th>
