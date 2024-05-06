@@ -48,9 +48,9 @@ Below are the instructions for running `docker-compose`:
    DB_URL=jdbc:postgresql://postgres_db:5432/some_database
    ```
    - Replace `<your_github_access_token>` to your github access token
-   - Go to `./tat-mobile-front` and create `.env` file with next content:
+   - Go to `./tat-mobile-front` and create `.env` file with desired backend URL localhost for dev and real one for hosted backend:
    ```text
-   VUE_APP_HOST_ADDRESS=http://java_app:8080/patch/statistic
+   VITE_BACKEND_URL=http://localhost:8080
    ```
 
 3. Run Docker Compose:
