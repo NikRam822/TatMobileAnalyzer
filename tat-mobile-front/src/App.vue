@@ -2,6 +2,10 @@
   <v-app style="height: 100vh">
     <v-layout>
       <v-app-bar>
+        <v-app-bar-nav-icon
+          v-show="this.$vuetify.display.xs || this.$vuetify.display.sm"
+          @click="showdrawer = !showdrawer"
+        ></v-app-bar-nav-icon>
         <v-btn variant="plain" to="/" title="Go dashboard">
           <v-icon size="x-large">
             <v-img src="./assets/Logo.svg"></v-img>
@@ -26,6 +30,13 @@
       <v-navigation-drawer v-if="currentPage != 'Dashboard'" width="400">
         <ListOfStats />
       </v-navigation-drawer>
+      <v-navigation-drawer
+        v-if="currentPage != 'Dashboard' && showdrawer && (this.$vuetify.display.xs || this.$vuetify.display.sm)"
+        permanent
+        width="400"
+      >
+        <ListOfStats />
+      </v-navigation-drawer>
       <v-main style="height: 100%">
         <v-sheet
           style="height: 96%; overflow-y: auto"
@@ -46,6 +57,7 @@ export default {
   data() {
     return {
       searchRepo: "",
+      showdrawer: false,
     };
   },
   methods: {},

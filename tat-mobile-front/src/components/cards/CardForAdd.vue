@@ -22,7 +22,7 @@
         ></v-text-field>
         <v-btn
           elevation="2"
-          :disabled="re.test(rep)"
+          :disabled="!re.test(rep)"
           type="submit"
           icon="mdi-plus-circle-outline"
           class="align-self-center"
