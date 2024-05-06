@@ -1,0 +1,78 @@
+<template>
+  <v-card
+    :key="rep.projectName"
+    @click="navigateToProjectReview()"
+    :title="rep.projectName"
+    :subtitle="rep.projectLink"
+    rounded="xl"
+    height="165"
+    border="md"
+    class="flex-1-0"
+    style="max-width: 500px; min-width: 200px"
+  >
+    <template v-slot:append>
+      <v-btn
+        @click.stop="deleteProject"
+        flat
+        icon="mdi-trash-can-outline"
+      ></v-btn>
+    </template>
+    <v-container v-show="loader">
+      <v-progress-linear
+        color="rgb(92, 99, 106)"
+        height="6"
+        indeterminate
+        rounded
+      ></v-progress-linear>
+      <p>Analyzing reposytory</p>
+    </v-container>
+  </v-card>
+</template>
+<script>
+import axios from "axios";
+export default {
+  data() {
+    return {
+      loader: false,
+    };
+  },
+  props: ["rep"],
+  methods: {
+    async navigateToProjectReview() {
+      if (!this.$store.state.RepoSatistic[this.rep.projectLink]) {
+        this.loader = true;
+        let hostadress = "http://localhost:8080/api/patch/statistic";
+        try {
+          const statistic = await axios.post(hostadress, {
+            projectId: this.rep.projectId,
+            projectLink: this.rep.projectLink,
+            projectName: this.rep.projectName,
+          });
+          this.$store.commit("addStatistc", [this.rep.projectLink, statistic]);
+        } catch (error) {
+          console.error("Error " + error.message);
+        }
+        this.loader = false;
+      } else {
+        // !!! delite this in store
+        this.$store.commit("changeCurrentRepo", this.rep);
+        this.$router.push("/project-review");
+      }
+    },
+    async deleteProject() {
+      let hostadress = "http://localhost:8080/project/delete-project";
+      try {
+        const statistic = await axios.delete(hostadress, {
+          data: {
+            projectId: this.rep.projectId,
+          },
+        });
+        this.$store.commit("delStatistic", this.rep.projectLink);
+      } catch (error) {
+        console.error("Error " + error.message);
+      }
+      this.$emit("get-repos");
+    },
+  },
+};
+</script>

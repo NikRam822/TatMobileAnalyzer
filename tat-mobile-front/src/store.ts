@@ -3,30 +3,27 @@ import createPersistedState from "vuex-persistedstate";
 
 export default createStore({
   state: {
-    filters: [],
     repositories: [],
-    currentRepo: "Error parsing name",
     RepoSatistic: {},
-    statsForGraph: {},
+    filters: [],
+    currentRepo: "Error parsing name",
   },
   mutations: {
     changeFilter(state, payload) {
       state.filters = payload;
-    },
-    changestatsForGraph(state, payload) {
-      state.statsForGraph = payload;
+      delete state.filters.projectId
     },
     addStatistc(state, rep) {
       state.RepoSatistic[rep[0]] = rep[1];
     },
-    deleteStatistic(state) {
-      state.RepoSatistic = {};
+    delStatistic(state, rep) {
+      delete state.RepoSatistic[rep]
     },
     refreshRepos(state, repos) {
       state.repositories = repos;
     },
-    changeCurrentRepo(state, payload) {
-      state.currentRepo = payload;
+    changeCurrentRepo(state, rep) {
+      state.currentRepo = rep;
     },
   },
   plugins: [createPersistedState()],

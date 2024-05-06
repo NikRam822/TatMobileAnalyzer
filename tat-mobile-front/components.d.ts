@@ -8,6 +8,8 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Bar: typeof import('./src/components/charts/Bar.vue')['default']
+    CardForAdd: typeof import('./src/components/cards/CardForAdd.vue')['default']
+    CardOfProject: typeof import('./src/components/cards/CardOfProject.vue')['default']
     ChurnStatistics: typeof import('./src/components/ChurnStatistics.vue')['default']
     ListOfStats: typeof import('./src/components/ListOfStats.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

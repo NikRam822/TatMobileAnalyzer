@@ -1,53 +1,45 @@
 <template>
-  <!-- Как работает скролл:
-  Параметр responsive в options задает размер графика в зависимости от родителя
-По этому создаем div вокруг Bar и задаем ему ширину
-В даннром случае это widthOfOneBar умножить на количество столбцов. Параметр widthOfOneBar я добавл в data
-Вокруг этого div создаем еще один уже правильного размера в рамках страницы и ставим overflow-x, который добавляет скролл-->
-  <div style="overflow-x: auto;">
-    <div :style="{
-      width: widthOfOneBar * this.$store.state.statsForGraph.reduce((sum, curr) => sum + curr.enable, 0) + 'px'
-    }">
-      <Bar :data="updateChart" :options="options" :chart-id="chartId" :dataset-id-key="datasetIdKey" :plugins="plugins"
-        :css-classes="cssClasses" :styles="styles" :width="width" :height="height" />
+  <div style="overflow-x: auto">
+    <div
+      :style="{
+        width: widthOfOneBar * statsForGraph.reduce((sum, curr) => sum + curr.enable, 0) + 'px',
+      }"
+      style="height: 400px"
+    >
+      <Bar
+        :data="updateChart"
+        :options="options"
+        :chart-id="chartId"
+        :dataset-id-key="datasetIdKey"
+        :plugins="plugins"
+        :css-classes="cssClasses"
+        :styles="styles"
+        :width="width"
+        :height="height"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import { Bar } from 'vue-chartjs';
-import {
-  Chart,
-  Title,
-  Tooltip,
-  Legend,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-} from 'chart.js';
+import { Bar } from "vue-chartjs";
+import { Chart, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from "chart.js";
 
-Chart.register(
-  Title,
-  Tooltip,
-  Legend,
-  BarElement,
-  CategoryScale,
-  LinearScale
-);
-Chart.defaults.color = "#FFF"
+Chart.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
+Chart.defaults.color = "#FFF";
 export default {
-  name: 'BarChart',
+  name: "BarChart",
   components: {
     Bar,
   },
   props: {
     chartId: {
       type: String,
-      default: 'bar-chart',
+      default: "bar-chart",
     },
     datasetIdKey: {
       type: String,
-      default: 'label',
+      default: "label",
     },
     width: {
       type: Number,
@@ -58,7 +50,7 @@ export default {
       default: 400,
     },
     cssClasses: {
-      default: '',
+      default: "",
       type: String,
     },
     styles: {
@@ -70,6 +62,7 @@ export default {
       default: () => [],
     },
   },
+  props: ["statsForGraph"],
   data() {
     return {
       widthOfOneBar: 100,
@@ -93,35 +86,35 @@ export default {
         labels: [],
         datasets: [
           {
-            label: 'Value',
-            backgroundColor: '#C3FFA5',
-            color: '#000',
+            label: "Value",
+            backgroundColor: "#C3FFA5",
+            color: "#000",
             data: [],
             borderRadius: 5,
             borderSkipped: false,
-            barPercentage: 0.5
+            barPercentage: 0.5,
           },
           {
-            label: 'Not value',
-            backgroundColor: '#F2A582',
+            label: "Not value",
+            backgroundColor: "#F2A582",
             data: [],
             borderRadius: 5,
-            barPercentage: 0.5
+            barPercentage: 0.5,
           },
         ],
-      }
-      data.labels = []
-      data.datasets[0].data = []
-      data.datasets[1].data = []
-      for (let author of this.$store.state.statsForGraph) {
+      };
+      data.labels = [];
+      data.datasets[0].data = [];
+      data.datasets[1].data = [];
+      for (let author of this.statsForGraph) {
         if (author.enable) {
-          data.labels.push(author.name)
-          data.datasets[0].data.push(author.value)
-          data.datasets[1].data.push(author.notValue)
+          data.labels.push(author.name);
+          data.datasets[0].data.push(author.value);
+          data.datasets[1].data.push(author.notValue);
         }
       }
-      return data
-    }
-  }
-}
+      return data;
+    },
+  },
+};
 </script>

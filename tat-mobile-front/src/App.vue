@@ -2,10 +2,8 @@
   <v-app style="height: 100vh">
     <v-layout>
       <v-app-bar>
-        <v-img src="./assets/Logo.svg" height="40" max-width="64"></v-img>
-        <v-app-bar-title
-          style="color: rgb(197, 226, 21)"
-          v-if="currentPage != '/project-review'"
+        <v-img src="./assets/Logo.svg" height="40" max-width="64" to="/"></v-img>
+        <v-app-bar-title style="color: rgb(197, 226, 21)" v-if="currentPage != '/project-review'"
           >Dashboard</v-app-bar-title
         >
         <v-app-bar-title style="color: rgb(197, 226, 21)" v-else>{{
@@ -18,12 +16,7 @@
         <ListOfStats />
       </v-navigation-drawer>
       <v-main style="height: 100%">
-        <v-sheet
-          style="height: 96%"
-          class="pa-4 ma-5"
-          rounded="xl"
-          elevation="4"
-        >
+        <v-sheet style="height: 96%" class="pa-4 ma-5" rounded="xl" elevation="4">
           <router-view @get-repos="getRepos" />
         </v-sheet>
       </v-main>
@@ -33,21 +26,9 @@
 
 <script>
 import axios from "axios";
+// import Logo from "@/assets/logo.svg";
 export default {
-  methods: {
-    async getRepos() {
-      let hostadress = "http://localhost:8080/project/get-projects";
-      try {
-        const repositories = await axios.get(hostadress);
-        this.$store.commit("refreshRepos", repositories.data);
-      } catch (error) {
-        console.error("Error fetching repositories:", error);
-      }
-    },
-  },
-  created() {
-    this.getRepos();
-  },
+  methods: {},
   computed: {
     currentPage() {
       return this.$route.name;
