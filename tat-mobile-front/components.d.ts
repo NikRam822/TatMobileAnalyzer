@@ -11,10 +11,8 @@ declare module 'vue' {
     CardForAdd: typeof import('./src/components/cards/CardForAdd.vue')['default']
     CardOfProject: typeof import('./src/components/cards/CardOfProject.vue')['default']
     ChurnStatistics: typeof import('./src/components/ChurnStatistics.vue')['default']
-    Content: typeof import('./src/components/Content.vue')['default']
     ListOfStats: typeof import('./src/components/ListOfStats.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Search: typeof import('./src/components/Search.vue')['default']
   }
 }

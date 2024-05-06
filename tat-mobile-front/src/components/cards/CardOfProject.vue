@@ -11,7 +11,12 @@
       class="d-flex flex-column"
       style="max-width: 500px; min-width: 200px"
     >
-      <v-btn @click.stop="deleteProject" flat icon="mdi-trash-can-outline" class="align-self-end ma-4"></v-btn>
+      <v-btn
+        @click.stop="deleteProject"
+        flat
+        icon="mdi-trash-can-outline"
+        class="align-self-end ma-4"
+      ></v-btn>
       <template v-slot:append>
         <v-btn
           @click.stop="updateFavor(rep.favorite, rep.projectId)"
@@ -20,7 +25,12 @@
         ></v-btn>
       </template>
       <v-container v-show="loader">
-        <v-progress-linear color="rgb(92, 99, 106)" height="6" indeterminate rounded></v-progress-linear>
+        <v-progress-linear
+          color="rgb(92, 99, 106)"
+          height="6"
+          indeterminate
+          rounded
+        ></v-progress-linear>
         <p>Analyzing reposytory</p>
       </v-container>
     </v-card>
@@ -39,7 +49,8 @@ export default {
     async navigateToProjectReview() {
       if (!this.$store.state.RepoSatistic[this.rep.projectLink]) {
         this.loader = true;
-        let hostadress = "http://localhost:8080/api/statistic/patch";
+        let hostadress =
+          import.meta.env.VITE_BACKEND_URL + "/api/statistic/patch";
         try {
           const statistic = await axios.post(hostadress, {
             projectId: this.rep.projectId,
@@ -57,7 +68,8 @@ export default {
       }
     },
     async deleteProject() {
-      let hostadress = "http://localhost:8080/api/project/delete-project";
+      let hostadress =
+        import.meta.env.VITE_BACKEND_URL + "/api/project/delete-project";
       try {
         const statistic = await axios.delete(hostadress, {
           data: {

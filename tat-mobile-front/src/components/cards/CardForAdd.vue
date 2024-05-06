@@ -9,9 +9,20 @@
       class="d-flex justify-center"
       style="max-width: 500px; min-width: 200px"
     >
-      <v-icon icon="mdi-plus-circle-outline" size="130" color="rgb(92, 99, 106)" class="align-self-center"></v-icon>
+      <v-icon
+        icon="mdi-plus-circle-outline"
+        size="130"
+        color="rgb(92, 99, 106)"
+        class="align-self-center"
+      ></v-icon>
     </v-card>
-    <v-card v-else rounded="xl" height="165" border="md" style="max-width: 500px; min-width: 200px">
+    <v-card
+      v-else
+      rounded="xl"
+      height="165"
+      border="md"
+      style="max-width: 500px; min-width: 200px"
+    >
       <v-form @submit.prevent="addCard()" class="d-flex flex-column">
         <v-text-field
           required
@@ -44,7 +55,7 @@ export default {
   methods: {
     async addCard() {
       // if (this.re.test(this.rep)) {
-      let hostadress = "http://localhost:8080/api/project/create";
+      let hostadress = import.meta.env.VITE_BACKEND_URL + "/api/project/create";
       try {
         await axios.post(hostadress, {
           projectId: 0,
