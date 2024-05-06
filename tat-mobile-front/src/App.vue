@@ -16,6 +16,7 @@
         }}</v-app-bar-title>
         <v-spacer></v-spacer>
         <v-text-field
+          v-if="this.$route.name == '/'"
           style="min-width: 200px"
           hide-details="true"
           density="compact"
