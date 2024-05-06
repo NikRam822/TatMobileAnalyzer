@@ -10,6 +10,8 @@
         <v-app-bar-title style="color: rgb(197, 226, 21)">{{ currentPage }}</v-app-bar-title>
         <v-spacer></v-spacer>
         <v-text-field
+          hide-details="true"
+          density="compact"
           prepend-inner-icon="mdi-magnify"
           variant="outlined"
           class="mr-8"
