@@ -1,32 +1,25 @@
 <template>
-  <v-card
-    :key="rep.projectName"
-    @click="navigateToProjectReview()"
-    :title="rep.projectName"
-    :subtitle="rep.projectLink"
-    rounded="xl"
-    height="165"
-    border="md"
-    class="flex-1-0"
-    style="max-width: 500px; min-width: 200px"
-  >
-    <template v-slot:append>
-      <v-btn
-        @click.stop="deleteProject"
-        flat
-        icon="mdi-trash-can-outline"
-      ></v-btn>
-    </template>
-    <v-container v-show="loader">
-      <v-progress-linear
-        color="rgb(92, 99, 106)"
-        height="6"
-        indeterminate
-        rounded
-      ></v-progress-linear>
-      <p>Analyzing reposytory</p>
-    </v-container>
-  </v-card>
+  <v-col xs="12" sm="6" md="4" lg="3" xl="2">
+    <v-card
+      :key="rep.projectName"
+      @click="navigateToProjectReview()"
+      :title="rep.projectName"
+      :subtitle="rep.projectLink"
+      rounded="xl"
+      height="165"
+      border="md"
+      class="flex-1-0"
+      style="max-width: 500px; min-width: 200px"
+    >
+      <template v-slot:append>
+        <v-btn @click.stop="deleteProject" flat icon="mdi-trash-can-outline"></v-btn>
+      </template>
+      <v-container v-show="loader">
+        <v-progress-linear color="rgb(92, 99, 106)" height="6" indeterminate rounded></v-progress-linear>
+        <p>Analyzing reposytory</p>
+      </v-container>
+    </v-card>
+  </v-col>
 </template>
 <script>
 import axios from "axios";
@@ -54,7 +47,6 @@ export default {
         }
         this.loader = false;
       } else {
-        // !!! delite this in store
         this.$store.commit("changeCurrentRepo", this.rep);
         this.$router.push("/project-review");
       }
