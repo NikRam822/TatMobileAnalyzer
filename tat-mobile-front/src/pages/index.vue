@@ -13,7 +13,7 @@ export default {
   props: ["searchRepo"],
   methods: {
     async getRepos() {
-      let hostadress = "http://localhost:8080/project/get-projects";
+      let hostadress = "http://localhost:8080/api/project/get-projects";
       try {
         const repositories = await axios.get(hostadress);
         this.$store.commit("refreshRepos", repositories.data);

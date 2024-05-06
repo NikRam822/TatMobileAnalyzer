@@ -44,7 +44,7 @@ export default {
   methods: {
     async addCard() {
       // if (this.re.test(this.rep)) {
-      let hostadress = "http://localhost:8080/project/create";
+      let hostadress = "http://localhost:8080/api/project/create";
       try {
         await axios.post(hostadress, {
           projectId: 0,
@@ -56,7 +56,7 @@ export default {
         console.error("Error fetching repositories:", error);
       }
       // } else {
-      //   alert("URl should be: https://github.com/author/REPO");
+      //   alert("URl should be: https://github.com/AUTHOR/REPO");
       // }
       this.$emit("get-repos");
       this.rep = "";

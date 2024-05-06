@@ -35,7 +35,7 @@ export default {
     async navigateToProjectReview() {
       if (!this.$store.state.RepoSatistic[this.rep.projectLink]) {
         this.loader = true;
-        let hostadress = "http://localhost:8080/api/patch/statistic";
+        let hostadress = "http://localhost:8080/api/statistic/patch";
         try {
           const statistic = await axios.post(hostadress, {
             projectId: this.rep.projectId,
@@ -53,7 +53,7 @@ export default {
       }
     },
     async deleteProject() {
-      let hostadress = "http://localhost:8080/project/delete-project";
+      let hostadress = "http://localhost:8080/api/project/delete-project";
       try {
         const statistic = await axios.delete(hostadress, {
           data: {
