@@ -102,11 +102,13 @@ export default {
     async addFile(filt) {
       let filts = this.$store.state.filters;
       filts[filt].splice(filts[filt].length - 1, 0, this.path);
-      this.$store.commit("changeFilter", filts);
       let hostadress = `http://localhost:8080/filter/update-filter`;
-      filts.projectId = this.$store.state.currentRepo.projectId;
       try {
-        await axios.put(hostadress, filts);
+        await axios.put(hostadress, {
+          test: filts.test,
+          generated: filts.generated,
+          projectId: this.$store.state.currentRepo.projectId,
+        });
       } catch (error) {
         console.error("Error " + error.message);
       }
@@ -115,11 +117,13 @@ export default {
     async deleteFile(filt) {
       let filts = this.$store.state.filters;
       filts[filt].splice(0, 1);
-      this.$store.commit("changeFilter", filts);
       let hostadress = `http://localhost:8080/filter/update-filter`;
-      filts.projectId = this.$store.state.currentRepo.projectId;
       try {
-        await axios.put(hostadress, filts);
+        await axios.put(hostadress, {
+          test: filts.test,
+          generated: filts.generated,
+          projectId: this.$store.state.currentRepo.projectId,
+        });
       } catch (error) {
         console.error("Error " + error.message);
       }

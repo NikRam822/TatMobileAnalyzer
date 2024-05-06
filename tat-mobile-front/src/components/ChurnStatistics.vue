@@ -65,7 +65,7 @@ export default {
   data() {
     return {
       prevCol: "",
-      statsForGraph: [],
+      statsForGraph: this.getChurnStatistic(),
     };
   },
 
@@ -88,21 +88,28 @@ export default {
     },
     getChurnStatistic() {
       const statsRepo = this.$store.state.RepoSatistic[this.$store.state.currentRepo.projectLink].data;
+      const statsForGraph = [];
       for (let name in statsRepo.churn) {
         let churn = statsRepo.churn[name];
         let overall = statsRepo.overall[name];
-        this.statsForGraph.push({ name: name });
-        this.statsForGraph[this.statsForGraph.length - 1].churn = Math.round(churn);
-        this.statsForGraph[this.statsForGraph.length - 1].overall = overall;
-        this.statsForGraph[this.statsForGraph.length - 1].value = Math.round((overall * (100 - churn)) / 100);
-        this.statsForGraph[this.statsForGraph.length - 1].notValue = Math.round((overall * churn) / 100);
-        this.statsForGraph[this.statsForGraph.length - 1].enable = true;
+        statsForGraph.push({ name: name });
+        statsForGraph[statsForGraph.length - 1].churn = Math.round(churn);
+        statsForGraph[statsForGraph.length - 1].overall = overall;
+        statsForGraph[statsForGraph.length - 1].value = Math.round((overall * (100 - churn)) / 100);
+        statsForGraph[statsForGraph.length - 1].notValue = Math.round((overall * churn) / 100);
+        statsForGraph[statsForGraph.length - 1].enable = true;
       }
+      return statsForGraph;
     },
   },
-
   created() {
-    this.getChurnStatistic();
+    this.$store.watch(
+      () => this.$store.state.RepoSatistic,
+      () => {
+        this.statsForGraph = this.getChurnStatistic();
+      },
+      { deep: true }
+    );
   },
 };
 </script>
