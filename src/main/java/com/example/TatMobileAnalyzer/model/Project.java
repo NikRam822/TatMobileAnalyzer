@@ -26,10 +26,13 @@ public class Project {
     @Column(name = "project_link")
     private String projectLink;
 
-    @OneToMany(mappedBy="project", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private Collection<Statistic> statistic;
 
-    @OneToMany(mappedBy="project", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private Collection<Filter> filters;
+
+    @Column(name = "favorite")
+    private Boolean favorite;
 
 }

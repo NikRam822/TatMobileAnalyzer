@@ -2,6 +2,7 @@ package com.example.TatMobileAnalyzer.services.impl;
 
 import com.example.TatMobileAnalyzer.model.Project;
 import com.example.TatMobileAnalyzer.repository.ProjectRepository;
+import com.example.TatMobileAnalyzer.services.FavoriteProjectService;
 import com.example.TatMobileAnalyzer.services.FilterService;
 import com.example.TatMobileAnalyzer.services.ProjectService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class ProjectServiceImpl implements ProjectService {
+public class ProjectServiceImpl implements ProjectService, FavoriteProjectService {
 
     private final FilterService filterService;
     private final ProjectRepository projectRepository;
@@ -30,6 +31,7 @@ public class ProjectServiceImpl implements ProjectService {
         Project newProject = new Project();
         newProject.setProjectName(project.getProjectName());
         newProject.setProjectLink(project.getProjectLink());
+        newProject.setFavorite(false);
 
         Project savedProject = null;
 
@@ -88,5 +90,33 @@ public class ProjectServiceImpl implements ProjectService {
             log.warn("Id of project to be deleted is null");
         }
 
+    }
+
+    @Override
+    public Project addFavoriteProject(Long projectId) {
+        Project project = projectRepository.findById(projectId).orElse(null);
+
+        if (project == null) {
+            log.warn("Project with id {} not found", projectId);
+        } else {
+            project.setFavorite(true);
+            projectRepository.save(project);
+            log.info("Added project with id {} to favorites", projectId);
+        }
+        return project;
+    }
+
+    @Override
+    public Project deleteFavoriteProject(Long projectId) {
+        Project project = projectRepository.findById(projectId).orElse(null);
+
+        if (project == null) {
+            log.warn("Project with id {} not found", projectId);
+        } else {
+            project.setFavorite(false);
+            projectRepository.save(project);
+            log.info("Deleted project with id {} from favorites", projectId);
+        }
+        return project;
     }
 }
