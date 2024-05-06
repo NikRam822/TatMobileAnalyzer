@@ -1,7 +1,9 @@
 <template>
   <v-card class="d-flex flex-column">
     <v-list>
-      <v-list-item v-for="val in statistics"> {{ val }} <v-divider></v-divider></v-list-item>
+      <v-list-item v-for="val in statistics">
+        {{ val }} <v-divider></v-divider
+      ></v-list-item>
     </v-list>
     <h1 class="align-self-center">Filters</h1>
     <v-list v-for="(files, filter) in this.$store.state.filters">
@@ -22,7 +24,11 @@
               <v-card width="100%" class="d-flex flex-wrap">
                 {{ file }}
                 <v-spacer></v-spacer>
-                <v-icon @click="deleteFile(filter, id)" icon="mdi-close" class="flex-2-0"></v-icon>
+                <v-icon
+                  @click="deleteFile(filter, id)"
+                  icon="mdi-close"
+                  class="flex-2-0"
+                ></v-icon>
                 <v-divider class="flex-1-1-100"></v-divider>
               </v-card>
             </v-list-item>
@@ -38,7 +44,9 @@
                         v-model="path"
                         :items="
                           Object.getOwnPropertyNames(
-                            this.$store.state.RepoSatistic[this.$store.state.currentRepo.projectLink].data.general
+                            this.$store.state.RepoSatistic[
+                              this.$store.state.currentRepo.projectLink
+                            ].data.general
                           )
                         "
                       ></v-autocomplete>
@@ -74,7 +82,9 @@ export default {
 
   methods: {
     async updateFilters() {
-      let hostadress = `http://localhost:8080/api/filter/get-filters-for-project`;
+      let hostadress =
+        import.meta.env.VITE_BACKEND_URL +
+        "/api/filter/get-filters-for-project";
       try {
         const filters = await axios.post(hostadress, {
           projectId: this.$store.state.currentRepo.projectId,
@@ -86,7 +96,8 @@ export default {
     },
     async updateStatistic(repo) {
       this.loader = true;
-      let hostadress = "http://localhost:8080/api/statistic/patch";
+      let hostadress =
+        import.meta.env.VITE_BACKEND_URL + "/api/statistic/patch";
       try {
         const statistic = await axios.post(hostadress, {
           projectId: repo.projectId,
@@ -102,7 +113,8 @@ export default {
     async addFile(filt) {
       let filts = this.$store.state.filters;
       filts[filt].splice(filts[filt].length - 1, 0, this.path);
-      let hostadress = `http://localhost:8080/api/filter/update-filter`;
+      let hostadress =
+        import.meta.env.VITE_BACKEND_URL + "/api/filter/update-filter";
       try {
         await axios.put(hostadress, {
           test: filts.test,
@@ -117,7 +129,8 @@ export default {
     async deleteFile(filt) {
       let filts = this.$store.state.filters;
       filts[filt].splice(0, 1);
-      let hostadress = `http://localhost:8080/api/filter/update-filter`;
+      let hostadress =
+        import.meta.env.VITE_BACKEND_URL + "/api/filter/update-filter";
       try {
         await axios.put(hostadress, {
           test: filts.test,
