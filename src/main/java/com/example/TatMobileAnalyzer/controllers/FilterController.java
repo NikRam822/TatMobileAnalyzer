@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 @Slf4j
 @RestController
-@RequestMapping("/filter")
+@RequestMapping("api/filter")
 public class FilterController {
 
     private final FilterService filterService;
