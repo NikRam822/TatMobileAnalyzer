@@ -44,6 +44,7 @@
 </template>
 <script>
 import axios from "axios";
+let server_path = import.meta.env.VITE_BACKEND_URL;
 export default {
   data() {
     return {
@@ -55,7 +56,7 @@ export default {
   methods: {
     async addCard() {
       // if (this.re.test(this.rep)) {
-      let hostadress = import.meta.env.VITE_BACKEND_URL + "/api/project/create";
+      let hostadress = server_path + "/api/project/create";
       try {
         await axios.post(hostadress, {
           projectId: 0,

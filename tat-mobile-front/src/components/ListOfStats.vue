@@ -72,6 +72,7 @@
 </template>
 <script>
 import axios from "axios";
+let server_path = import.meta.env.VITE_BACKEND_URL;
 export default {
   data: () => ({
     // Это список содержащий различные статистики (Пока что одна только раьботает)
@@ -82,9 +83,7 @@ export default {
 
   methods: {
     async updateFilters() {
-      let hostadress =
-        import.meta.env.VITE_BACKEND_URL +
-        "/api/filter/get-filters-for-project";
+      let hostadress = server_path + "/api/filter/get-filters-for-project";
       try {
         const filters = await axios.post(hostadress, {
           projectId: this.$store.state.currentRepo.projectId,
@@ -96,8 +95,7 @@ export default {
     },
     async updateStatistic(repo) {
       this.loader = true;
-      let hostadress =
-        import.meta.env.VITE_BACKEND_URL + "/api/statistic/patch";
+      let hostadress = server_path + "/api/statistic/patch";
       try {
         const statistic = await axios.post(hostadress, {
           projectId: repo.projectId,
@@ -113,8 +111,7 @@ export default {
     async addFile(filt) {
       let filts = this.$store.state.filters;
       filts[filt].splice(filts[filt].length - 1, 0, this.path);
-      let hostadress =
-        import.meta.env.VITE_BACKEND_URL + "/api/filter/update-filter";
+      let hostadress = server_path + "/api/filter/update-filter";
       try {
         await axios.put(hostadress, {
           test: filts.test,
@@ -129,8 +126,7 @@ export default {
     async deleteFile(filt) {
       let filts = this.$store.state.filters;
       filts[filt].splice(0, 1);
-      let hostadress =
-        import.meta.env.VITE_BACKEND_URL + "/api/filter/update-filter";
+      let hostadress = server_path + "/api/filter/update-filter";
       try {
         await axios.put(hostadress, {
           test: filts.test,

@@ -10,6 +10,7 @@
 </template>
 <script>
 import axios from "axios";
+let server_path = import.meta.env.VITE_BACKEND_URL;
 export default {
   data() {
     return {};
@@ -17,8 +18,7 @@ export default {
   props: ["searchRepo"],
   methods: {
     async getRepos() {
-      let hostadress =
-        import.meta.env.VITE_BACKEND_URL + "/api/project/get-projects";
+      let hostadress = server_path + "/api/project/get-projects";
       try {
         const repositories = await axios.get(hostadress);
         this.$store.commit("refreshRepos", repositories.data);
