@@ -11,11 +11,17 @@
         <v-spacer></v-spacer>
         <v-icon icon="mdi-account" size="40px" class="mr-10"></v-icon>
       </v-app-bar>
-      <v-navigation-drawer v-if="currentPage == '/project-review'" width="400">
+      <v-navigation-drawer v-if="currentPage != 'Dashboard'" width="400">
         <ListOfStats />
       </v-navigation-drawer>
       <v-main style="height: 100%">
-        <v-sheet style="height: 96%" class="pa-4 ma-5" rounded="xl" elevation="4">
+        <v-sheet
+          style="height: 96%; overflow-y: auto"
+          class="pa-4 ma-5 page"
+          rounded="xl"
+          elevation="4"
+          id="scroll-target"
+        >
           <router-view @get-repos="getRepos" />
         </v-sheet>
       </v-main>
@@ -24,7 +30,6 @@
 </template>
 
 <script>
-import axios from "axios";
 // import Logo from "@/assets/logo.svg";
 export default {
   methods: {},
@@ -40,3 +45,13 @@ export default {
   },
 };
 </script>
+<style scoped>
+.page::-webkit-scrollbar {
+  display: none;
+}
+
+.page {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+</style>

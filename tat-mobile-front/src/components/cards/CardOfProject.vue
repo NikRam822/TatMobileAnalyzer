@@ -8,11 +8,12 @@
       rounded="xl"
       height="165"
       border="md"
-      class="flex-1-0"
+      class="d-flex flex-column"
       style="max-width: 500px; min-width: 200px"
     >
+      <v-btn @click.stop="deleteProject" flat icon="mdi-trash-can-outline" class="align-self-end ma-4"></v-btn>
       <template v-slot:append>
-        <v-btn @click.stop="deleteProject" flat icon="mdi-trash-can-outline"></v-btn>
+        <v-btn flat icon="mdi-star-outline"></v-btn>
       </template>
       <v-container v-show="loader">
         <v-progress-linear color="rgb(92, 99, 106)" height="6" indeterminate rounded></v-progress-linear>

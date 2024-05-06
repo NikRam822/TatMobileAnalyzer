@@ -6,12 +6,12 @@
       rounded="xl"
       height="165"
       border="md"
-      class="d-flex justify-center flex-1-0"
+      class="d-flex justify-center"
       style="max-width: 500px; min-width: 200px"
     >
       <v-icon icon="mdi-plus-circle-outline" size="130" color="rgb(92, 99, 106)" class="align-self-center"></v-icon>
     </v-card>
-    <v-card v-else rounded="xl" height="165" border="md" class="flex-1-0" style="max-width: 500px; min-width: 200px">
+    <v-card v-else rounded="xl" height="165" border="md" style="max-width: 500px; min-width: 200px">
       <v-form @submit.prevent="addCard()" class="d-flex flex-column">
         <v-text-field
           required
