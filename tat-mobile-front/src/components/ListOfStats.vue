@@ -3,7 +3,7 @@
     <v-list>
       <v-list-item v-for="val in statistics"> {{ val }} <v-divider></v-divider></v-list-item>
     </v-list>
-
+    <h1 class="align-self-center">Filters</h1>
     <v-list v-for="(files, filter) in this.$store.state.filters">
       <v-list-item>
         <v-menu open-on-hover>

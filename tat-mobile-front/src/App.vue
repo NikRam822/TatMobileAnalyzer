@@ -2,13 +2,12 @@
   <v-app style="height: 100vh">
     <v-layout>
       <v-app-bar>
-        <v-img src="./assets/Logo.svg" height="40" max-width="64" to="/"></v-img>
-        <v-app-bar-title style="color: rgb(197, 226, 21)" v-if="currentPage != '/project-review'"
-          >Dashboard</v-app-bar-title
-        >
-        <v-app-bar-title style="color: rgb(197, 226, 21)" v-else>{{
-          this.$store.state.currentRepo.projectName
-        }}</v-app-bar-title>
+        <v-btn variant="plain" to="/" title="Go dashboard">
+          <v-icon size="x-large">
+            <v-img src="./assets/Logo.svg"></v-img>
+          </v-icon>
+        </v-btn>
+        <v-app-bar-title style="color: rgb(197, 226, 21)">{{ currentPage }}</v-app-bar-title>
         <v-spacer></v-spacer>
         <v-icon icon="mdi-account" size="40px" class="mr-10"></v-icon>
       </v-app-bar>
@@ -31,7 +30,12 @@ export default {
   methods: {},
   computed: {
     currentPage() {
-      return this.$route.name;
+      switch (this.$route.name) {
+        case "/project-review":
+          return this.$store.state.currentRepo.projectName;
+        default:
+          return "Dashboard";
+      }
     },
   },
 };
