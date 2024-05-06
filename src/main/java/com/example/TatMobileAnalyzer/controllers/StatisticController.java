@@ -9,7 +9,6 @@ import com.example.TatMobileAnalyzer.services.StatisticService;
 import com.example.TatMobileAnalyzer.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +19,7 @@ import java.util.Map;
 @CrossOrigin
 @Slf4j
 @RestController
-@RequestMapping("")
+@RequestMapping("/api/statistic")
 public class StatisticController {
 
     private final StatisticService statisticService;
@@ -41,17 +40,12 @@ public class StatisticController {
         this.patchScanService = patchScanService;
     }
 
-    @GetMapping("/api/")
-    ResponseEntity<String> getAll() {
-        return new ResponseEntity<>("Hello World!", HttpStatus.OK);
-    }
-
-    @PostMapping("/api/repository")
+    @PostMapping("/repository")
     ResponseEntity<String> getCommitStatistic(@RequestBody RepositoryDto repositoryDto) {
         return statisticService.getStatistic(repositoryDto.getRepositoryUrl());
     }
 
-    @PostMapping("/api/loc/statistic")
+    @PostMapping("/loc")
     ResponseEntity<String> getStatisticLocFiles(@RequestParam(required = false) String since,
                                                 @RequestParam(required = false) String until,
                                                 @RequestBody RepositoryDto repositoryDto) {
@@ -64,7 +58,7 @@ public class StatisticController {
         return locFilesService.getStatisticLocFiles(repositoryDto.getRepositoryUrl(), period);
     }
 
-    @PostMapping("api/patch/statistic")
+    @PostMapping("/patch")
     ResponseEntity<Map<String, Object>> getStatisticPatchScan(@RequestParam(required = false) String since,
                                                               @RequestParam(required = false) String until,
                                                               @RequestBody ProjectDto projectDto) throws ParseException {
@@ -74,7 +68,7 @@ public class StatisticController {
         return patchScanService.getStatisticPatchScan(projectDto.getProjectLink(), startDate, endDate, projectDto.getProjectId());
     }
 
-    @PostMapping("api/files/statistics")
+    @PostMapping("/files")
     ResponseEntity<String> getFileStatistic(@RequestBody RepositoryDto repositoryDto) {
         return fileStatService.getContributorsByFiles(repositoryDto.getRepositoryUrl());
     }
