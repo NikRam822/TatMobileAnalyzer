@@ -9,6 +9,13 @@
         </v-btn>
         <v-app-bar-title style="color: rgb(197, 226, 21)">{{ currentPage }}</v-app-bar-title>
         <v-spacer></v-spacer>
+        <v-text-field
+          prepend-inner-icon="mdi-magnify"
+          variant="outlined"
+          class="mr-8"
+          label="Search reposytory"
+          v-model="searchRepo"
+        ></v-text-field>
         <v-icon icon="mdi-account" size="40px" class="mr-10"></v-icon>
       </v-app-bar>
       <v-navigation-drawer v-if="currentPage != 'Dashboard'" width="400">
@@ -22,7 +29,7 @@
           elevation="4"
           id="scroll-target"
         >
-          <router-view @get-repos="getRepos" />
+          <router-view @get-repos="getRepos" :searchRepo="searchRepo" />
         </v-sheet>
       </v-main>
     </v-layout>
@@ -30,8 +37,12 @@
 </template>
 
 <script>
-// import Logo from "@/assets/logo.svg";
 export default {
+  data() {
+    return {
+      searchRepo: "",
+    };
+  },
   methods: {},
   computed: {
     currentPage() {

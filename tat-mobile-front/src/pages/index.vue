@@ -1,25 +1,16 @@
 <template>
   <v-row>
-    <CardOfProject v-for="rep in this.$store.state.repositories" :rep="rep" @get-repos="getRepos" />
+    <CardOfProject v-for="rep in repositories" :rep="rep" @get-repos="getRepos" />
     <CardForAdd @get-repos="getRepos" />
   </v-row>
-  <!-- <v-pagination
-      v-model="page"
-      :length="Math.ceil(this.$store.state.repositories.length / itemPerPage)"
-      @input="paginate"
-      classs="align-self-end
-"
-    >
-    </v-pagination> -->
 </template>
 <script>
 import axios from "axios";
 export default {
   data() {
-    return {
-      // page: 1,
-    };
+    return {};
   },
+  props: ["searchRepo"],
   methods: {
     async getRepos() {
       let hostadress = "http://localhost:8080/project/get-projects";
@@ -30,32 +21,18 @@ export default {
         console.error("Error fetching repositories:", error);
       }
     },
-    // paginate(page) {
-    //   this.page = page;
-    // },
   },
-  // computed: {
-  //   displayedCards() {
-  //     const startIndex = (this.page - 1) * this.itemPerPage;
-  //     const endIndex = startIndex + this.itemPerPage;
-  //     return this.$store.state.repositories.slice(startIndex, endIndex);
-  //   },
-  // itemPerPage() {
-  //   switch (this.$vuetify.display.name) {
-  //     case "xs":
-  //       return 2;
-  //     case "sm":
-  //       return 3;
-  //     case "md":
-  //       return 8;
-  //     case "lg":
-  //       return 15;
-  //     case "xl":
-  //       return 35;
-  //     default:
-  //       return 15;
-  //   }
-  // },
+  computed: {
+    repositories() {
+      let newRpos = [];
+      for (let repo of this.$store.state.repositories) {
+        if (repo.projectLink.toLowerCase().includes(this.searchRepo.toLowerCase())) {
+          newRpos.push(repo);
+        }
+      }
+      return newRpos;
+    },
+  },
   created() {
     this.getRepos();
   },
