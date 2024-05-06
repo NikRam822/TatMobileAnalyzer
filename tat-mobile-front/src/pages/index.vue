@@ -30,6 +30,9 @@ export default {
           newRpos.push(repo);
         }
       }
+      newRpos.sort(function (a, b) {
+        return b.favorite - a.favorite;
+      });
       return newRpos;
     },
   },
