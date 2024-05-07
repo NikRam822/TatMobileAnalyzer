@@ -43,14 +43,14 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd TatMobileAnalyzer;
-            echo "GITHUB_ACCESS_TOKEN=${{ secrets.GITHUB_ACCESS_TOKEN }}" > .env;
+            echo "GITHUB_ACCESS_TOKEN=${{ secrets.GITHUB_TOKEN }}" > .env;
             echo "DB_USER=${{ secrets.DB_USER }}" >> .env;
             echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env;
             echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env;
             echo "DB_URL=${{ secrets.DB_URL }}" >> .env;
             echo "DB_URL=${{ secrets.DB_URL }}" >> .env;
-            echo "VITE_BACKEND_URL=http://localhost:8080" > ./src/main/resources/env.properties;
-            echo "VITE_BACKEND_URL=http://localhost:8080" > ./tat-mobile-front/.env;
+            echo "VITE_BACKEND_URL=http://java_app" > ./src/main/resources/env.properties;
+            echo "VITE_BACKEND_URL=http://java_app" > ./tat-mobile-front/.env;
             git fetch;
             git checkout master;
             git pull origin master;
