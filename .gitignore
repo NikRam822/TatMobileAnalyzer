@@ -40,6 +40,8 @@ build/
 */node_modules
 */dist
 */.env
+*/typed-router.d.ts
+*/components.d.ts
 
 # local env files
 */.env.local

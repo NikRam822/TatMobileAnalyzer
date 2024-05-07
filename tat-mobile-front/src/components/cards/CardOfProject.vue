@@ -5,24 +5,44 @@
       @click="navigateToProjectReview()"
       :title="rep.projectName"
       :subtitle="rep.projectLink"
+      elevation="4"
       rounded="xl"
       height="165"
-      border="md"
       class="d-flex flex-column"
+      :style="
+        this.$store.state.RepoSatistic[rep.projectLink]
+          ? {
+              background: 'rgb(69,77,85)',
+              background:
+                'linear-gradient(0deg, rgba(69,77,85,0) 0%, rgba(134,153,52,0.1) 60%, rgba(197,226,21,0.2) 100%)',
+            }
+          : {}
+      "
       style="max-width: 500px; min-width: 200px"
     >
       <template v-slot:append>
         <v-btn
           @click.stop="updateFavor(rep.favorite, rep.projectId)"
           flat
-          :icon="['mdi-star-outline', 'mdi-star'][+rep.favorite]"
+          class="text-orange-darken-2"
+          :icon="rep.favorite ? 'mdi-star-outline' : 'mdi-star'"
         ></v-btn>
       </template>
       <v-container v-show="loader">
-        <v-progress-linear color="rgb(92, 99, 106)" height="6" indeterminate rounded></v-progress-linear>
+        <v-progress-linear
+          color="rgb(92, 99, 106)"
+          height="6"
+          indeterminate
+          rounded
+        ></v-progress-linear>
         <p>Analyzing reposytory</p>
       </v-container>
-      <v-btn @click.stop="deleteProject" flat icon="mdi-trash-can-outline" class="align-self-end ma-4"></v-btn>
+      <v-btn
+        @click.stop="deleteProject"
+        flat
+        icon="mdi-trash-can-outline"
+        class="align-self-end ma-4 text-red-lighten-2"
+      ></v-btn>
     </v-card>
   </v-col>
 </template>

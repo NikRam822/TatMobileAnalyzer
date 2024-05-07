@@ -3,19 +3,32 @@
     <v-card
       @click="cardAppend = !cardAppend"
       v-if="cardAppend"
+      elevation="4"
       rounded="xl"
       height="165"
-      border="md"
       class="d-flex justify-center"
       style="max-width: 500px; min-width: 200px"
     >
-      <v-icon icon="mdi-plus-circle-outline" size="130" color="rgb(92, 99, 106)" class="align-self-center"></v-icon>
+      <v-icon
+        icon="mdi-plus-circle-outline"
+        size="130"
+        color="rgb(92, 99, 106)"
+        class="align-self-center"
+      ></v-icon>
     </v-card>
-    <v-card v-else rounded="xl" height="165" border="md" style="max-width: 500px; min-width: 200px">
+    <v-card
+      v-else
+      rounded="xl"
+      height="165"
+      border="md"
+      style="max-width: 500px; min-width: 200px"
+    >
       <v-form @submit.prevent="addCard()" class="d-flex flex-column">
         <v-text-field
           required
-          :rules="[re.test(rep) || 'Wrong URL, needed https://github.com/AUTHOR/REPO']"
+          :rules="[
+            re.test(rep) || 'Wrong URL, needed https://github.com/AUTHOR/REPO',
+          ]"
           v-model="rep"
           label="Enter reposytory URL"
           type="url"
