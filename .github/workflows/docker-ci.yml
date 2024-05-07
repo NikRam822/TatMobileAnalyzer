@@ -54,6 +54,6 @@ jobs:
             echo "VITE_BACKEND_URL=http://localhost:8080" > ./tat-mobile-front/.env;
             echo "VUE_APP_HOST_ADDRESS=http://localhost:8080/patch/statistic" > ./tat-mobile-front/.env;
             git fetch;
-            git checkout features/deploy;
-            git pull;
+            git checkout master;
+            git pull origin master;
             docker-compose -f "docker-compose.yml" up -d;
