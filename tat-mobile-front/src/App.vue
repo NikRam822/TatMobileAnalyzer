@@ -6,13 +6,13 @@
           v-show="this.$vuetify.display.xs || this.$vuetify.display.sm"
           @click="showdrawer = !showdrawer"
         ></v-app-bar-nav-icon>
-        <v-btn variant="plain" to="/" title="Go dashboard">
+        <v-btn variant="plain" to="/" title="Go dashboard" size="x-large">
           <v-icon size="x-large">
-            <v-img src="./assets/Logo.svg"></v-img>
+            <v-img src="./assets/logo.svg"></v-img>
           </v-icon>
         </v-btn>
         <v-app-bar-title
-          v-show="!this.$vuetify.display.xs"
+          v-show="!this.$vuetify.display.xs || this.$route.name == '/project-review'"
           style="color: rgb(197, 226, 21)"
           >{{ currentPage }}</v-app-bar-title
         >
@@ -34,11 +34,7 @@
         <ListOfStats />
       </v-navigation-drawer>
       <v-navigation-drawer
-        v-if="
-          currentPage != 'Dashboard' &&
-          showdrawer &&
-          (this.$vuetify.display.xs || this.$vuetify.display.sm)
-        "
+        v-if="currentPage != 'Dashboard' && showdrawer && (this.$vuetify.display.xs || this.$vuetify.display.sm)"
         permanent
         width="400"
       >

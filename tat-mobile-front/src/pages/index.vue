@@ -1,10 +1,6 @@
 <template>
   <v-row>
-    <CardOfProject
-      v-for="rep in repositories"
-      :rep="rep"
-      @get-repos="getRepos"
-    />
+    <CardOfProject v-for="rep in repositories" :rep="rep" @get-repos="getRepos" />
     <CardForAdd @get-repos="getRepos" />
   </v-row>
 </template>
@@ -31,9 +27,7 @@ export default {
     repositories() {
       let newRpos = [];
       for (let repo of this.$store.state.repositories) {
-        if (
-          repo.projectLink.toLowerCase().includes(this.searchRepo.toLowerCase())
-        ) {
+        if (repo.projectLink.toLowerCase().includes(this.searchRepo.toLowerCase())) {
           newRpos.push(repo);
         }
       }
