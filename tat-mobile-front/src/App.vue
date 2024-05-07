@@ -11,9 +11,11 @@
             <v-img src="./assets/Logo.svg"></v-img>
           </v-icon>
         </v-btn>
-        <v-app-bar-title v-show="!this.$vuetify.display.xs" style="color: rgb(197, 226, 21)">{{
-          currentPage
-        }}</v-app-bar-title>
+        <v-app-bar-title
+          v-show="!this.$vuetify.display.xs"
+          style="color: rgb(197, 226, 21)"
+          >{{ currentPage }}</v-app-bar-title
+        >
         <v-spacer></v-spacer>
         <v-text-field
           v-if="this.$route.name == '/'"
@@ -32,7 +34,11 @@
         <ListOfStats />
       </v-navigation-drawer>
       <v-navigation-drawer
-        v-if="currentPage != 'Dashboard' && showdrawer && (this.$vuetify.display.xs || this.$vuetify.display.sm)"
+        v-if="
+          currentPage != 'Dashboard' &&
+          showdrawer &&
+          (this.$vuetify.display.xs || this.$vuetify.display.sm)
+        "
         permanent
         width="400"
       >
@@ -46,7 +52,7 @@
           elevation="4"
           id="scroll-target"
         >
-          <router-view @get-repos="getRepos" :searchRepo="searchRepo" />
+          <router-view :searchRepo="searchRepo" />
         </v-sheet>
       </v-main>
     </v-layout>
