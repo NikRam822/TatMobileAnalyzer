@@ -2,49 +2,33 @@ package com.example.TatMobileAnalyzer.services.impl;
 
 import com.example.TatMobileAnalyzer.model.Filter;
 import com.example.TatMobileAnalyzer.services.FilterService;
+import com.example.TatMobileAnalyzer.services.GitHubService;
 import com.example.TatMobileAnalyzer.services.PatchScanService;
-import com.google.common.collect.Lists;
 import lombok.SneakyThrows;
 import org.kohsuke.github.GHCommit;
-import org.kohsuke.github.GHCommitQueryBuilder;
-import org.kohsuke.github.GitHub;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.net.URI;
 import java.util.*;
 
 @Service
 public class PatchScanServiceImpl implements PatchScanService {
 
-    @Value("${access.token}")
-    private String accessToken;
-
     FilterService filterService;
+    GitHubService gitHubService;
 
     @Autowired
-    public void setFilterService(FilterService filterService) {
+    public PatchScanServiceImpl(GitHubService gitHubService, FilterService filterService) {
         this.filterService = filterService;
+        this.gitHubService = gitHubService;
     }
 
     @SneakyThrows
     @Override
     public ResponseEntity<Map<String, Object>> getStatisticPatchScan(String repositoryUrl, Date since, Date until, Long projectId) {
-        URI uri = new URI(repositoryUrl);
-        String[] pathParts = uri.getPath().split("/");
-        String owner = pathParts[1];
-        String repositoryName = pathParts[2];
 
-        GitHub github = GitHub.connectUsingOAuth(accessToken);
-
-        GHCommitQueryBuilder commitQueryBuilder = github.getRepository(owner + "/" + repositoryName).queryCommits();
-
-        commitQueryBuilder = (since != null) ? commitQueryBuilder.since(since) : commitQueryBuilder;
-        commitQueryBuilder = (until != null) ? commitQueryBuilder.until(until) : commitQueryBuilder;
-
-        List<GHCommit> commitsPerPeriod = Lists.reverse(commitQueryBuilder.list().toList());
+        List<GHCommit> commitsPerPeriod = gitHubService.getCommitsPerPeriod(repositoryUrl, since, until);
 
         Map<String, List<Map<String, Object>>> authorStats = new LinkedHashMap<>();
         Map<String, Integer> overall = new HashMap<>();
@@ -96,7 +80,7 @@ public class PatchScanServiceImpl implements PatchScanService {
         List<GHCommit.File> files = commit.listFiles().toList();
         Filter filter = filterService.getFiltersByProjectId(projectId);
 
-        if(filter == null) {
+        if (filter == null) {
             filter = new Filter();
         }
         for (GHCommit.File file : files) {

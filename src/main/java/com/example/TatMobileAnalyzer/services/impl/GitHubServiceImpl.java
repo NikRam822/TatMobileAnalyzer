@@ -2,7 +2,11 @@ package com.example.TatMobileAnalyzer.services.impl;
 
 import com.example.TatMobileAnalyzer.services.GitHubService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 import lombok.SneakyThrows;
+import org.kohsuke.github.GHCommit;
+import org.kohsuke.github.GHCommitQueryBuilder;
+import org.kohsuke.github.GitHub;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +15,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class GitHubServiceImpl implements GitHubService {
@@ -31,6 +32,26 @@ public class GitHubServiceImpl implements GitHubService {
                 build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         return response;
+    }
+
+    @Override
+    @SneakyThrows
+    public List<GHCommit> getCommitsPerPeriod(String repositoryUrl, Date since, Date until) {
+
+        URI uri = new URI(repositoryUrl);
+        String[] pathParts = uri.getPath().split("/");
+        String owner = pathParts[1];
+        String repositoryName = pathParts[2];
+
+        GitHub github = GitHub.connectUsingOAuth(accessToken);
+
+        GHCommitQueryBuilder commitQueryBuilder = github.getRepository(owner + "/" + repositoryName).queryCommits();
+
+        commitQueryBuilder = (since != null) ? commitQueryBuilder.since(since) : commitQueryBuilder;
+        commitQueryBuilder = (until != null) ? commitQueryBuilder.until(until) : commitQueryBuilder;
+
+        List<GHCommit> commitsPerPeriod = Lists.reverse(commitQueryBuilder.list().toList());
+        return commitsPerPeriod;
     }
 
     public List<Map<String, Object>> readJsonToList(String data) {

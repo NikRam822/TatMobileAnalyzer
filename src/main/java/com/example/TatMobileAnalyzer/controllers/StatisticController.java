@@ -69,8 +69,13 @@ public class StatisticController {
     }
 
     @PostMapping("/files")
-    ResponseEntity<String> getFileStatistic(@RequestBody RepositoryDto repositoryDto) {
-        return fileStatService.getContributorsByFiles(repositoryDto.getRepositoryUrl());
+    ResponseEntity<String> getFileStatistic(@RequestParam(required = false) String since,
+                                            @RequestParam(required = false) String until,
+                                            @RequestBody RepositoryDto repositoryDto) throws ParseException {
+
+        Date startDate = DateUtils.parseDate(since, "yyyy-MM-dd");
+        Date endDate = DateUtils.parseDate(until, "yyyy-MM-dd");
+        return fileStatService.getContributorsByFiles(repositoryDto.getRepositoryUrl(), startDate, endDate);
     }
 
 }
