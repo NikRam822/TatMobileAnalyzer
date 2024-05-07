@@ -49,10 +49,8 @@ jobs:
             echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env;
             echo "DB_URL=${{ secrets.DB_URL }}" >> .env;
             echo "DB_URL=${{ secrets.DB_URL }}" >> .env;
-            echo "VITE_BACKEND_URL=http://localhost:8080" > env.properties;
-            echo "VUE_APP_HOST_ADDRESS=http://localhost:8080/patch/statistic" > env.properties;
+            echo "VITE_BACKEND_URL=http://localhost:8080" > ./src/main/resources/env.properties;
             echo "VITE_BACKEND_URL=http://localhost:8080" > ./tat-mobile-front/.env;
-            echo "VUE_APP_HOST_ADDRESS=http://localhost:8080/patch/statistic" > ./tat-mobile-front/.env;
             git fetch;
             git checkout master;
             git pull origin master;
