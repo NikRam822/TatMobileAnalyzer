@@ -3,9 +3,7 @@ package com.example.TatMobileAnalyzer.controllers;
 import com.example.TatMobileAnalyzer.dto.ProjectDto;
 import com.example.TatMobileAnalyzer.dto.RepositoryDto;
 import com.example.TatMobileAnalyzer.services.FileStatService;
-import com.example.TatMobileAnalyzer.services.LocFilesService;
 import com.example.TatMobileAnalyzer.services.PatchScanService;
-import com.example.TatMobileAnalyzer.services.StatisticService;
 import com.example.TatMobileAnalyzer.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,40 +20,15 @@ import java.util.Map;
 @RequestMapping("/api/statistic")
 public class StatisticController {
 
-    private final StatisticService statisticService;
-    private final LocFilesService locFilesService;
     private final PatchScanService patchScanService;
 
     private final FileStatService fileStatService;
 
 
     @Autowired
-    public StatisticController(StatisticService statisticService,
-                               LocFilesService locFilesService,
-                               FileStatService fileStatService,
-                               PatchScanService patchScanService) {
-        this.statisticService = statisticService;
-        this.locFilesService = locFilesService;
+    public StatisticController(FileStatService fileStatService, PatchScanService patchScanService) {
         this.fileStatService = fileStatService;
         this.patchScanService = patchScanService;
-    }
-
-    @PostMapping("/repository")
-    ResponseEntity<String> getCommitStatistic(@RequestBody RepositoryDto repositoryDto) {
-        return statisticService.getStatistic(repositoryDto.getRepositoryUrl());
-    }
-
-    @PostMapping("/loc")
-    ResponseEntity<String> getStatisticLocFiles(@RequestParam(required = false) String since,
-                                                @RequestParam(required = false) String until,
-                                                @RequestBody RepositoryDto repositoryDto) {
-        String period = "";
-        if (since != null || until != null) {
-            period = (since == null) ? "?until=" + until :
-                    (until == null) ? "?since=" + since :
-                            "?since=" + since + "&until=" + until;
-        }
-        return locFilesService.getStatisticLocFiles(repositoryDto.getRepositoryUrl(), period);
     }
 
     @PostMapping("/patch")

@@ -9,11 +9,5 @@ import java.util.Map;
 
 public interface GitHubService {
 
-    HttpResponse<String> sendGetRequest(String apiUrl);
-
-    List<Map<String, Object>> readJsonToList(String data);
-
-    Map<String, Object> readJsonToMap(String data);
-
     List<GHCommit> getCommitsPerPeriod(String repositoryUrl, Date since, Date until);
 }

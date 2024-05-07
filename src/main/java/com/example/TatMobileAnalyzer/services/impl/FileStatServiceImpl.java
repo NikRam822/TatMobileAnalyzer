@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.net.http.HttpResponse;
 import java.util.*;
 
 @Service
@@ -28,7 +27,6 @@ public class FileStatServiceImpl implements FileStatService {
 
         List<GHCommit> commitsPerPeriod = gitHubService.getCommitsPerPeriod(repoUrl, since, until);
 
-//        Map<String, List<Object>> fileContributorsMap = processCommits(response.body());
         Map<String, List<Map<String, Object>>> fileContributorsMap = processCommits(commitsPerPeriod);
 
         String outputPath = "output.csv";
@@ -60,7 +58,7 @@ public class FileStatServiceImpl implements FileStatService {
                     if (contributor instanceof Map) {
                         Map<String, Object> contributorInfo = (Map<String, Object>) contributor;
                         String contributorName = contributorInfo.keySet().iterator().next(); // Get the author's name from the Map key
-                        if (contributorName.equals(author )) {
+                        if (contributorName.equals(author)) {
                             contributorExists = true;
                             List<Map<String, Object>> changes = (List<Map<String, Object>>) contributorInfo.getOrDefault(author, new ArrayList<>());
                             changes.add(fileStats);
