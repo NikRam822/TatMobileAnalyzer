@@ -4,7 +4,6 @@ services:
   frontend:
     build:
       context: ./tat-mobile-front
-      dockerfile: Dockerfile
     container_name: frontend
     depends_on:
       - java_app

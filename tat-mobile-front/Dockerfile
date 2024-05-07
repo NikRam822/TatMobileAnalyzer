@@ -25,7 +25,7 @@ RUN npm install
 # copy project files and folders to the current working directory (i.e. 'app' folder)
 COPY . .
 
-EXPOSE 4000
+EXPOSE 3000
 
 # build app for production with minification
 CMD [ "npm", "run" , "dev"]
