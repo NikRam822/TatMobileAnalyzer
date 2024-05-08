@@ -1,57 +1,63 @@
 package com.example.TatMobileAnalyzer.services.impl;
 
 import com.example.TatMobileAnalyzer.services.GitHubService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.kohsuke.github.GHCommit;
+import org.kohsuke.github.GHCommitQueryBuilder;
+import org.kohsuke.github.GitHub;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Service
+@Slf4j
 public class GitHubServiceImpl implements GitHubService {
 
     @Value("${access.token}")
     private String accessToken;
 
+    @Override
     @SneakyThrows
-    public HttpResponse<String> sendGetRequest(String apiUrl) {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().
-                header("Authorization", "Bearer " + accessToken).
-                uri(URI.create(apiUrl)).
-                build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        return response;
+    public List<GHCommit> getCommitsPerPeriod(String repositoryUrl, Date since, Date until) {
+
+        URI uri = new URI(repositoryUrl);
+        String[] pathParts = uri.getPath().split("/");
+        String owner = pathParts[1];
+        String repositoryName = pathParts[2];
+
+        GitHub github = GitHub.connectUsingOAuth(accessToken);
+
+        GHCommitQueryBuilder commitQueryBuilder = github.getRepository(owner + "/" + repositoryName).queryCommits();
+
+        commitQueryBuilder = (since != null) ? commitQueryBuilder.since(since) : commitQueryBuilder;
+        commitQueryBuilder = (until != null) ? commitQueryBuilder.until(until) : commitQueryBuilder;
+
+        List<GHCommit> commitsPerPeriod = Lists.reverse(commitQueryBuilder.list().toList());
+        return commitsPerPeriod;
     }
 
-    public List<Map<String, Object>> readJsonToList(String data) {
-        List jsonData = new ArrayList<>();
+    @SneakyThrows
+    @Override
+    public boolean isValidRepository(String repositoryUrl) {
+        URI uri = new URI(repositoryUrl);
+        String[] pathParts = uri.getPath().split("/");
+        String owner = pathParts[1];
+        String repositoryName = pathParts[2];
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            jsonData = objectMapper.readValue(data, List.class);
+            GitHub github = GitHub.connectUsingOAuth(accessToken);
+            github.getRepository(owner + "/" + repositoryName);
+            log.info("Repository {} is valid", repositoryUrl);
+            return true;
         } catch (IOException e) {
-            e.printStackTrace();
+            log.warn("Repository not found or validation error with link: {}", repositoryUrl, e);
+            return false;
         }
-        return jsonData;
     }
 
-    public Map<String, Object> readJsonToMap(String data) {
-        Map<String, Object> jsonData = new HashMap<>();
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            jsonData = objectMapper.readValue(data, Map.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return jsonData;
-    }
 }

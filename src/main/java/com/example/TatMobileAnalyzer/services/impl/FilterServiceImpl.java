@@ -43,8 +43,6 @@ public class FilterServiceImpl implements FilterService {
         Filter filter = filterRepository.findById(id).orElse(null);
         if (filter == null) {
             log.warn("Filter with id {} not found", id);
-        } else {
-            log.info("Found filter with id: {}", id);
         }
         return filter;
     }
@@ -59,9 +57,7 @@ public class FilterServiceImpl implements FilterService {
 
     public Filter getFiltersByProjectId(Long projectId) {
         Filter filter = filterRepository.findByProjectId(projectId);
-        if (filter != null) {
-            log.info("Found {} filter", filter.getId());
-        } else {
+        if (filter == null) {
             log.warn("Filter with id {} not found", projectId);
         }
         return filter;

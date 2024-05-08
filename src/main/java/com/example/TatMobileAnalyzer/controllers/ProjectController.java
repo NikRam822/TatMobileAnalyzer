@@ -30,7 +30,7 @@ public class ProjectController {
 
 
     @PostMapping("/create")
-    ResponseEntity createProject(@RequestBody ProjectDto projectDto) {
+    ResponseEntity<?> createProject(@RequestBody ProjectDto projectDto) {
 
         Project project = projectService.findByProjectLink(projectDto.getProjectLink());
         if (project != null) {
@@ -41,6 +41,11 @@ public class ProjectController {
         project.setProjectName(projectDto.getProjectName());
         project.setProjectLink(projectDto.getProjectLink());
         Project createdProject = projectService.createProject(project);
+
+        if (createdProject == null) {
+            log.warn("Project with link {} was not created", projectDto.getProjectLink());
+            return new ResponseEntity<>("Project was not created. Link: " + projectDto.getProjectLink(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
         return new ResponseEntity<>(ProjectDto.toProjectDto(createdProject), HttpStatus.CREATED);
     }

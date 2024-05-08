@@ -1,19 +1,19 @@
 package com.example.TatMobileAnalyzer.controllers;
 
-import com.example.TatMobileAnalyzer.dto.ProjectDto;
+import com.example.TatMobileAnalyzer.dto.ProjectIdDto;
 import com.example.TatMobileAnalyzer.dto.RepositoryDto;
+import com.example.TatMobileAnalyzer.services.ChurnService;
 import com.example.TatMobileAnalyzer.services.FileStatService;
-import com.example.TatMobileAnalyzer.services.LocFilesService;
-import com.example.TatMobileAnalyzer.services.PatchScanService;
-import com.example.TatMobileAnalyzer.services.StatisticService;
 import com.example.TatMobileAnalyzer.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin
@@ -22,55 +22,43 @@ import java.util.Map;
 @RequestMapping("/api/statistic")
 public class StatisticController {
 
-    private final StatisticService statisticService;
-    private final LocFilesService locFilesService;
-    private final PatchScanService patchScanService;
+    private final ChurnService churnService;
 
     private final FileStatService fileStatService;
 
 
     @Autowired
-    public StatisticController(StatisticService statisticService,
-                               LocFilesService locFilesService,
-                               FileStatService fileStatService,
-                               PatchScanService patchScanService) {
-        this.statisticService = statisticService;
-        this.locFilesService = locFilesService;
+    public StatisticController(FileStatService fileStatService, ChurnService churnService) {
         this.fileStatService = fileStatService;
-        this.patchScanService = patchScanService;
+        this.churnService = churnService;
     }
 
-    @PostMapping("/repository")
-    ResponseEntity<String> getCommitStatistic(@RequestBody RepositoryDto repositoryDto) {
-        return statisticService.getStatistic(repositoryDto.getRepositoryUrl());
-    }
-
-    @PostMapping("/loc")
-    ResponseEntity<String> getStatisticLocFiles(@RequestParam(required = false) String since,
-                                                @RequestParam(required = false) String until,
-                                                @RequestBody RepositoryDto repositoryDto) {
-        String period = "";
-        if (since != null || until != null) {
-            period = (since == null) ? "?until=" + until :
-                    (until == null) ? "?since=" + since :
-                            "?since=" + since + "&until=" + until;
-        }
-        return locFilesService.getStatisticLocFiles(repositoryDto.getRepositoryUrl(), period);
-    }
-
-    @PostMapping("/patch")
-    ResponseEntity<Map<String, Object>> getStatisticPatchScan(@RequestParam(required = false) String since,
-                                                              @RequestParam(required = false) String until,
-                                                              @RequestBody ProjectDto projectDto) throws ParseException {
+    @PostMapping("/churn")
+    ResponseEntity<Map<String, Object>> getStatisticChurn(@RequestParam(required = false) String since,
+                                                          @RequestParam(required = false) String until,
+                                                          @RequestBody ProjectIdDto projectIdDto) throws ParseException {
         Date startDate = DateUtils.parseDate(since, "yyyy-MM-dd");
         Date endDate = DateUtils.parseDate(until, "yyyy-MM-dd");
 
-        return patchScanService.getStatisticPatchScan(projectDto.getProjectLink(), startDate, endDate, projectDto.getProjectId());
+        Map<String, Object> statisticChurn = churnService.getStatisticChurn(startDate, endDate, projectIdDto.getProjectId());
+
+        if (statisticChurn == null) {
+            log.error("Error with analyze project with id: {}", projectIdDto.getProjectId());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(statisticChurn, HttpStatus.OK);
     }
 
     @PostMapping("/files")
-    ResponseEntity<String> getFileStatistic(@RequestBody RepositoryDto repositoryDto) {
-        return fileStatService.getContributorsByFiles(repositoryDto.getRepositoryUrl());
+    ResponseEntity<String> getFileStatistic(@RequestParam(required = false) String since,
+                                            @RequestParam(required = false) String until,
+                                            @RequestBody RepositoryDto repositoryDto) throws ParseException {
+
+        Date startDate = DateUtils.parseDate(since, "yyyy-MM-dd");
+        Date endDate = DateUtils.parseDate(until, "yyyy-MM-dd");
+
+        Map<String, List<Map<String, Object>>> fileStatistic = fileStatService.getContributorsByFiles(repositoryDto.getRepositoryUrl(), startDate, endDate);
+        return new ResponseEntity<>(fileStatistic.toString(), HttpStatus.OK);
     }
 
 }
