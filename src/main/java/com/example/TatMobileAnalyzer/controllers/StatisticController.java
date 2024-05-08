@@ -7,11 +7,13 @@ import com.example.TatMobileAnalyzer.services.FileStatService;
 import com.example.TatMobileAnalyzer.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin
@@ -33,12 +35,13 @@ public class StatisticController {
 
     @PostMapping("/churn")
     ResponseEntity<Map<String, Object>> getStatisticChurn(@RequestParam(required = false) String since,
-                                                            @RequestParam(required = false) String until,
-                                                            @RequestBody ProjectDto projectDto) throws ParseException {
+                                                          @RequestParam(required = false) String until,
+                                                          @RequestBody ProjectDto projectDto) throws ParseException {
         Date startDate = DateUtils.parseDate(since, "yyyy-MM-dd");
         Date endDate = DateUtils.parseDate(until, "yyyy-MM-dd");
 
-        return churnService.getStatisticPatchScan(projectDto.getProjectLink(), startDate, endDate, projectDto.getProjectId());
+        Map<String, Object> statisticChurn = churnService.getStatisticChurn(projectDto.getProjectLink(), startDate, endDate, projectDto.getProjectId());
+        return new ResponseEntity<>(statisticChurn, HttpStatus.OK);
     }
 
     @PostMapping("/files")
@@ -48,7 +51,9 @@ public class StatisticController {
 
         Date startDate = DateUtils.parseDate(since, "yyyy-MM-dd");
         Date endDate = DateUtils.parseDate(until, "yyyy-MM-dd");
-        return fileStatService.getContributorsByFiles(repositoryDto.getRepositoryUrl(), startDate, endDate);
+
+        Map<String, List<Map<String, Object>>> fileStatistic = fileStatService.getContributorsByFiles(repositoryDto.getRepositoryUrl(), startDate, endDate);
+        return new ResponseEntity<>(fileStatistic.toString(), HttpStatus.OK);
     }
 
 }

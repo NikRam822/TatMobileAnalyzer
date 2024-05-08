@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.kohsuke.github.GHCommit;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -31,7 +30,7 @@ public class ChurnServiceImpl implements ChurnService {
 
     @SneakyThrows
     @Override
-    public ResponseEntity<Map<String, Object>> getStatisticPatchScan(String repositoryUrl, Date since, Date until, Long projectId) {
+    public Map<String, Object> getStatisticChurn(String repositoryUrl, Date since, Date until, Long projectId) {
         List<GHCommit> commitsPerPeriod = gitHubService.getCommitsPerPeriod(repositoryUrl, since, until);
 
         Map<String, List<Map<String, JsonNode>>> authorStats = new HashMap<>();
@@ -42,12 +41,6 @@ public class ChurnServiceImpl implements ChurnService {
 
         processCommits(commitsPerPeriod, authorStats, overall, general, generalResult, churn, projectId);
 
-        // Create object for conversion to JSON
-        ChurnStats stats = new ChurnStats(authorStats, overall, generalResult, churn);
-
-        // Convert the object to JsonNode
-        JsonNode jsonNode = objectMapper.valueToTree(stats);
-
         // Create a map to hold the JSON nodes
         Map<String, Object> finalStats = new HashMap<>();
         finalStats.put("authorStats", authorStats);
@@ -56,7 +49,7 @@ public class ChurnServiceImpl implements ChurnService {
         finalStats.put("churn", churn);
 
         // Return ResponseEntity with the map of JSON nodes
-        return ResponseEntity.ok(finalStats);
+        return finalStats;
     }
 
 
@@ -112,9 +105,7 @@ public class ChurnServiceImpl implements ChurnService {
             fileStat.put("filename", objectMapper.valueToTree(file.getFileName()));
             fileStat.put("add all", objectMapper.valueToTree(file.getLinesAdded()));
             fileStat.put("del all", objectMapper.valueToTree(file.getLinesDeleted()));
-
             //fileStat.put("path", file.getPatch());
-
             // fileStat.put("add", patchInfo.getAdd());
             // fileStat.put("del", patchInfo.getDel());
 

@@ -6,8 +6,6 @@ import com.example.TatMobileAnalyzer.utils.MapToCsvConverter;
 import lombok.SneakyThrows;
 import org.kohsuke.github.GHCommit;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -23,7 +21,7 @@ public class FileStatServiceImpl implements FileStatService {
     }
 
     @Override
-    public ResponseEntity getContributorsByFiles(String repoUrl, Date since, Date until) {
+    public Map<String, List<Map<String, Object>>> getContributorsByFiles(String repoUrl, Date since, Date until) {
 
         List<GHCommit> commitsPerPeriod = gitHubService.getCommitsPerPeriod(repoUrl, since, until);
 
@@ -32,7 +30,7 @@ public class FileStatServiceImpl implements FileStatService {
         String outputPath = "output.csv";
         MapToCsvConverter.mapToCsv(fileContributorsMap, outputPath);
 
-        return new ResponseEntity<>(fileContributorsMap, HttpStatus.OK);
+        return fileContributorsMap;
     }
 
     @SneakyThrows
