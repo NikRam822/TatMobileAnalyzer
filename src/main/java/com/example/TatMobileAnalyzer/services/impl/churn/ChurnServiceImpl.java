@@ -1,9 +1,12 @@
-package com.example.TatMobileAnalyzer.services.impl;
+package com.example.TatMobileAnalyzer.services.impl.churn;
 
 import com.example.TatMobileAnalyzer.model.Filter;
+import com.example.TatMobileAnalyzer.services.ChurnService;
 import com.example.TatMobileAnalyzer.services.FilterService;
 import com.example.TatMobileAnalyzer.services.GitHubService;
-import com.example.TatMobileAnalyzer.services.ChurnService;
+import com.example.TatMobileAnalyzer.services.impl.PatchReader;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.kohsuke.github.GHCommit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,20 +20,21 @@ public class ChurnServiceImpl implements ChurnService {
 
     FilterService filterService;
     GitHubService gitHubService;
+    ObjectMapper objectMapper;
 
     @Autowired
-    public ChurnServiceImpl(GitHubService gitHubService, FilterService filterService) {
+    public ChurnServiceImpl(FilterService filterService, GitHubService gitHubService, ObjectMapper objectMapper) {
         this.filterService = filterService;
         this.gitHubService = gitHubService;
+        this.objectMapper = objectMapper;
     }
 
     @SneakyThrows
     @Override
-    public ResponseEntity<Map<String, Object>> getStatisticPatchScan(String repositoryUrl, Date since, Date until, Long projectId) {
-
+    public ResponseEntity<String> getStatisticPatchScan(String repositoryUrl, Date since, Date until, Long projectId) {
         List<GHCommit> commitsPerPeriod = gitHubService.getCommitsPerPeriod(repositoryUrl, since, until);
 
-        Map<String, List<Map<String, Object>>> authorStats = new LinkedHashMap<>();
+        Map<String, List<Map<String, JsonNode>>> authorStats = new LinkedHashMap<>();
         Map<String, Integer> overall = new HashMap<>();
         Map<String, Map<Integer, String>> general = new HashMap<>();
         Map<String, Map<String, Integer>> generalResult = new HashMap<>();
@@ -38,32 +42,32 @@ public class ChurnServiceImpl implements ChurnService {
 
         processCommits(commitsPerPeriod, authorStats, overall, general, generalResult, churn, projectId);
 
-        Map<String, Object> finalStats = new HashMap<>();
-        finalStats.put("authorStats", authorStats);
-        finalStats.put("overall", overall);
-        finalStats.put("general", generalResult);
-        finalStats.put("churn", churn);
+        // Создаем объект для преобразования в JSON
+        ChurnStats stats = new ChurnStats(authorStats, overall, generalResult, churn);
 
-        return ResponseEntity.ok(finalStats);
+        // Преобразуем объект в JSON
+        String jsonResult = objectMapper.writeValueAsString(stats);
+
+        return ResponseEntity.ok(jsonResult);
     }
 
     @SneakyThrows
-    private void processCommits(List<GHCommit> commitsPerPeriod, Map<String, List<Map<String, Object>>> authorStats,
+    private void processCommits(List<GHCommit> commitsPerPeriod, Map<String, List<Map<String, JsonNode>>> authorStats,
                                 Map<String, Integer> overall, Map<String, Map<Integer, String>> general,
                                 Map<String, Map<String, Integer>> generalResult, Map<String, Double> churn, Long projectId) {
         for (GHCommit commit : commitsPerPeriod) {
             String author = commit.getCommitShortInfo().getAuthor().getName();
-            List<Map<String, Object>> authorCommits = authorStats.getOrDefault(author, new ArrayList<>());
+            List<Map<String, JsonNode>> authorCommits = authorStats.getOrDefault(author, new ArrayList<>());
 
-            List<Map<String, Object>> fileStats = processCommitFiles(commit, general, overall, author, projectId);
+            List<Map<String, JsonNode>> fileStats = processCommitFiles(commit, general, overall, author, projectId);
 
-            Map<String, Object> commitStat = new HashMap<>();
-            commitStat.put("sha", commit.getSHA1());
-            commitStat.put("date", commit.getCommitDate().toString());
-            commitStat.put("linesDifference", commit.getLinesChanged());
-            commitStat.put("totalAdditions", commit.getLinesAdded());
-            commitStat.put("totalDeletions", commit.getLinesDeleted());
-            commitStat.put("files", fileStats);
+            Map<String, JsonNode> commitStat = new HashMap<>();
+            commitStat.put("sha", objectMapper.valueToTree(commit.getSHA1()));
+            commitStat.put("date", objectMapper.valueToTree(commit.getCommitDate().toString()));
+            commitStat.put("linesDifference", objectMapper.valueToTree(commit.getLinesChanged()));
+            commitStat.put("totalAdditions", objectMapper.valueToTree(commit.getLinesAdded()));
+            commitStat.put("totalDeletions", objectMapper.valueToTree(commit.getLinesDeleted()));
+            commitStat.put("files", objectMapper.valueToTree(fileStats));
 
             authorCommits.add(commitStat);
             authorStats.put(author, authorCommits);
@@ -73,9 +77,9 @@ public class ChurnServiceImpl implements ChurnService {
     }
 
     @SneakyThrows
-    private List<Map<String, Object>> processCommitFiles(GHCommit commit, Map<String, Map<Integer, String>> general,
-                                                         Map<String, Integer> overall, String author, Long projectId) {
-        List<Map<String, Object>> fileStats = new ArrayList<>();
+    private List<Map<String, JsonNode>> processCommitFiles(GHCommit commit, Map<String, Map<Integer, String>> general,
+                                                           Map<String, Integer> overall, String author, Long projectId) {
+        List<Map<String, JsonNode>> fileStats = new ArrayList<>();
 
         List<GHCommit.File> files = commit.listFiles().toList();
         Filter filter = filterService.getFiltersByProjectId(projectId);
@@ -95,14 +99,10 @@ public class ChurnServiceImpl implements ChurnService {
             String patch = file.getPatch();
             PatchReader.PatchInfo patchInfo = PatchReader.readPatch(patch);
 
-            Map<String, Object> fileStat = new HashMap<>();
-            fileStat.put("filename", file.getFileName());
-            fileStat.put("add all", file.getLinesAdded());
-            fileStat.put("del all", file.getLinesDeleted());
-            //fileStat.put("path", file.getPatch());
-
-            // fileStat.put("add", patchInfo.getAdd());
-            // fileStat.put("del", patchInfo.getDel());
+            Map<String, JsonNode> fileStat = new HashMap<>();
+            fileStat.put("filename", objectMapper.valueToTree(file.getFileName()));
+            fileStat.put("add all", objectMapper.valueToTree(file.getLinesAdded()));
+            fileStat.put("del all", objectMapper.valueToTree(file.getLinesDeleted()));
 
             fileStats.add(fileStat);
             overall.put(author, overall.getOrDefault(author, 0) + patchInfo.getAdd().size());
@@ -123,10 +123,10 @@ public class ChurnServiceImpl implements ChurnService {
     }
 
 
-    private void calculateChurn(Map<String, List<Map<String, Object>>> authorStats, Map<String, Integer> overall,
+    private void calculateChurn(Map<String, List<Map<String, JsonNode>>> authorStats, Map<String, Integer> overall,
                                 Map<String, Map<Integer, String>> general, Map<String, Map<String, Integer>> generalResult,
                                 Map<String, Double> churn) {
-        for (Map.Entry<String, List<Map<String, Object>>> entry : authorStats.entrySet()) {
+        for (Map.Entry<String, List<Map<String, JsonNode>>> entry : authorStats.entrySet()) {
             String author = entry.getKey();
             Integer totalLines = overall.get(author);
             var ref = new Object() {

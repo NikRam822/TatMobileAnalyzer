@@ -32,9 +32,9 @@ public class StatisticController {
     }
 
     @PostMapping("/churn")
-    ResponseEntity<Map<String, Object>> getStatisticChurn(@RequestParam(required = false) String since,
-                                                          @RequestParam(required = false) String until,
-                                                          @RequestBody ProjectDto projectDto) throws ParseException {
+    ResponseEntity<String> getStatisticChurn(@RequestParam(required = false) String since,
+                                             @RequestParam(required = false) String until,
+                                             @RequestBody ProjectDto projectDto) throws ParseException {
         Date startDate = DateUtils.parseDate(since, "yyyy-MM-dd");
         Date endDate = DateUtils.parseDate(until, "yyyy-MM-dd");
 
