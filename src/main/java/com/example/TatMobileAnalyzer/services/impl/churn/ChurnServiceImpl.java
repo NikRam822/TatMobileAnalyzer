@@ -39,14 +39,16 @@ public class ChurnServiceImpl implements ChurnService {
         Map<String, Map<String, Integer>> generalResult = new HashMap<>();
         Map<String, Double> churn = new HashMap<>();
 
-        processCommits(commitsPerPeriod, authorStats, overall, general, generalResult, churn, projectId);
+        ChurnStat churnStat = new ChurnStat(authorStats, overall, general, generalResult, churn);
+
+        processCommits(commitsPerPeriod, churnStat, projectId);
 
         // Create a map to hold the JSON nodes
         Map<String, Object> finalStats = new HashMap<>();
-        finalStats.put("authorStats", authorStats);
-        finalStats.put("overall", overall);
-        finalStats.put("general", generalResult);
-        finalStats.put("churn", churn);
+        finalStats.put("authorStats", churnStat.authorStats());
+        finalStats.put("overall", churnStat.overall());
+        finalStats.put("general", churnStat.generalResult());
+        finalStats.put("churn", churnStat.churn());
 
         // Return ResponseEntity with the map of JSON nodes
         return finalStats;
@@ -54,14 +56,12 @@ public class ChurnServiceImpl implements ChurnService {
 
 
     @SneakyThrows
-    private void processCommits(List<GHCommit> commitsPerPeriod, Map<String, List<Map<String, JsonNode>>> authorStats,
-                                Map<String, Integer> overall, Map<String, Map<Integer, String>> general,
-                                Map<String, Map<String, Integer>> generalResult, Map<String, Double> churn, Long projectId) {
+    private void processCommits(List<GHCommit> commitsPerPeriod, ChurnStat churnStat, Long projectId) {
         for (GHCommit commit : commitsPerPeriod) {
             String author = commit.getCommitShortInfo().getAuthor().getName();
-            List<Map<String, JsonNode>> authorCommits = authorStats.getOrDefault(author, new ArrayList<>());
+            List<Map<String, JsonNode>> authorCommits = churnStat.authorStats().getOrDefault(author, new ArrayList<>());
 
-            List<Map<String, JsonNode>> fileStats = processCommitFiles(commit, general, overall, author, projectId);
+            List<Map<String, JsonNode>> fileStats = processCommitFiles(commit, churnStat, author, projectId);
 
             Map<String, JsonNode> commitStat = new HashMap<>();
             commitStat.put("sha", objectMapper.valueToTree(commit.getSHA1()));
@@ -72,17 +72,15 @@ public class ChurnServiceImpl implements ChurnService {
             commitStat.put("files", objectMapper.valueToTree(fileStats));
 
             authorCommits.add(commitStat);
-            authorStats.put(author, authorCommits);
+            churnStat.authorStats().put(author, authorCommits);
         }
 
-        calculateChurn(authorStats, overall, general, generalResult, churn);
+        calculateChurn(churnStat);
     }
 
     @SneakyThrows
-    private List<Map<String, JsonNode>> processCommitFiles(GHCommit commit, Map<String, Map<Integer, String>> general,
-                                                           Map<String, Integer> overall, String author, Long projectId) {
+    private List<Map<String, JsonNode>> processCommitFiles(GHCommit commit, ChurnStat churnStat, String author, Long projectId) {
         List<Map<String, JsonNode>> fileStats = new ArrayList<>();
-
         List<GHCommit.File> files = commit.listFiles().toList();
         Filter filter = filterService.getFiltersByProjectId(projectId);
 
@@ -90,7 +88,6 @@ public class ChurnServiceImpl implements ChurnService {
             filter = new Filter();
         }
         for (GHCommit.File file : files) {
-
             // Check if the file name begins with one of the lines in the filter.getGenerated() or filter.getTest() arrays
             boolean matchesGenerated = filter.getGenerated().stream().anyMatch(file.getFileName()::startsWith);
             boolean matchesTest = filter.getTest().stream().anyMatch(file.getFileName()::startsWith);
@@ -110,50 +107,48 @@ public class ChurnServiceImpl implements ChurnService {
             // fileStat.put("del", patchInfo.getDel());
 
             fileStats.add(fileStat);
-            overall.put(author, overall.getOrDefault(author, 0) + patchInfo.getAdd().size());
+            churnStat.overall().put(author, churnStat.overall().getOrDefault(author, 0) + patchInfo.getAdd().size());
 
-            updateGeneralStatistics(file, patchInfo, general, author);
+            updateGeneralStatistics(file, patchInfo, churnStat, author);
         }
         return fileStats;
     }
 
     @SneakyThrows
-    private void updateGeneralStatistics(GHCommit.File file, PatchReader.PatchInfo patchInfo, Map<String, Map<Integer, String>> general, String author) {
-        Map<Integer, String> fileLines = general.getOrDefault(file.getFileName(), new HashMap<>());
+    private void updateGeneralStatistics(GHCommit.File file, PatchReader.PatchInfo patchInfo, ChurnStat churnStat, String author) {
+        Map<Integer, String> fileLines = churnStat.general().getOrDefault(file.getFileName(), new HashMap<>());
         for (String addedLine : patchInfo.getAdd()) {
             int lineNumber = Integer.parseInt(addedLine.split(". ")[0]);
             fileLines.put(lineNumber, author);
         }
-        general.put(file.getFileName(), fileLines);
+        churnStat.general().put(file.getFileName(), fileLines);
     }
 
 
-    private void calculateChurn(Map<String, List<Map<String, JsonNode>>> authorStats, Map<String, Integer> overall,
-                                Map<String, Map<Integer, String>> general, Map<String, Map<String, Integer>> generalResult,
-                                Map<String, Double> churn) {
-        for (Map.Entry<String, List<Map<String, JsonNode>>> entry : authorStats.entrySet()) {
+    private void calculateChurn(ChurnStat churnStat) {
+        for (Map.Entry<String, List<Map<String, JsonNode>>> entry : churnStat.authorStats().entrySet()) {
             String author = entry.getKey();
-            Integer totalLines = overall.get(author);
+            Integer totalLines = churnStat.overall().get(author);
             var ref = new Object() {
                 int addLines = 0;
             };
-            general.forEach((files, mapOfAdds) -> mapOfAdds.forEach((numberOfAdds, authorOfAdd) -> {
+            churnStat.general().forEach((files, mapOfAdds) -> mapOfAdds.forEach((numberOfAdds, authorOfAdd) -> {
                 if (authorOfAdd.equals(author)) {
                     ref.addLines = ref.addLines + 1;
                 }
             }));
 
-            for (String fileName : general.keySet()) {
+            for (String fileName : churnStat.general().keySet()) {
                 Map<String, Integer> generalStats = new HashMap<>();
-                general.get(fileName).forEach((lineNumber, authorOfAdd) -> {
+                churnStat.general().get(fileName).forEach((lineNumber, authorOfAdd) -> {
                     generalStats.merge(authorOfAdd, 1, Integer::sum);
                 });
-                generalResult.put(fileName, generalStats);
+                churnStat.generalResult().put(fileName, generalStats);
             }
             if (totalLines != null && totalLines != 0) {
-                churn.put(author, 100 - (((double) ref.addLines / totalLines) * 100));
+                churnStat.churn().put(author, 100 - (((double) ref.addLines / totalLines) * 100));
             } else {
-                churn.put(author, 0.0);
+                churnStat.churn().put(author, 0.0);
             }
         }
     }
