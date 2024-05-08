@@ -22,26 +22,23 @@
     >
       <template v-slot:append>
         <v-btn
+          variant="text"
           @click.stop="updateFavor(rep.favorite, rep.projectId)"
           flat
-          class="text-orange-darken-2"
-          :icon="rep.favorite ? 'mdi-star-outline' : 'mdi-star'"
+          class="text-amber-accent-3"
+          :icon="rep.favorite ? 'mdi-star' : 'mdi-star-outline'"
         ></v-btn>
       </template>
       <v-container v-show="loader">
-        <v-progress-linear
-          color="rgb(92, 99, 106)"
-          height="6"
-          indeterminate
-          rounded
-        ></v-progress-linear>
+        <v-progress-linear color="rgb(92, 99, 106)" height="6" indeterminate rounded></v-progress-linear>
         <p>Analyzing reposytory</p>
       </v-container>
       <v-btn
+        variant="text"
         @click.stop="deleteProject"
         flat
         icon="mdi-trash-can-outline"
-        class="align-self-end ma-4 text-red-lighten-2"
+        class="align-self-end ma-4 text-grey"
       ></v-btn>
     </v-card>
   </v-col>

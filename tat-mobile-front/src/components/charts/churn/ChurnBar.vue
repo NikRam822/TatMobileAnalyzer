@@ -1,5 +1,5 @@
 <template>
-  <div style="overflow-x: auto">
+  <div style="overflow-x: auto; height: 100%">
     <div
       :style="{
         width: widthOfOneBar * statsForGraph.reduce((sum, curr) => sum + curr.enable, 0) + 'px',
