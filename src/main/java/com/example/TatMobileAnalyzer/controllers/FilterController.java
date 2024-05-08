@@ -24,7 +24,7 @@ public class FilterController {
     }
 
     @PostMapping("/get-filters-for-project")
-    ResponseEntity getAll(@RequestBody ProjectIdDto projectIdDto) {
+    ResponseEntity<?> getAll(@RequestBody ProjectIdDto projectIdDto) {
         Filter filter = filterService.getFiltersByProjectId(projectIdDto.getProjectId());
         if (filter == null) {
             log.error("No filters found for project " + projectIdDto.getProjectId());
@@ -35,7 +35,7 @@ public class FilterController {
     }
 
     @PutMapping("/update-filter")
-    ResponseEntity updateFilter(@RequestBody FilterDto filterDto) {
+    ResponseEntity<?> updateFilter(@RequestBody FilterDto filterDto) {
 
         Filter filter = filterService.getFiltersByProjectId(filterDto.getProjectId());
         if (filter == null) {
