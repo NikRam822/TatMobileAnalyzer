@@ -42,6 +42,11 @@ public class ProjectController {
         project.setProjectLink(projectDto.getProjectLink());
         Project createdProject = projectService.createProject(project);
 
+        if (createdProject == null) {
+            log.warn("Project with link {} was not created", projectDto.getProjectLink());
+            return new ResponseEntity<>("Project was not created. Link: " + projectDto.getProjectLink(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
         return new ResponseEntity<>(ProjectDto.toProjectDto(createdProject), HttpStatus.CREATED);
     }
 
