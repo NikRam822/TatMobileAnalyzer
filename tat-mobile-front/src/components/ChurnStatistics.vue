@@ -38,24 +38,12 @@
         </tr>
       </tbody>
     </v-table>
-    <v-container class="d-flex flex-column">
-      <v-container style="height: 60%">
-        <ChurnBar :statsForGraph="statsForGraph" />
-      </v-container>
-      <v-container style="height: 40%; width: 100%" class="d-flex flex-row">
-        <v-container style="width: 50%">
-          <ChurnDoughnut :statsForGraph="statsForGraph" />
-        </v-container>
-        <v-container style="width: 50%">
-          <ChurnDoughnutOvarall :statsForGraph="statsForGraph" />
-        </v-container>
-      </v-container>
+    <v-container style="height: 60%">
+      <ChurnBar :statsForGraph="statsForGraph" />
     </v-container>
   </div>
 </template>
 <script>
-import ChurnDoughnut from "./charts/churn/ChurnDoughnut.vue";
-
 export default {
   data() {
     return {
