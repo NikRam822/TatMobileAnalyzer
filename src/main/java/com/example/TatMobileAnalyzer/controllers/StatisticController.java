@@ -1,6 +1,6 @@
 package com.example.TatMobileAnalyzer.controllers;
 
-import com.example.TatMobileAnalyzer.dto.ProjectDto;
+import com.example.TatMobileAnalyzer.dto.ProjectIdDto;
 import com.example.TatMobileAnalyzer.dto.RepositoryDto;
 import com.example.TatMobileAnalyzer.services.ChurnService;
 import com.example.TatMobileAnalyzer.services.FileStatService;
@@ -36,11 +36,16 @@ public class StatisticController {
     @PostMapping("/churn")
     ResponseEntity<Map<String, Object>> getStatisticChurn(@RequestParam(required = false) String since,
                                                           @RequestParam(required = false) String until,
-                                                          @RequestBody ProjectDto projectDto) throws ParseException {
+                                                          @RequestBody ProjectIdDto projectIdDto) throws ParseException {
         Date startDate = DateUtils.parseDate(since, "yyyy-MM-dd");
         Date endDate = DateUtils.parseDate(until, "yyyy-MM-dd");
 
-        Map<String, Object> statisticChurn = churnService.getStatisticChurn(projectDto.getProjectLink(), startDate, endDate, projectDto.getProjectId());
+        Map<String, Object> statisticChurn = churnService.getStatisticChurn(startDate, endDate, projectIdDto.getProjectId());
+
+        if (statisticChurn == null) {
+            log.error("Error with analyze project with id: {}", projectIdDto.getProjectId());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         return new ResponseEntity<>(statisticChurn, HttpStatus.OK);
     }
 

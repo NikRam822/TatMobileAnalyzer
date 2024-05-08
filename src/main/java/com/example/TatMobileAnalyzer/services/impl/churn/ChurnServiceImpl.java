@@ -1,13 +1,16 @@
 package com.example.TatMobileAnalyzer.services.impl.churn;
 
 import com.example.TatMobileAnalyzer.model.Filter;
+import com.example.TatMobileAnalyzer.model.Project;
 import com.example.TatMobileAnalyzer.services.ChurnService;
 import com.example.TatMobileAnalyzer.services.FilterService;
 import com.example.TatMobileAnalyzer.services.GitHubService;
+import com.example.TatMobileAnalyzer.services.ProjectService;
 import com.example.TatMobileAnalyzer.services.impl.PatchReader;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.kohsuke.github.GHCommit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,23 +18,34 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
+@Slf4j
 public class ChurnServiceImpl implements ChurnService {
 
     FilterService filterService;
     GitHubService gitHubService;
     ObjectMapper objectMapper;
+    ProjectService projectService;
 
     @Autowired
-    public ChurnServiceImpl(FilterService filterService, GitHubService gitHubService, ObjectMapper objectMapper) {
+    public ChurnServiceImpl(FilterService filterService,
+                            GitHubService gitHubService,
+                            ObjectMapper objectMapper,
+                            ProjectService projectService) {
         this.filterService = filterService;
         this.gitHubService = gitHubService;
         this.objectMapper = objectMapper;
+        this.projectService = projectService;
     }
 
     @SneakyThrows
     @Override
-    public Map<String, Object> getStatisticChurn(String repositoryUrl, Date since, Date until, Long projectId) {
-        List<GHCommit> commitsPerPeriod = gitHubService.getCommitsPerPeriod(repositoryUrl, since, until);
+    public Map<String, Object> getStatisticChurn(Date since, Date until, Long projectId) {
+        Project project = projectService.getProjectById(projectId);
+        if (project == null) {
+            log.warn("Project with id {} not found", projectId);
+            return null;
+        }
+        List<GHCommit> commitsPerPeriod = gitHubService.getCommitsPerPeriod(project.getProjectLink(), since, until);
 
         Map<String, List<Map<String, JsonNode>>> authorStats = new HashMap<>();
         Map<String, Integer> overall = new HashMap<>();

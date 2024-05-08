@@ -99,8 +99,6 @@ export default {
       try {
         const statistic = await axios.post(hostadress, {
           projectId: repo.projectId,
-          projectLink: repo.projectLink,
-          projectName: repo.projectName,
         });
         this.$store.commit("addStatistc", [repo.projectLink, statistic]);
       } catch (error) {
