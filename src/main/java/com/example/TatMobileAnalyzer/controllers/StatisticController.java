@@ -3,7 +3,7 @@ package com.example.TatMobileAnalyzer.controllers;
 import com.example.TatMobileAnalyzer.dto.ProjectDto;
 import com.example.TatMobileAnalyzer.dto.RepositoryDto;
 import com.example.TatMobileAnalyzer.services.FileStatService;
-import com.example.TatMobileAnalyzer.services.PatchScanService;
+import com.example.TatMobileAnalyzer.services.ChurnService;
 import com.example.TatMobileAnalyzer.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,25 +20,25 @@ import java.util.Map;
 @RequestMapping("/api/statistic")
 public class StatisticController {
 
-    private final PatchScanService patchScanService;
+    private final ChurnService churnService;
 
     private final FileStatService fileStatService;
 
 
     @Autowired
-    public StatisticController(FileStatService fileStatService, PatchScanService patchScanService) {
+    public StatisticController(FileStatService fileStatService, ChurnService churnService) {
         this.fileStatService = fileStatService;
-        this.patchScanService = patchScanService;
+        this.churnService = churnService;
     }
 
-    @PostMapping("/patch")
-    ResponseEntity<Map<String, Object>> getStatisticPatchScan(@RequestParam(required = false) String since,
-                                                              @RequestParam(required = false) String until,
-                                                              @RequestBody ProjectDto projectDto) throws ParseException {
+    @PostMapping("/churn")
+    ResponseEntity<Map<String, Object>> getStatisticChurn(@RequestParam(required = false) String since,
+                                                          @RequestParam(required = false) String until,
+                                                          @RequestBody ProjectDto projectDto) throws ParseException {
         Date startDate = DateUtils.parseDate(since, "yyyy-MM-dd");
         Date endDate = DateUtils.parseDate(until, "yyyy-MM-dd");
 
-        return patchScanService.getStatisticPatchScan(projectDto.getProjectLink(), startDate, endDate, projectDto.getProjectId());
+        return churnService.getStatisticPatchScan(projectDto.getProjectLink(), startDate, endDate, projectDto.getProjectId());
     }
 
     @PostMapping("/files")

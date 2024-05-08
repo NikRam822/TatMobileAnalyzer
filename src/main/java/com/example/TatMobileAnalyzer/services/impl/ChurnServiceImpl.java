@@ -3,7 +3,7 @@ package com.example.TatMobileAnalyzer.services.impl;
 import com.example.TatMobileAnalyzer.model.Filter;
 import com.example.TatMobileAnalyzer.services.FilterService;
 import com.example.TatMobileAnalyzer.services.GitHubService;
-import com.example.TatMobileAnalyzer.services.PatchScanService;
+import com.example.TatMobileAnalyzer.services.ChurnService;
 import lombok.SneakyThrows;
 import org.kohsuke.github.GHCommit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +13,13 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class PatchScanServiceImpl implements PatchScanService {
+public class ChurnServiceImpl implements ChurnService {
 
     FilterService filterService;
     GitHubService gitHubService;
 
     @Autowired
-    public PatchScanServiceImpl(GitHubService gitHubService, FilterService filterService) {
+    public ChurnServiceImpl(GitHubService gitHubService, FilterService filterService) {
         this.filterService = filterService;
         this.gitHubService = gitHubService;
     }

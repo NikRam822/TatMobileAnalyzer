@@ -40,7 +40,7 @@ export default {
     async navigateToProjectReview() {
       if (!this.$store.state.RepoSatistic[this.rep.projectLink]) {
         this.loader = true;
-        let hostadress = server_path + "/api/statistic/patch";
+        let hostadress = server_path + "/api/statistic/churn";
         try {
           const statistic = await axios.post(hostadress, {
             projectId: this.rep.projectId,

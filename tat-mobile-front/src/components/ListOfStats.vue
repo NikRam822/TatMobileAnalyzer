@@ -95,7 +95,7 @@ export default {
     },
     async updateStatistic(repo) {
       this.loader = true;
-      let hostadress = server_path + "/api/statistic/patch";
+      let hostadress = server_path + "/api/statistic/churn";
       try {
         const statistic = await axios.post(hostadress, {
           projectId: repo.projectId,
