@@ -91,7 +91,6 @@ public class ChurnServiceImpl implements ChurnService {
             // Check if the file name begins with one of the lines in the filter.getGenerated() or filter.getTest() arrays
             boolean matchesGenerated = filter.getGenerated().stream().anyMatch(file.getFileName()::startsWith);
             boolean matchesTest = filter.getTest().stream().anyMatch(file.getFileName()::startsWith);
-
             if (matchesGenerated || matchesTest) {
                 continue;
             }
@@ -105,7 +104,6 @@ public class ChurnServiceImpl implements ChurnService {
             //fileStat.put("path", file.getPatch());
             // fileStat.put("add", patchInfo.getAdd());
             // fileStat.put("del", patchInfo.getDel());
-
             fileStats.add(fileStat);
             churnStat.overall().put(author, churnStat.overall().getOrDefault(author, 0) + patchInfo.getAdd().size());
 
