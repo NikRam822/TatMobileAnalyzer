@@ -6,5 +6,5 @@ import java.util.Date;
 import java.util.Map;
 
 public interface ChurnService {
-    ResponseEntity<String> getStatisticPatchScan(String repositoryUrl, Date since, Date until, Long projectId);
+    ResponseEntity<Map<String, Object>> getStatisticPatchScan(String repositoryUrl, Date since, Date until, Long projectId);
 }

@@ -2,8 +2,8 @@ package com.example.TatMobileAnalyzer.controllers;
 
 import com.example.TatMobileAnalyzer.dto.ProjectDto;
 import com.example.TatMobileAnalyzer.dto.RepositoryDto;
-import com.example.TatMobileAnalyzer.services.FileStatService;
 import com.example.TatMobileAnalyzer.services.ChurnService;
+import com.example.TatMobileAnalyzer.services.FileStatService;
 import com.example.TatMobileAnalyzer.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +32,9 @@ public class StatisticController {
     }
 
     @PostMapping("/churn")
-    ResponseEntity<String> getStatisticChurn(@RequestParam(required = false) String since,
-                                             @RequestParam(required = false) String until,
-                                             @RequestBody ProjectDto projectDto) throws ParseException {
+    ResponseEntity<Map<String, Object>> getStatisticChurn(@RequestParam(required = false) String since,
+                                                            @RequestParam(required = false) String until,
+                                                            @RequestBody ProjectDto projectDto) throws ParseException {
         Date startDate = DateUtils.parseDate(since, "yyyy-MM-dd");
         Date endDate = DateUtils.parseDate(until, "yyyy-MM-dd");
 
