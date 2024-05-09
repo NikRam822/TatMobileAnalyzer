@@ -46,6 +46,7 @@ Below are the instructions for running `docker-compose`:
    DB_PASSWORD=some_password
    DB_DATABASE=some_database
    DB_URL=jdbc:postgresql://postgres_db:5432/some_database
+   FRONTEND_HOST=https://host.com/
    ```
    - Replace `<your_github_access_token>` to your github access token
    - Go to `./tat-mobile-front` and create `.env` file with desired backend URL localhost for dev and real one for hosted backend:
