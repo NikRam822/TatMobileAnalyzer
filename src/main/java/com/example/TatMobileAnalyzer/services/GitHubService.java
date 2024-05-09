@@ -1,14 +1,13 @@
 package com.example.TatMobileAnalyzer.services;
 
-import java.net.http.HttpResponse;
+import org.kohsuke.github.GHCommit;
+
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public interface GitHubService {
 
-    HttpResponse<String> sendGetRequest(String apiUrl);
+    List<GHCommit> getCommitsPerPeriod(String repositoryUrl, Date since, Date until);
 
-    List<Map<String, Object>> readJsonToList(String data);
-
-    Map<String, Object> readJsonToMap(String data);
+    boolean isValidRepository(String repositoryUrl);
 }

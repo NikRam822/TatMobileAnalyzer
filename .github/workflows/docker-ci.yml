@@ -3,8 +3,8 @@ name: Docker CI
 on:
   push:
     branches:
-      - main
-      - features/ci-docker
+      - master
+      - features/deploy
 
 jobs:
   push_to_registry:
@@ -43,11 +43,15 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd TatMobileAnalyzer;
-            echo "GITHUB_ACCESS_TOKEN=${{ secrets.GITHUB_ACCESS_TOKEN }}" > .env;
+            echo "ACCESS_TOKEN_GITHUB=${{ secrets.ACCESS_TOKEN_GITHUB }}" > .env;
             echo "DB_USER=${{ secrets.DB_USER }}" >> .env;
             echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env;
             echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env;
             echo "DB_URL=${{ secrets.DB_URL }}" >> .env;
-            git checkout features/ci-docker;
-            git pull;
-            docker-compose -f "docker-compose.fast.yml" up -d;
+            echo "DB_URL=${{ secrets.DB_URL }}" >> .env;
+            echo "VITE_BACKEND_URL=http://java_app" > ./src/main/resources/env.properties;
+            echo "VITE_BACKEND_URL=http://java_app" > ./tat-mobile-front/.env;
+            git fetch;
+            git checkout master;
+            git pull origin master;
+            docker-compose -f "docker-compose.yml" up -d;

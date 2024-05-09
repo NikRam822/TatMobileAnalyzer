@@ -7,11 +7,12 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    CardsFolder: typeof import('./src/components/CardsFolder.vue')['default']
-    Content: typeof import('./src/components/Content.vue')['default']
-    Loginfolder: typeof import('./src/components/Loginfolder.vue')['default']
+    Bar: typeof import('./src/components/charts/Bar.vue')['default']
+    CardForAdd: typeof import('./src/components/cards/CardForAdd.vue')['default']
+    CardOfProject: typeof import('./src/components/cards/CardOfProject.vue')['default']
+    ChurnStatistics: typeof import('./src/components/ChurnStatistics.vue')['default']
+    ListOfStats: typeof import('./src/components/ListOfStats.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Search: typeof import('./src/components/Search.vue')['default']
   }
 }

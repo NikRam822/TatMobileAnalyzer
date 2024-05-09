@@ -4,7 +4,6 @@ services:
   frontend:
     build:
       context: ./tat-mobile-front
-      dockerfile: Dockerfile
     container_name: frontend
     depends_on:
       - java_app
@@ -26,7 +25,7 @@ services:
     links:
       - postgres_db:postgres_db
     environment:
-      GITHUB_ACCESS_TOKEN: ${GITHUB_ACCESS_TOKEN}
+      ACCESS_TOKEN_GITHUB_: ${ACCESS_TOKEN_GITHUB}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_URL: ${DB_URL}

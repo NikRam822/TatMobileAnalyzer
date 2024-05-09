@@ -1,6 +1,7 @@
 package com.example.TatMobileAnalyzer.controllers;
 
 import com.example.TatMobileAnalyzer.dto.FilterDto;
+import com.example.TatMobileAnalyzer.dto.ProjectIdDto;
 import com.example.TatMobileAnalyzer.model.Filter;
 import com.example.TatMobileAnalyzer.services.FilterService;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 @Slf4j
 @RestController
-@RequestMapping("/filter")
+@RequestMapping("api/filter")
 public class FilterController {
 
     private final FilterService filterService;
@@ -22,24 +23,24 @@ public class FilterController {
         this.filterService = filterService;
     }
 
-    @GetMapping("/get-filters-for-project")
-    ResponseEntity<FilterDto> getAll(@RequestParam Long projectId) {
-        Filter filter = filterService.getFiltersByProjectId(projectId);
+    @PostMapping("/get-filters-for-project")
+    ResponseEntity<?> getAll(@RequestBody ProjectIdDto projectIdDto) {
+        Filter filter = filterService.getFiltersByProjectId(projectIdDto.getProjectId());
         if (filter == null) {
-            log.error("No filters found for project " + projectId);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            log.error("No filters found for project " + projectIdDto.getProjectId());
+            return new ResponseEntity<>("No filters found for project " + projectIdDto.getProjectId(), HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
         return new ResponseEntity<>(FilterDto.toFilterDto(filter), HttpStatus.OK);
     }
 
     @PutMapping("/update-filter")
-    ResponseEntity<FilterDto> createProject(@RequestBody FilterDto filterDto, @RequestParam Long projectId) {
+    ResponseEntity<?> updateFilter(@RequestBody FilterDto filterDto) {
 
-        Filter filter = filterService.getFiltersByProjectId(projectId);
+        Filter filter = filterService.getFiltersByProjectId(filterDto.getProjectId());
         if (filter == null) {
-            log.error("No filters found for project " + projectId);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            log.error("No filters found for project " + filterDto.getProjectId());
+            return new ResponseEntity<>("No filters found for project " + filterDto.getProjectId(), HttpStatus.NOT_FOUND);
 
         }
         filter.setTest(filterDto.getTest());

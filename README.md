@@ -41,7 +41,7 @@ Below are the instructions for running `docker-compose`:
 2. Create two `.env` files:
    - In the root folder create `.env` file with next content:
    ```text
-   GITHUB_ACCESS_TOKEN=<your_github_access_token>
+   ACCESS_TOKEN_GITHUB=<your_github_access_token>
    DB_USER=some_user
    DB_PASSWORD=some_password
    DB_DATABASE=some_database
@@ -49,9 +49,9 @@ Below are the instructions for running `docker-compose`:
    FRONTEND_HOST=https://host.com/
    ```
    - Replace `<your_github_access_token>` to your github access token
-   - Go to `./tat-mobile-front` and create `.env` file with next content:
+   - Go to `./tat-mobile-front` and create `.env` file with desired backend URL localhost for dev and real one for hosted backend:
    ```text
-   VUE_APP_HOST_ADDRESS=http://java_app:8080/patch/statistic
+   VITE_BACKEND_URL=http://localhost:8080
    ```
 
 3. Run Docker Compose:
@@ -68,9 +68,9 @@ Below are the instructions for running `docker-compose`:
 1. Ensure that you have `jdk-17` with `maven` for building projects, `npm` and 
 latest `postgres` database installed on your system.
 2. Create two `.env` files:
-   - In the root folder create `.env` file with next content:
+   - In the root folder cre~~~~ate `.env` file with next content:
    ```text
-   GITHUB_ACCESS_TOKEN=<your_github_access_token>
+   ACCESS_TOKEN_GITHUB=<your_github_access_token>
    DB_USER=some_user
    DB_PASSWORD=some_password
    DB_DATABASE=some_database

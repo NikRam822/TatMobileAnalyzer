@@ -10,6 +10,7 @@ public class FilterDto {
 
     private List<String> Generated;
     private List<String> Test;
+    private Long projectId;
 
     public static FilterDto toFilterDto(Filter filter) {
         FilterDto filterDto = new FilterDto();
