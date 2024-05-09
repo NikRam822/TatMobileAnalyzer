@@ -43,7 +43,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd TatMobileAnalyzer;
-            echo "GITHUB_ACCESS_TOKEN=${{ secrets.GITHUB_TOKEN }}" > .env;
+            echo "ACCESS_TOKEN_GITHUB=${{ secrets.ACCESS_TOKEN_GITHUB }}" > .env;
             echo "DB_USER=${{ secrets.DB_USER }}" >> .env;
             echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env;
             echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env;

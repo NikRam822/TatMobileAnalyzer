@@ -41,7 +41,7 @@ Below are the instructions for running `docker-compose`:
 2. Create two `.env` files:
    - In the root folder create `.env` file with next content:
    ```text
-   GITHUB_ACCESS_TOKEN=<your_github_access_token>
+   ACCESS_TOKEN_GITHUB=<your_github_access_token>
    DB_USER=some_user
    DB_PASSWORD=some_password
    DB_DATABASE=some_database
@@ -67,9 +67,9 @@ Below are the instructions for running `docker-compose`:
 1. Ensure that you have `jdk-17` with `maven` for building projects, `npm` and 
 latest `postgres` database installed on your system.
 2. Create two `.env` files:
-   - In the root folder create `.env` file with next content:
+   - In the root folder cre~~~~ate `.env` file with next content:
    ```text
-   GITHUB_ACCESS_TOKEN=<your_github_access_token>
+   ACCESS_TOKEN_GITHUB=<your_github_access_token>
    DB_USER=some_user
    DB_PASSWORD=some_password
    DB_DATABASE=some_database
