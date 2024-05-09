@@ -9,33 +9,21 @@
       class="d-flex justify-center"
       style="max-width: 500px; min-width: 200px"
     >
-      <v-icon
-        icon="mdi-plus-circle-outline"
-        size="130"
-        color="rgb(92, 99, 106)"
-        class="align-self-center"
-      ></v-icon>
+      <v-icon icon="mdi-plus-circle-outline" size="130" color="rgb(92, 99, 106)" class="align-self-center"></v-icon>
     </v-card>
-    <v-card
-      v-else
-      rounded="xl"
-      height="165"
-      border="md"
-      style="max-width: 500px; min-width: 200px"
-    >
+    <v-card v-else rounded="xl" height="165" border="md" style="max-width: 500px; min-width: 200px">
       <v-form @submit.prevent="addCard()" class="d-flex flex-column">
         <v-text-field
           required
-          :rules="[
-            re.test(rep) || 'Wrong URL, needed https://github.com/AUTHOR/REPO',
-          ]"
+          :rules="[re.test(rep) || 'Wrong URL, needed https://github.com/AUTHOR/REPO']"
           v-model="rep"
           label="Enter reposytory URL"
           type="url"
         ></v-text-field>
+        <p v-if="err" class="ml-4" style="color: #fe6d51">This repository does not exist</p>
         <v-btn
           elevation="2"
-          :disabled="!re.test(rep)"
+          :disabled="!rep"
           type="submit"
           icon="mdi-plus-circle-outline"
           class="align-self-center"
@@ -50,6 +38,7 @@ let server_path = import.meta.env.VITE_BACKEND_URL;
 export default {
   data() {
     return {
+      err: false,
       rep: "",
       cardAppend: true,
       re: new RegExp("^https://github.com/([^/]+)/([^/]+)$"),
@@ -64,13 +53,13 @@ export default {
           projectLink: this.rep,
           projectName: this.rep.slice(this.rep.lastIndexOf("/") + 1),
         });
+        this.cardAppend = true;
+        this.rep = "";
       } catch (error) {
-        alert("This repo already exists");
+        this.err = true;
         console.error("Error fetching repositories:", error);
       }
-      this.cardAppend = true;
       this.$emit("get-repos");
-      this.rep = "";
     },
   },
 };
