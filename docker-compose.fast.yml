@@ -25,6 +25,7 @@ services:
       - postgres_db:postgres_db
     environment:
       ACCESS_TOKEN_GITHUB: ${ACCESS_TOKEN_GITHUB}
+      FRONTEND_HOST: ${FRONTEND_HOST}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_URL: ${DB_URL}

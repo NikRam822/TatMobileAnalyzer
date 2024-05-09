@@ -44,6 +44,7 @@ jobs:
           script: |
             cd TatMobileAnalyzer;
             echo "ACCESS_TOKEN_GITHUB=${{ secrets.ACCESS_TOKEN_GITHUB }}" > .env;
+            echo "FRONTEND_HOST=http://frontend" >> .env;
             echo "DB_USER=${{ secrets.DB_USER }}" >> .env;
             echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env;
             echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env;
