@@ -1,5 +1,5 @@
 <template>
-  <v-col xs="12" sm="5" md="4" lg="3" xl="2">
+  <v-col xs="12" sm="6" md="4" lg="3" xl="2">
     <v-card
       @click="cardAppend = !cardAppend"
       v-if="cardAppend"
@@ -7,7 +7,7 @@
       rounded="xl"
       height="165"
       class="d-flex justify-center"
-      style="max-width: 500px; min-width: 200px"
+      style="min-width: 200px"
     >
       <v-icon icon="mdi-plus-circle-outline" size="130" color="rgb(92, 99, 106)" class="align-self-center"></v-icon>
     </v-card>
@@ -17,10 +17,11 @@
           required
           :rules="[re.test(rep) || 'Wrong URL, needed https://github.com/AUTHOR/REPO']"
           v-model="rep"
-          label="Enter reposytory URL"
+          label="Reposytory URL"
+          hint="Enter URL GitHub repository"
           type="url"
         ></v-text-field>
-        <p v-if="err" class="ml-4" style="color: #fe6d51">This repository does not exist</p>
+        <div v-if="err" class="error">This repository does not exist</div>
         <v-btn
           elevation="2"
           :disabled="!rep"
@@ -55,6 +56,7 @@ export default {
         });
         this.cardAppend = true;
         this.rep = "";
+        this.err = false;
       } catch (error) {
         this.err = true;
         console.error("Error fetching repositories:", error);
@@ -64,3 +66,13 @@ export default {
   },
 };
 </script>
+<style scoped>
+.error {
+  margin: 0px 10px;
+  padding: 0px 8px;
+  color: rgb(254, 109, 81);
+  background-color: rgba(254, 109, 81, 0.2);
+  border: 1px solid rgb(254, 109, 81);
+  border-radius: 10px;
+}
+</style>

@@ -1,24 +1,5 @@
 <template>
-  <div style="overflow-x: auto; height: 100%">
-    <div
-      :style="{
-        width: widthOfOneBar * statsForGraph.reduce((sum, curr) => sum + curr.enable, 0) + 'px',
-      }"
-      style="height: 100%"
-    >
-      <Bar
-        :data="updateChart"
-        :options="options"
-        :chart-id="chartId"
-        :dataset-id-key="datasetIdKey"
-        :plugins="plugins"
-        :css-classes="cssClasses"
-        :styles="styles"
-        :width="width"
-        :height="height"
-      />
-    </div>
-  </div>
+  <Bar :data="updateChart" :options="options" />
 </template>
 
 <script>
@@ -32,46 +13,21 @@ export default {
   components: {
     Bar,
   },
-  props: {
-    chartId: {
-      type: String,
-      default: "bar-chart",
-    },
-    datasetIdKey: {
-      type: String,
-      default: "label",
-    },
-    width: {
-      type: Number,
-      default: 400,
-    },
-    height: {
-      type: Number,
-      default: 400,
-    },
-    cssClasses: {
-      default: "",
-      type: String,
-    },
-    styles: {
-      type: Object,
-      default: () => ({}),
-    },
-    plugins: {
-      type: Array,
-      default: () => [],
-    },
-  },
   props: ["statsForGraph"],
   data() {
     return {
-      widthOfOneBar: 100,
       options: {
+        indexAxis: "y",
         responsive: true,
         maintainAspectRatio: false,
         scales: {
           x: {
             stacked: true,
+            display: true,
+            title: {
+              display: true,
+              text: "Overall",
+            },
           },
           y: {
             stacked: true,

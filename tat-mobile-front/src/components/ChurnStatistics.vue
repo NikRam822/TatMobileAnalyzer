@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column flex-sm-row" style="overflow-y: false; height: 100%">
+  <div class="d-flex flex-column flex-sm-row">
     <v-table fixed-header>
       <thead>
         <tr>
@@ -38,7 +38,7 @@
         </tr>
       </tbody>
     </v-table>
-    <v-container style="height: 60%">
+    <v-container style="width: 100%">
       <ChurnBar :statsForGraph="statsForGraph" />
     </v-container>
   </div>

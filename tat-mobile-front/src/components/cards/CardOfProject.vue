@@ -9,6 +9,7 @@
       rounded="xl"
       height="165"
       class="d-flex flex-column"
+      style="min-width: 200px"
       :style="
         this.$store.state.RepoSatistic[rep.projectLink]
           ? {
@@ -18,7 +19,6 @@
             }
           : {}
       "
-      style="max-width: 500px; min-width: 200px"
     >
       <template v-slot:append>
         <v-btn
