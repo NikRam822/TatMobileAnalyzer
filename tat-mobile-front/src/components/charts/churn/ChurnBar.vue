@@ -1,5 +1,10 @@
 <template>
-  <Bar :data="updateChart" :options="options" />
+  <div
+    :style="{ height: widthOfOneBar * statsForGraph.reduce((sum, curr) => sum + curr.enable, 0) + 'px' }"
+    class="w-50"
+  >
+    <Bar :data="updateChart" :options="options" />
+  </div>
 </template>
 
 <script>
@@ -16,6 +21,7 @@ export default {
   props: ["statsForGraph"],
   data() {
     return {
+      widthOfOneBar: 70,
       options: {
         indexAxis: "y",
         responsive: true,
