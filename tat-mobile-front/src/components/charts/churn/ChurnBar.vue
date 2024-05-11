@@ -1,10 +1,5 @@
 <template>
-  <div
-    :style="{ height: widthOfOneBar * statsForGraph.reduce((sum, curr) => sum + curr.enable, 0) + 'px' }"
-    class="w-50"
-  >
-    <Bar :data="updateChart" :options="options" />
-  </div>
+  <Bar :data="updateChart" :options="options" />
 </template>
 
 <script>

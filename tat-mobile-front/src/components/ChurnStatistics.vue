@@ -38,7 +38,9 @@
         </tr>
       </tbody>
     </v-table>
-    <ChurnBar :statsForGraph="statsForGraph" />
+    <div :style="{ height: 70 * statsForGraph.reduce((sum, curr) => sum + curr.enable, 0) + 'px', minWidth: 50 + '%' }">
+      <ChurnBar :statsForGraph="statsForGraph" />
+    </div>
   </div>
 </template>
 <script>
