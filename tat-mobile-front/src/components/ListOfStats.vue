@@ -2,9 +2,10 @@
   <v-card class="d-flex flex-column">
     <v-list>
       <v-list-item v-for="val in statistics">
-        {{ val }} <v-divider></v-divider
-      ></v-list-item>
+        <v-btn @click="toPage(val.link)" width="100%">{{ val.name }}</v-btn>
+      </v-list-item>
     </v-list>
+    <v-divider></v-divider>
     <h1 class="align-self-center">Filters</h1>
     <v-list v-for="(files, filter) in this.$store.state.filters">
       <v-list-item>
@@ -24,11 +25,7 @@
               <v-card width="100%" class="d-flex flex-wrap">
                 {{ file }}
                 <v-spacer></v-spacer>
-                <v-icon
-                  @click="deleteFile(filter, id)"
-                  icon="mdi-close"
-                  class="flex-2-0"
-                ></v-icon>
+                <v-icon @click="deleteFile(filter, id)" icon="mdi-close" class="flex-2-0"></v-icon>
                 <v-divider class="flex-1-1-100"></v-divider>
               </v-card>
             </v-list-item>
@@ -44,9 +41,7 @@
                         v-model="path"
                         :items="
                           Object.getOwnPropertyNames(
-                            this.$store.state.RepoSatistic[
-                              this.$store.state.currentRepo.projectLink
-                            ].data.general
+                            this.$store.state.RepoSatistic[this.$store.state.currentRepo.projectLink].data.general
                           )
                         "
                       ></v-autocomplete>
@@ -75,13 +70,18 @@ import axios from "axios";
 let server_path = import.meta.env.VITE_BACKEND_URL;
 export default {
   data: () => ({
-    // Это список содержащий различные статистики (Пока что одна только раьботает)
-    statistics: ["Churn Statistics"],
+    statistics: [
+      { name: "Churn Statistics", link: "ChurnStatistics" },
+      { name: "Cocomo Statisitcs", link: "CocomoStatistics" },
+    ],
     loader: false,
     path: "",
   }),
 
   methods: {
+    toPage(page) {
+      this.$store.commit("changePage", page);
+    },
     async updateFilters() {
       let hostadress = server_path + "/api/filter/get-filters-for-project";
       try {
