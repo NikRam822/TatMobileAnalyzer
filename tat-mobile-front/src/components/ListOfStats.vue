@@ -1,78 +1,20 @@
 <template>
-  <v-card class="d-flex flex-column">
-    <h3 class="align-self-center">Chose the type of stats:</h3>
-    <v-divider></v-divider>
-    <v-list>
-      <v-list-item v-for="val in statistics">
-        <v-btn variant="tonal" @click="toPage(val.link)" width="100%">{{
-          val.name
-        }}</v-btn>
-      </v-list-item>
-    </v-list>
-    <v-divider></v-divider>
-    <h3 class="align-self-center">Configure filters:</h3>
-    <v-list v-for="(files, filter) in this.$store.state.filters">
-      <v-list-item>
-        <v-menu open-on-hover>
-          <template v-slot:activator="{ props }">
-            <v-btn
-              width="100%"
-              variant="outlined"
-              @click="updateStatistic(this.$store.state.currentRepo)"
-              v-bind="props"
-            >
-              {{ filter }}
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item v-for="(file, id) in files">
-              <v-card width="100%" class="d-flex flex-wrap">
-                {{ file }}
-                <v-spacer></v-spacer>
-                <v-icon
-                  @click="deleteFile(filter, id)"
-                  icon="mdi-close"
-                  class="flex-2-0"
-                ></v-icon>
-                <v-divider class="flex-1-1-100"></v-divider>
-              </v-card>
-            </v-list-item>
-            <v-list-item>
-              <v-btn width="100%">
-                <v-icon icon="mdi-plus"></v-icon>
-                <v-overlay activator="parent">
-                  <v-card class="ma-10" width="1000px">
-                    <v-form @submit.prevent="addFile(filter)">
-                      <v-autocomplete
-                        required
-                        label="Enter file path"
-                        v-model="path"
-                        :items="
-                          Object.getOwnPropertyNames(
-                            this.$store.state.RepoSatistic[
-                              this.$store.state.currentRepo.projectLink
-                            ].data.general
-                          )
-                        "
-                      ></v-autocomplete>
-                      <v-btn type="submit" width="100%"> Add file </v-btn>
-                    </v-form>
-                  </v-card>
-                </v-overlay>
-              </v-btn>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </v-list-item>
-    </v-list>
-
-    <v-progress-circular
-      v-if="loader"
-      size="100"
-      width="20"
-      class="align-self-center"
-      indeterminate
-    ></v-progress-circular>
+  <v-card class="d-flex flex-column justify-space-between" style="height: 100%">
+    <v-container>
+      <h3 class="align-self-center">Chose the type of stats:</h3>
+      <v-divider></v-divider>
+      <v-list>
+        <v-list-item v-for="val in statistics">
+          <v-btn variant="tonal" @click="toPage(val.link)" width="100%">{{
+            val.name
+          }}</v-btn>
+        </v-list-item>
+      </v-list>
+      <v-divider></v-divider>
+    </v-container>
+    <v-container>
+      <v-btn width="100%"> Filters </v-btn>
+    </v-container>
   </v-card>
 </template>
 <script>
