@@ -1,17 +1,29 @@
 <template>
-  <v-container class="d-flex flex-column justify-space-between" style="height: 100%">
+  <v-container
+    class="d-flex flex-column justify-space-between"
+    style="height: 100%"
+  >
     <v-container>
       <h3 class="align-self-center text-center">Statisitcs</h3>
       <v-divider></v-divider>
       <v-list>
         <v-list-item v-for="val in statistics">
-          <v-btn variant="tonal" @click="toPage(val.link)" width="100%">{{ val.name }}</v-btn>
+          <v-btn variant="tonal" @click="toPage(val.link)" width="100%">{{
+            val.name
+          }}</v-btn>
         </v-list-item>
       </v-list>
       <v-divider></v-divider>
     </v-container>
+    <v-progress-circular
+      v-if="loader"
+      size="100"
+      width="20"
+      class="align-self-center"
+      indeterminate
+    ></v-progress-circular>
     <v-container>
-      <v-menu>
+      <v-menu :close-on-content-click="false">
         <template v-slot:activator="{ props }">
           <v-btn width="100%" v-bind="props"> Filters </v-btn>
         </template>
@@ -23,14 +35,51 @@
               </v-container>
             </v-list-item>
             <v-divider></v-divider>
-            <v-list-item v-for="(files, filter) in this.$store.state.filters" :key="filter">
+            <v-list-item
+              v-for="(files, filter) in this.$store.state.filters"
+              :key="filter"
+            >
               <v-container class="ma-0 pa-0 d-flex justify-space-between">
                 <v-btn variant="tonal" width="80%">
                   {{ filter }}
                 </v-btn>
-                <v-btn>
+                <v-btn @click="config = true">
                   <v-icon icon="mdi-cog"></v-icon>
                 </v-btn>
+                <v-dialog v-model="config" width="1000px" persistent>
+                  <v-card prepend-icon="mdi-cog" title="Filter config">
+                    <v-form @submit.prevent="addFile(filter)">
+                      <v-autocomplete
+                        required
+                        label="Enter file path"
+                        v-model="path"
+                        :items="
+                          Object.getOwnPropertyNames(
+                            this.$store.state.RepoSatistic[
+                              this.$store.state.currentRepo.projectLink
+                            ].data.general
+                          )
+                        "
+                      ></v-autocomplete>
+                      <v-btn type="submit" width="100%"> Add file </v-btn>
+                    </v-form>
+                    <v-list>
+                      <v-list-item v-for="(file, id) in files" key="id">
+                        {{ file }}
+                        <v-btn
+                          variant="text"
+                          icon="mdi-trash-can-outline"
+                          @click="deleteFile(filter, id)"
+                        ></v-btn>
+                      </v-list-item>
+                    </v-list>
+                    <v-btn
+                      class="ma-1 greenBtn"
+                      text="SAVE"
+                      @click="config = false"
+                    ></v-btn>
+                  </v-card>
+                </v-dialog>
               </v-container>
             </v-list-item>
           </v-list>
@@ -38,7 +87,7 @@
             @click="updateStatistic(this.$store.state.currentRepo)"
             variant="tonal"
             width="100%"
-            style="background-color: rgb(197, 226, 21)"
+            class="greenBtn"
           >
             Accept</v-btn
           >
@@ -58,6 +107,7 @@ export default {
     ],
     loader: false,
     path: "",
+    config: false,
   }),
 
   methods: {
