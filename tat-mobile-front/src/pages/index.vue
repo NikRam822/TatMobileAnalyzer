@@ -27,7 +27,10 @@ export default {
     repositories() {
       let newRpos = [];
       for (let repo of this.$store.state.repositories) {
-        if (repo.projectLink.toLowerCase().includes(this.searchRepo.toLowerCase())) {
+        const projectLink = repo.projectLink?.toLowerCase() || "";
+        const searchTerm = this.searchRepo.toLowerCase();
+        if (projectLink.includes(searchTerm)) {
+
           newRpos.push(repo);
         }
       }

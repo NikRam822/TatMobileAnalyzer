@@ -1,66 +1,15 @@
 <template>
-  <v-card class="d-flex flex-column">
-    <v-list>
-      <v-list-item v-for="val in statistics">
-        {{ val }} <v-divider></v-divider
-      ></v-list-item>
-    </v-list>
-    <h1 class="align-self-center">Filters</h1>
-    <v-list v-for="(files, filter) in this.$store.state.filters">
-      <v-list-item>
-        <v-menu open-on-hover>
-          <template v-slot:activator="{ props }">
-            <v-btn
-              width="100%"
-              variant="outlined"
-              @click="updateStatistic(this.$store.state.currentRepo)"
-              v-bind="props"
-            >
-              {{ filter }}
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item v-for="(file, id) in files">
-              <v-card width="100%" class="d-flex flex-wrap">
-                {{ file }}
-                <v-spacer></v-spacer>
-                <v-icon
-                  @click="deleteFile(filter, id)"
-                  icon="mdi-close"
-                  class="flex-2-0"
-                ></v-icon>
-                <v-divider class="flex-1-1-100"></v-divider>
-              </v-card>
-            </v-list-item>
-            <v-list-item>
-              <v-btn width="100%">
-                <v-icon icon="mdi-plus"></v-icon>
-                <v-overlay activator="parent">
-                  <v-card class="ma-10" width="1000px">
-                    <v-form @submit.prevent="addFile(filter)">
-                      <v-autocomplete
-                        required
-                        label="Enter file path"
-                        v-model="path"
-                        :items="
-                          Object.getOwnPropertyNames(
-                            this.$store.state.RepoSatistic[
-                              this.$store.state.currentRepo.projectLink
-                            ].data.general
-                          )
-                        "
-                      ></v-autocomplete>
-                      <v-btn type="submit" width="100%"> Add file </v-btn>
-                    </v-form>
-                  </v-card>
-                </v-overlay>
-              </v-btn>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </v-list-item>
-    </v-list>
-
+  <v-container class="d-flex flex-column justify-space-between" style="height: 100%">
+    <v-container>
+      <h3 class="align-self-center text-center">Statisitcs</h3>
+      <v-divider></v-divider>
+      <v-list>
+        <v-list-item v-for="val in statistics">
+          <v-btn variant="tonal" @click="toPage(val.link)" width="100%">{{ val.name }}</v-btn>
+        </v-list-item>
+      </v-list>
+      <v-divider></v-divider>
+    </v-container>
     <v-progress-circular
       v-if="loader"
       size="100"
@@ -68,20 +17,80 @@
       class="align-self-center"
       indeterminate
     ></v-progress-circular>
-  </v-card>
+    <v-container>
+      <v-menu :close-on-content-click="false">
+        <template v-slot:activator="{ props }">
+          <v-btn width="100%" v-bind="props"> Filters </v-btn>
+        </template>
+        <v-card>
+          <v-list>
+            <v-list-item>
+              <v-container class="ma-0 pa-0 d-flex justify-space-between">
+                <v-btn variant="tonal" width="100%"> New filter </v-btn>
+              </v-container>
+            </v-list-item>
+            <v-divider></v-divider>
+            <v-list-item v-for="(files, filter) in this.$store.state.filters" :key="filter">
+              <v-container class="ma-0 pa-0 d-flex justify-space-between">
+                <v-btn variant="tonal" width="80%">
+                  {{ filter }}
+                </v-btn>
+                <v-btn @click="config = true">
+                  <v-icon icon="mdi-cog"></v-icon>
+                </v-btn>
+                <v-dialog v-model="config" width="1000px" persistent>
+                  <v-card prepend-icon="mdi-cog" title="Filter config">
+                    <v-form @submit.prevent="addFile(filter)">
+                      <v-autocomplete
+                        required
+                        label="Enter file path"
+                        v-model="path"
+                        :items="
+                          Object.getOwnPropertyNames(
+                            this.$store.state.RepoSatistic[this.$store.state.currentRepo.projectLink].data.general
+                          )
+                        "
+                      ></v-autocomplete>
+                      <v-btn type="submit" width="100%"> Add file </v-btn>
+                    </v-form>
+                    <v-list>
+                      <v-list-item v-for="(file, id) in files" key="id">
+                        {{ file }}
+                        <v-btn variant="text" icon="mdi-trash-can-outline" @click="deleteFile(filter, id)"></v-btn>
+                      </v-list-item>
+                    </v-list>
+                    <v-btn class="ma-1 greenBtn" text="SAVE" @click="config = false"></v-btn>
+                  </v-card>
+                </v-dialog>
+              </v-container>
+            </v-list-item>
+          </v-list>
+          <v-btn @click="updateStatistic(this.$store.state.currentRepo)" variant="tonal" width="100%" class="greenBtn">
+            Accept</v-btn
+          >
+        </v-card>
+      </v-menu>
+    </v-container>
+  </v-container>
 </template>
 <script>
 import axios from "axios";
 let server_path = import.meta.env.VITE_BACKEND_URL;
 export default {
   data: () => ({
-    // Это список содержащий различные статистики (Пока что одна только раьботает)
-    statistics: ["Churn Statistics"],
+    statistics: [
+      { name: "Churn Statistics", link: "ChurnStatistics" },
+      { name: "Project cost", link: "CocomoStatistics" },
+    ],
     loader: false,
     path: "",
+    config: false,
   }),
 
   methods: {
+    toPage(page) {
+      this.$store.commit("changePage", page);
+    },
     async updateFilters() {
       let hostadress = server_path + "/api/filter/get-filters-for-project";
       try {

@@ -7,8 +7,12 @@ export default createStore({
     RepoSatistic: {},
     filters: [],
     currentRepo: "Error parsing name",
+    currentStatisitc: "ChurnStatistics"
   },
   mutations: {
+    changePage(state, payload) {
+      state.currentStatisitc = payload;
+    },
     changeFilter(state, payload) {
       state.filters = payload;
       delete state.filters.projectId

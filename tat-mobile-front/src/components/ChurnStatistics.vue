@@ -38,7 +38,15 @@
         </tr>
       </tbody>
     </v-table>
-    <div :style="{ height: 70 * statsForGraph.reduce((sum, curr) => sum + curr.enable, 0) + 'px', minWidth: 50 + '%' }">
+    <div
+      :style="{
+        height:
+          70 * statsForGraph.reduce((sum, curr) => sum + curr.enable, 0) +
+          60 +
+          'px',
+        minWidth: 50 + '%',
+      }"
+    >
       <ChurnBar :statsForGraph="statsForGraph" />
     </div>
   </div>
