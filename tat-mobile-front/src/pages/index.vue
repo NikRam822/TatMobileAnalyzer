@@ -1,10 +1,6 @@
 <template>
   <v-row>
-    <CardOfProject
-      v-for="rep in repositories"
-      :rep="rep"
-      @get-repos="getRepos"
-    />
+    <CardOfProject v-for="rep in repositories" :rep="rep" @get-repos="getRepos" />
     <CardForAdd @get-repos="getRepos" />
   </v-row>
 </template>
@@ -34,6 +30,7 @@ export default {
         const projectLink = repo.projectLink?.toLowerCase() || "";
         const searchTerm = this.searchRepo.toLowerCase();
         if (projectLink.includes(searchTerm)) {
+
           newRpos.push(repo);
         }
       }
