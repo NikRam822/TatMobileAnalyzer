@@ -45,7 +45,7 @@ Below are the instructions for running `docker-compose`:
 2. Go to `/src/main/resources` and create `env.properties` file with next content:
 
    ```text
-   ACCESS_TOKEN_GITHUB=<your_github_access_token>
+   ACCESS_TOKEN_GITHUB=your_github_access_token
    DB_USER=some_user
    DB_PASSWORD=some_password
    DB_DATABASE=some_database
@@ -53,7 +53,7 @@ Below are the instructions for running `docker-compose`:
    FRONTEND_HOST=https://host.com/
    ```
 
-   - Replace `<your_github_access_token>` to your github access token
+   - Replace all parameters to your parameters
 
 3. Go to `./tat-mobile-front` and create `.env` file with desired backend URL localhost for dev and real one for hosted backend:
 
