@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin
+
 @Slf4j
 @RestController
 @RequestMapping("/api/statistic")
