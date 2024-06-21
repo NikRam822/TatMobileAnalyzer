@@ -55,16 +55,7 @@
                 <v-dialog v-model="config" width="1000px" persistent>
                   <v-card prepend-icon="mdi-cog" title="Filter config">
                     <v-form @submit.prevent="addFile(filter)">
-                      <v-autocomplete
-                        required
-                        label="Enter file path"
-                        v-model="path"
-                        :items="
-                          Object.getOwnPropertyNames(
-                            this.$store.state.RepoSatistic[this.$store.state.currentRepo.projectLink].data.general
-                          )
-                        "
-                      ></v-autocomplete>
+                      <v-autocomplete required label="Enter file path" v-model="path" :items="paths"></v-autocomplete>
                       <v-btn type="submit" width="100%"> Add file </v-btn>
                     </v-form>
                     <v-list>
@@ -179,6 +170,21 @@ export default {
         }
       }
       return reposNames;
+    },
+    paths() {
+      let allPaths = [];
+      for (let path of Object.getOwnPropertyNames(
+        this.$store.state.RepoSatistic[this.$store.state.currentRepo.projectLink].data.general
+      )) {
+        path = path.split("/");
+        let currentPath = "";
+        for (let p of path) {
+          currentPath += p;
+          allPaths.push(currentPath);
+          currentPath += "/";
+        }
+      }
+      return allPaths;
     },
   },
 };
