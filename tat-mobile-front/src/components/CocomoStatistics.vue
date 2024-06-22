@@ -7,29 +7,38 @@
       </v-sheet>
       <v-sheet width="150px" class="text-center ma-2">
         <p>Lines of code:</p>
-        <v-text-field variant="solo-inverted" @input="validateInput" v-model="LOC"></v-text-field>
+        <v-text-field
+          type="number"
+          variant="solo-inverted"
+          v-model="LOC"
+          min="0"
+          append-inner-icon="mdi-autorenew"
+          @click:append-inner="this.LOC = calculateLOC()"
+          hint="enter the number of thousand lines"
+          suffix="k"
+        ></v-text-field>
       </v-sheet>
     </div>
-    <div class="d-flex flex-row justify-space-around ma-2" style="width: 100%">
+    <div class="d-flex flex-row justify-space-around ma-2 mt-16" style="width: 100%">
       <v-sheet class="text-center">
         <p style="color: rgb(197, 226, 21)">Labor intensity with risk</p>
-        <v-chip size="large">
+        <v-chip size="x-large">
           {{ laborIntensityWithRisk }}
         </v-chip>
       </v-sheet>
       <v-sheet class="text-center">
         <p>Person-months</p>
-        <v-chip>
+        <v-chip size="large">
           {{ personMonths }}
         </v-chip>
       </v-sheet>
       <v-sheet class="text-center">
         <p>Months</p>
-        <v-chip> {{ months }}</v-chip>
+        <v-chip size="large"> {{ months }}</v-chip>
       </v-sheet>
       <v-sheet class="text-center">
         <p>Personnel</p>
-        <v-chip> {{ personel }}</v-chip>
+        <v-chip size="large"> {{ personel }}</v-chip>
       </v-sheet>
     </div>
   </div>
@@ -50,7 +59,10 @@
         <td>
           <v-radio
             v-if="param.vl"
-            @click="(param.pick = param.vl), updateResult()"
+            @click="
+              param.pick = 'vl';
+              updateResult();
+            "
             v-model="param.pick"
             true-value="vl"
             :label="String(param.vl)"
@@ -59,7 +71,10 @@
         <td>
           <v-radio
             v-if="param.l"
-            @click="(param.pick = param.l), updateResult()"
+            @click="
+              param.pick = 'l';
+              updateResult();
+            "
             v-model="param.pick"
             true-value="l"
             :label="String(param.l)"
@@ -68,7 +83,10 @@
         <td>
           <v-radio
             v-if="param.n"
-            @click="(param.pick = param.n), updateResult()"
+            @click="
+              param.pick = 'n';
+              updateResult();
+            "
             v-model="param.pick"
             true-value="n"
             :label="String(param.n)"
@@ -77,7 +95,10 @@
         <td>
           <v-radio
             v-if="param.h"
-            @click="(param.pick = param.h), updateResult()"
+            @click="
+              param.pick = 'h';
+              updateResult();
+            "
             v-model="param.pick"
             true-value="h"
             :label="String(param.h)"
@@ -86,7 +107,10 @@
         <td>
           <v-radio
             v-if="param.vh"
-            @click="(param.pick = param.vh), updateResult()"
+            @click="
+              param.pick = 'vh';
+              updateResult();
+            "
             v-model="param.pick"
             true-value="vh"
             :label="String(param.vh)"
@@ -102,7 +126,7 @@ let server_path = import.meta.env.VITE_BACKEND_URL;
 export default {
   data() {
     return {
-      teamType: ["ORGANIC", "SEMIDETACTCH", "EMBEDDED"],
+      teamType: ["ORGANIC", "SEMIDETACH", "EMBEDDED"],
       currentTeam: "ORGANIC",
       LOC: 0,
       personMonths: 0,
@@ -112,8 +136,8 @@ export default {
       table: [
         {
           pick: "n",
-          name1: "analyticalSkills",
-          name: "Required Software Reliability",
+          name1: "reliability",
+          name: "Reliability",
           vl: 0.75,
           l: 0.88,
           n: 1.0,
@@ -123,7 +147,7 @@ export default {
         {
           pick: "n",
           name1: "databaseSize",
-          name: "Size of Application Database",
+          name: "Database Size",
           vl: 0,
           l: 0.94,
           n: 1.0,
@@ -132,8 +156,8 @@ export default {
         },
         {
           pick: "n",
-          name1: "developmentExperience",
-          name: "Complexity of The Product",
+          name1: "productComplexity",
+          name: "Product Complexity",
           vl: 0.7,
           l: 0.85,
           n: 1.0,
@@ -142,19 +166,19 @@ export default {
         },
         {
           pick: "n",
-          name1: "developmentMethods",
-          name: "Runtime Performance Constraints",
+          name1: "performance",
+          name: "Performance",
           vl: 0,
           l: 0,
           n: 1.0,
           h: 1.11,
           vh: 1.3,
         },
-        { pick: "n", name1: "developmentSchedule", name: "Memory Constraints", vl: 0, l: 0, n: 1.0, h: 1.06, vh: 1.21 },
+        { pick: "n", name1: "memoryLimit", name: "Memory limit", vl: 0, l: 0, n: 1.0, h: 1.06, vh: 1.21 },
         {
           pick: "n",
-          name1: "developmentSkills",
-          name: "Volatility of the virtual machine environment",
+          name1: "unstableEnvironment",
+          name: "Unstable environment",
           vl: 0,
           l: 0.87,
           n: 1.0,
@@ -163,8 +187,8 @@ export default {
         },
         {
           pick: "n",
-          name1: "developmentTools",
-          name: "Required turnaround time",
+          name1: "recoveryTime",
+          name: "Recovery time",
           vl: 0,
           l: 0.94,
           n: 1.0,
@@ -173,8 +197,8 @@ export default {
         },
         {
           pick: "n",
-          name1: "languageExperience",
-          name: "Analyst capability",
+          name1: "analyticalSkills",
+          name: "Analytical skill",
           vl: 1.46,
           l: 1.19,
           n: 1.0,
@@ -183,8 +207,8 @@ export default {
         },
         {
           pick: "n",
-          name1: "memoryLimit",
-          name: "Applications experience",
+          name1: "developmentSkills",
+          name: "Development skills",
           vl: 1.29,
           l: 1.13,
           n: 1.0,
@@ -193,8 +217,8 @@ export default {
         },
         {
           pick: "n",
-          name1: "performance",
-          name: "Software engineer capability",
+          name1: "developmentExperience",
+          name: "Development experience",
           vl: 1.42,
           l: 1.17,
           n: 1.0,
@@ -203,7 +227,7 @@ export default {
         },
         {
           pick: "n",
-          name1: "productComplexity",
+          name1: "virtualMachinesExperience",
           name: "Virtual machine experience",
           vl: 1.21,
           l: 1.1,
@@ -213,8 +237,8 @@ export default {
         },
         {
           pick: "n",
-          name1: "recoveryTime",
-          name: "Programming language experience",
+          name1: "languageExperience",
+          name: "language experience",
           vl: 1.14,
           l: 1.07,
           n: 1.0,
@@ -223,8 +247,8 @@ export default {
         },
         {
           pick: "n",
-          name1: "reliability",
-          name: "Application of software engineering methods",
+          name1: "developmentTools",
+          name: "Development tools",
           vl: 1.24,
           l: 1.1,
           n: 1.0,
@@ -233,8 +257,8 @@ export default {
         },
         {
           pick: "n",
-          name1: "unstableEnvironment",
-          name: "Use of software tools",
+          name1: "developmentMethods",
+          name: "Development methods",
           vl: 1.24,
           l: 1.1,
           n: 1.0,
@@ -243,8 +267,8 @@ export default {
         },
         {
           pick: "n",
-          name1: "virtualMachinesExperience",
-          name: "Required development schedule",
+          name1: "developmentSchedule",
+          name: "Development schedule",
           vl: 1.23,
           l: 1.08,
           n: 1.0,
@@ -256,14 +280,6 @@ export default {
     };
   },
   methods: {
-    validateInput(event) {
-      const value = event.target.value;
-      if (/^\d*$/.test(value)) {
-        this.number = value;
-      } else {
-        event.target.value = this.number;
-      }
-    },
     async updateResult() {
       const resp = {};
       for (let item of this.table) {
@@ -283,22 +299,29 @@ export default {
         console.error("Error: ", error);
       }
     },
-  },
-  computed: {
     calculateLOC() {
       let totalValue = 0;
-      for (let val of Object.values(
-        this.$store.state.RepoSatistic[this.$store.state.currentRepo.projectLink].data.overall
-      )) {
-        totalValue += val;
+      const statsRepo = this.$store.state.RepoSatistic[this.$store.state.currentRepo.projectLink].data;
+      for (let name in statsRepo.churn) {
+        let churn = statsRepo.churn[name];
+        let overall = statsRepo.overall[name];
+        totalValue += Math.round((overall * (100 - churn)) / 100);
       }
-      totalValue = totalValue;
       return totalValue / 1000;
     },
   },
+  computed: {},
   mounted() {
-    this.LOC = this.calculateLOC;
+    this.LOC = this.calculateLOC();
     this.updateResult();
+  },
+  watch: {
+    LOC() {
+      this.updateResult();
+    },
+    currentTeam() {
+      this.updateResult();
+    },
   },
 };
 </script>
