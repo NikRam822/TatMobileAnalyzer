@@ -7,6 +7,7 @@ import CocomoStatistics from "../components/CocomoStatistics.vue";
 import ChurnStatistics from "../components/ChurnStatistics.vue";
 
 export default {
+  props: ["searchRepo"],
   components: {
     CocomoStatistics,
     ChurnStatistics,

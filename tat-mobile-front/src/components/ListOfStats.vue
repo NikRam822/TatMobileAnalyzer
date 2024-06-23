@@ -2,7 +2,7 @@
   <v-container class="d-flex flex-column justify-space-between" style="height: 100%">
     <v-container>
       <v-container>
-        <v-btn variant="default" width="100%" height="70px" class="text-none text-h4" color="rgb(197, 226, 21)">
+        <v-btn variant="text" width="100%" height="70px" class="text-none text-h4" color="rgb(197, 226, 21)">
           {{ this.$store.state.currentRepo.projectName }}
           <v-menu activator="parent">
             <v-list>
