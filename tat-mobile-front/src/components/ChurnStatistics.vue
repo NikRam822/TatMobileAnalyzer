@@ -40,10 +40,7 @@
     </v-table>
     <div
       :style="{
-        height:
-          70 * statsForGraph.reduce((sum, curr) => sum + curr.enable, 0) +
-          60 +
-          'px',
+        height: 70 * statsForGraph.reduce((sum, curr) => sum + curr.enable, 0) + 60 + 'px',
         minWidth: 50 + '%',
       }"
     >
@@ -86,7 +83,7 @@ export default {
         statsForGraph.push({ name: name });
         statsForGraph[statsForGraph.length - 1].churn = Math.round(churn);
         statsForGraph[statsForGraph.length - 1].overall = overall;
-        statsForGraph[statsForGraph.length - 1].value = Math.round((overall * (100 - churn)) / 100);
+        statsForGraph[statsForGraph.length - 1].value = Math.round(overall * ((100 - churn) / 100));
         statsForGraph[statsForGraph.length - 1].notValue = Math.round((overall * churn) / 100);
         statsForGraph[statsForGraph.length - 1].enable = true;
       }

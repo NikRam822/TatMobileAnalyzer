@@ -30,7 +30,6 @@ export default {
         const projectLink = repo.projectLink?.toLowerCase() || "";
         const searchTerm = this.searchRepo.toLowerCase();
         if (projectLink.includes(searchTerm)) {
-
           newRpos.push(repo);
         }
       }

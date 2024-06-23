@@ -1,14 +1,28 @@
 <template>
   <v-container class="d-flex flex-column justify-space-between" style="height: 100%">
     <v-container>
-      <h3 class="align-self-center text-center">Statisitcs</h3>
-      <v-divider></v-divider>
-      <v-list>
-        <v-list-item v-for="val in statistics">
-          <v-btn variant="tonal" @click="toPage(val.link)" width="100%">{{ val.name }}</v-btn>
-        </v-list-item>
-      </v-list>
-      <v-divider></v-divider>
+      <v-container>
+        <v-btn variant="text" width="100%" height="70px" class="text-none text-h4" color="rgb(197, 226, 21)">
+          {{ this.$store.state.currentRepo.projectName }}
+          <v-menu activator="parent">
+            <v-list>
+              <v-list-item v-for="(item, index) in getRepositoryes" :key="index" :value="index" @click="goToRepo(item)">
+                <v-list-item-title>{{ item.projectName }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </v-btn>
+      </v-container>
+      <v-container>
+        <h3 class="align-self-center text-center">Statisitcs</h3>
+        <v-divider></v-divider>
+        <v-list>
+          <v-list-item v-for="val in statistics">
+            <v-btn variant="tonal" @click="toPage(val.link)" width="100%">{{ val.name }}</v-btn>
+          </v-list-item>
+        </v-list>
+        <v-divider></v-divider>
+      </v-container>
     </v-container>
     <v-progress-circular
       v-if="loader"
@@ -41,16 +55,7 @@
                 <v-dialog v-model="config" width="1000px" persistent>
                   <v-card prepend-icon="mdi-cog" title="Filter config">
                     <v-form @submit.prevent="addFile(filter)">
-                      <v-autocomplete
-                        required
-                        label="Enter file path"
-                        v-model="path"
-                        :items="
-                          Object.getOwnPropertyNames(
-                            this.$store.state.RepoSatistic[this.$store.state.currentRepo.projectLink].data.general
-                          )
-                        "
-                      ></v-autocomplete>
+                      <v-autocomplete required label="Enter file path" v-model="path" :items="paths"></v-autocomplete>
                       <v-btn type="submit" width="100%"> Add file </v-btn>
                     </v-form>
                     <v-list>
@@ -145,9 +150,42 @@ export default {
       }
       this.path = "";
     },
+    goToRepo(item) {
+      this.$store.commit("changeCurrentRepo", item);
+      location.reload();
+    },
   },
   created() {
     this.updateFilters();
+  },
+  computed: {
+    getRepositoryes() {
+      const reposNames = [];
+      for (let rep of this.$store.state.repositories) {
+        if (
+          rep.projectName != this.$store.state.currentRepo.projectName &&
+          this.$store.state.RepoSatistic[rep.projectLink]
+        ) {
+          reposNames.push(rep);
+        }
+      }
+      return reposNames;
+    },
+    paths() {
+      let allPaths = [];
+      for (let path of Object.getOwnPropertyNames(
+        this.$store.state.RepoSatistic[this.$store.state.currentRepo.projectLink].data.general
+      )) {
+        path = path.split("/");
+        let currentPath = "";
+        for (let p of path) {
+          currentPath += p;
+          allPaths.push(currentPath);
+          currentPath += "/";
+        }
+      }
+      return allPaths;
+    },
   },
 };
 </script>

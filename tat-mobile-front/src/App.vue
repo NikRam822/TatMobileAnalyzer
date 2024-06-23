@@ -60,8 +60,8 @@ export default {
     currentPage() {
       switch (this.$route.name) {
         case "/project-review":
-          return this.$store.state.currentRepo.projectName;
-        default:
+          return "Project Review";
+        case "/":
           return "Dashboard";
       }
     },
