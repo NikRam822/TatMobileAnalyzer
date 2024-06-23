@@ -2,14 +2,22 @@ import { createStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
 
 export default createStore({
+
   state: {
     repositories: [],
     RepoSatistic: {},
     filters: [],
     currentRepo: "Error parsing name",
-    currentStatisitc: "ChurnStatistics"
+    currentStatisitc: "ChurnStatistics",
+    storeParams: {},
   },
   mutations: {
+    delParam(state){
+      delete state.storeParams[state.currentRepo.projectLink]
+    },
+    setParams(state, param) {
+      state.storeParams[state.currentRepo.projectLink] = param
+  },
     changePage(state, payload) {
       state.currentStatisitc = payload;
     },
@@ -29,6 +37,11 @@ export default createStore({
     changeCurrentRepo(state, rep) {
       state.currentRepo = rep;
     },
+  },
+  getters: {
+    getParams(state) {
+      return state.storeParams[state.currentRepo.projectLink]
+  }
   },
   plugins: [createPersistedState()],
 });
