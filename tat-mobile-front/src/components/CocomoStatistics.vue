@@ -42,6 +42,7 @@
       </v-sheet>
     </div>
   </div>
+  <v-btn @click="resetCoef()" variant="text"> Reset coefficient <v-icon icon="mdi-autorenew"></v-icon></v-btn>
   <v-table>
     <thead>
       <tr>
@@ -267,16 +268,19 @@ export default {
     };
   },
   methods: {
+    resetCoef() {
+      const coef = {};
+      for (let item of this.table) {
+        coef[item.name1] = "n";
+      }
+      this.coefficient = coef;
+      return coef;
+    },
     setParams() {
       if (!this.$store.getters["getParams"]) {
         const params = {};
-        const coef = {};
-        for (let item of this.table) {
-          coef[item.name1] = "n";
-        }
         this.LOC = this.calculateLOC();
-        this.coefficient = coef;
-        params.coef = coef;
+        params.coef = this.resetCoef();
         params.teamType = this.currentTeam;
         params.LOC = this.LOC;
         this.$store.commit("setParams", params);
