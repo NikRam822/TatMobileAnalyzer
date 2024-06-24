@@ -4,34 +4,24 @@
 
 ## What is TatMobileAnalyzer?
 
-TatMobileAnalyzer is a comprehensive solution for analysing the work of developers within one or several projects. This solution is aimed primarily at managers and product owners and is an tool that provides statistics on project contributors.
+TatMobileAnalyzer is a comprehensive solution for analyzing developers' work and estimating project labor costs. This solution is designed primarily for senior managers and product owners and is a tool that provides statistics on project participants as well as the COCOMO2 project estimation model
 For more information visit our [Software Requirement Specification document](docs/SPECIFICATION.md).
 
-## Metrics represented in our system
+## Functions represented in our system
 
 <details>
 <summary>Click to see more</summary>
 
-Currently, the following metrics are available:
+The following features are currently available:
 
-### Quantitative metrics:
+### Analyzing developer contributions to the project:
 
-- Number of developer commits over a given time period
-- Percentage of developer commits compared to the total number of commits over a period of time
-- Number of add and del developer commits over a period of time
-- Percentage of developer add and del commits over total number of add and del commits over a period of time
-- How much the codebase has grown over the time period including developer commits
-- How many add and del lines of code a developer writes on average per day
-- Number of add and del commits for each developer over a period of time (detailed information on commits)
-- Information on commits per developer (add and del by files)
+Analyze all commits by project contributors. Based on the analyzed commits, an objective picture of the repository for the selected period for each contributor is obtained. There is information about who wrote how many lines, how many lines got into the repository, how many lines are not used in the repository and what percentage of useful lines the contributor writes.
 
-Planned metrics:
 
-### Metrics requiring qualitative analysis of the codebase:
+### Calculating the cost of a project based on COCOMO 2:
 
-- Number of syntactically unique lines of code over a period of time
-- Number of duplicated lines of code for a certain period of time
-- Cyclomatic complexity
+The project provides the ability to estimate project labor costs based on the COCOMO 2 model. This model allows you to estimate the planned cost of the project, the planned effort, the timeframe and the number of developers.
 </details>
 
 ## Build
@@ -73,6 +63,7 @@ Below are the instructions for running `docker-compose`:
 ### without Docker, locally
 
 <details>
+<summary>Click to see more</summary>
 
 1. Ensure that you have `jdk-17` with `maven` for building projects, `npm` and
    latest `postgres` database installed on your system.
@@ -84,10 +75,11 @@ Below are the instructions for running `docker-compose`:
    DB_PASSWORD=some_password
    DB_DATABASE=some_database
    DB_URL=jdbc:postgresql://localhost:5432/some_database
+   FRONTEND_HOST=http://localhost:3000/
    ```
    - Replace `<your_github_access_token>` to your github access token. `DB_USER`, `DB_PASSWORD`,
      `DB_DATABASE`, and `DB_URL` should be real one and relevant for your `postgres` database.
-     Note! The database should be created before running the backend.
+     Note! The database should be created before running the backend. `FRONTEND_HOST` should be replaced with the address of your frontend.
    - Go to `./tat-mobile-front` and create `.env` file with next content:
    ```text
    VUE_APP_HOST_ADDRESS=http://localhost:8080/patch/statistic
@@ -104,17 +96,19 @@ Below are the instructions for running `docker-compose`:
 
 ### TatMobileAnalyzer uses
 
-1. Spring boot (version 2.7.4)
-2. PostgreSQL
-3. Swagger2 (version 2.7.0)
-4. Javadoc (version 3.0.0)
+1. Java (version 17)
+2. Js
+3. Spring boot (version 2.7.4)
+4. Vue.js (version 3.4.21)
+5. PostgreSQL
+6. Swagger2 (version 2.7.0)
+7. Javadoc (version 3.0.0)
 
 ### Links
 
 - [Tat Mobile Specification](./docs/SPECIFICATION.md)
 - [GitHub Workflow Rules](./docs/WORKFLOW.md)
 - [Figma Prototype](https://www.figma.com/file/OE0pQL3mn4wlcng6o10AK3/ServiceDesign?type=design&node-id=264%3A1251&mode=design&t=XG83iR2C8fcI6gXF-1)
-- [Toggle Report](https://docs.google.com/document/d/1K6aZL5N1QduP5FQHXYm_HEbrKH27j5Ctd6gg3J50kU0/edit#heading=h.sv8ku27k1igh)
 - [Other Artifacts](https://drive.google.com/drive/folders/1RKxz5tozCQmqkwWamR1bCjz847XtSwqx?usp=sharing)
 
 ### License
