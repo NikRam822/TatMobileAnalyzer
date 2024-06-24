@@ -42,6 +42,7 @@
       </v-sheet>
     </div>
   </div>
+  <v-btn @click="resetCoef()" variant="text"> Reset coefficient <v-icon icon="mdi-autorenew"></v-icon></v-btn>
   <v-table>
     <thead>
       <tr>
@@ -60,10 +61,10 @@
           <v-radio
             v-if="param.vl"
             @click="
-              param.pick = 'vl';
+              coefficient[param.name1] = 'vl';
               updateResult();
             "
-            v-model="param.pick"
+            v-model="coefficient[param.name1]"
             true-value="vl"
             :label="String(param.vl)"
           ></v-radio>
@@ -72,10 +73,10 @@
           <v-radio
             v-if="param.l"
             @click="
-              param.pick = 'l';
+              coefficient[param.name1] = 'l';
               updateResult();
             "
-            v-model="param.pick"
+            v-model="coefficient[param.name1]"
             true-value="l"
             :label="String(param.l)"
           ></v-radio>
@@ -84,10 +85,10 @@
           <v-radio
             v-if="param.n"
             @click="
-              param.pick = 'n';
+              coefficient[param.name1] = 'n';
               updateResult();
             "
-            v-model="param.pick"
+            v-model="coefficient[param.name1]"
             true-value="n"
             :label="String(param.n)"
           ></v-radio>
@@ -96,10 +97,10 @@
           <v-radio
             v-if="param.h"
             @click="
-              param.pick = 'h';
+              coefficient[param.name1] = 'h';
               updateResult();
             "
-            v-model="param.pick"
+            v-model="coefficient[param.name1]"
             true-value="h"
             :label="String(param.h)"
           ></v-radio>
@@ -108,10 +109,10 @@
           <v-radio
             v-if="param.vh"
             @click="
-              param.pick = 'vh';
+              coefficient[param.name1] = 'vh';
               updateResult();
             "
-            v-model="param.pick"
+            v-model="coefficient[param.name1]"
             true-value="vh"
             :label="String(param.vh)"
           ></v-radio>
@@ -126,16 +127,8 @@ let server_path = import.meta.env.VITE_BACKEND_URL;
 export default {
   data() {
     return {
-      teamType: ["ORGANIC", "SEMIDETACH", "EMBEDDED"],
-      currentTeam: "ORGANIC",
-      LOC: 0,
-      personMonths: 0,
-      months: 0,
-      personel: 0,
-      laborIntensityWithRisk: 0,
       table: [
         {
-          pick: "n",
           name1: "reliability",
           name: "Reliability",
           vl: 0.75,
@@ -145,7 +138,6 @@ export default {
           vh: 1.4,
         },
         {
-          pick: "n",
           name1: "databaseSize",
           name: "Database Size",
           vl: 0,
@@ -155,7 +147,6 @@ export default {
           vh: 1.16,
         },
         {
-          pick: "n",
           name1: "productComplexity",
           name: "Product Complexity",
           vl: 0.7,
@@ -165,7 +156,6 @@ export default {
           vh: 1.3,
         },
         {
-          pick: "n",
           name1: "performance",
           name: "Performance",
           vl: 0,
@@ -174,9 +164,8 @@ export default {
           h: 1.11,
           vh: 1.3,
         },
-        { pick: "n", name1: "memoryLimit", name: "Memory limit", vl: 0, l: 0, n: 1.0, h: 1.06, vh: 1.21 },
+        { name1: "memoryLimit", name: "Memory limit", vl: 0, l: 0, n: 1.0, h: 1.06, vh: 1.21 },
         {
-          pick: "n",
           name1: "unstableEnvironment",
           name: "Unstable environment",
           vl: 0,
@@ -186,7 +175,6 @@ export default {
           vh: 1.3,
         },
         {
-          pick: "n",
           name1: "recoveryTime",
           name: "Recovery time",
           vl: 0,
@@ -196,7 +184,6 @@ export default {
           vh: 1.15,
         },
         {
-          pick: "n",
           name1: "analyticalSkills",
           name: "Analytical skill",
           vl: 1.46,
@@ -206,7 +193,6 @@ export default {
           vh: 0.71,
         },
         {
-          pick: "n",
           name1: "developmentSkills",
           name: "Development skills",
           vl: 1.29,
@@ -216,7 +202,6 @@ export default {
           vh: 0.82,
         },
         {
-          pick: "n",
           name1: "developmentExperience",
           name: "Development experience",
           vl: 1.42,
@@ -226,7 +211,6 @@ export default {
           vh: 0.7,
         },
         {
-          pick: "n",
           name1: "virtualMachinesExperience",
           name: "Virtual machine experience",
           vl: 1.21,
@@ -236,7 +220,6 @@ export default {
           vh: 0,
         },
         {
-          pick: "n",
           name1: "languageExperience",
           name: "language experience",
           vl: 1.14,
@@ -246,7 +229,6 @@ export default {
           vh: 0,
         },
         {
-          pick: "n",
           name1: "developmentTools",
           name: "Development tools",
           vl: 1.24,
@@ -256,7 +238,6 @@ export default {
           vh: 0.82,
         },
         {
-          pick: "n",
           name1: "developmentMethods",
           name: "Development methods",
           vl: 1.24,
@@ -266,7 +247,6 @@ export default {
           vh: 0.83,
         },
         {
-          pick: "n",
           name1: "developmentSchedule",
           name: "Development schedule",
           vl: 1.23,
@@ -277,13 +257,52 @@ export default {
         },
       ],
       test: true,
+      teamType: ["ORGANIC", "SEMIDETACH", "EMBEDDED"],
+      currentTeam: "ORGANIC",
+      LOC: 0,
+      coefficient: {},
+      personMonths: 0,
+      months: 0,
+      personel: 0,
+      laborIntensityWithRisk: 0,
     };
   },
   methods: {
+    resetCoef() {
+      const coef = {};
+      for (let item of this.table) {
+        coef[item.name1] = "n";
+      }
+      this.coefficient = coef;
+      return coef;
+    },
+    setParams() {
+      if (!this.$store.getters["getParams"]) {
+        const params = {};
+        this.LOC = this.calculateLOC();
+        params.coef = this.resetCoef();
+        params.teamType = this.currentTeam;
+        params.LOC = this.LOC;
+        this.$store.commit("setParams", params);
+      } else {
+        const storeParam = this.$store.getters["getParams"];
+        this.coefficient = storeParam.coef;
+        this.LOC = storeParam.LOC;
+        this.currentTeam = storeParam.teamType;
+      }
+    },
+    updateStore() {
+      const params = {};
+      params.teamType = this.currentTeam;
+      params.LOC = this.LOC;
+      params.coef = this.coefficient;
+      this.$store.commit("setParams", params);
+    },
     async updateResult() {
+      this.updateStore();
       const resp = {};
       for (let item of this.table) {
-        resp[item.name1] = item[item.pick];
+        resp[item.name1] = item[this.coefficient[item.name1]];
       }
       resp.kloc = this.LOC;
       resp.projectType = this.currentTeam;
@@ -296,6 +315,7 @@ export default {
         this.personel = response.personnel;
         this.laborIntensityWithRisk = response.laborIntensityWithRisk;
       } catch (error) {
+        // this.$store.commit("delParam");
         console.error("Error: ", error);
       }
     },
@@ -310,9 +330,8 @@ export default {
       return totalValue / 1000;
     },
   },
-  computed: {},
   mounted() {
-    this.LOC = this.calculateLOC();
+    this.setParams();
     this.updateResult();
   },
   watch: {
