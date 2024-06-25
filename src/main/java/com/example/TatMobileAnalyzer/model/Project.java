@@ -35,4 +35,7 @@ public class Project {
     @Column(name = "favorite")
     private Boolean favorite;
 
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    private Collection<Cocomo> cocomo;
+
 }
