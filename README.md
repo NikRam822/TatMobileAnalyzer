@@ -24,6 +24,8 @@ Analyze all commits by project contributors. Based on the analyzed commits, an o
 The project provides the ability to estimate project labor costs based on the COCOMO 2 model. This model allows you to estimate the planned cost of the project, the planned effort, the timeframe and the number of developers.
 </details>
 
+![demo](docs/media/analyze_demo.gif)
+
 ## Build
 
 ### with Docker
@@ -106,8 +108,9 @@ Below are the instructions for running `docker-compose`:
 
 ### Links
 
-- [Tat Mobile Specification](./docs/SPECIFICATION.md)
-- [GitHub Workflow Rules](./docs/WORKFLOW.md)
+- [TatMobile Analyzer](http://178.154.240.54:3000/)
+- [Tat Mobile Specification](docs/SPECIFICATION.md)
+- [GitHub Workflow Rules](docs/WORKFLOW.md)
 - [Figma Prototype](https://www.figma.com/file/OE0pQL3mn4wlcng6o10AK3/ServiceDesign?type=design&node-id=264%3A1251&mode=design&t=XG83iR2C8fcI6gXF-1)
 - [Other Artifacts](https://drive.google.com/drive/folders/1RKxz5tozCQmqkwWamR1bCjz847XtSwqx?usp=sharing)
 
