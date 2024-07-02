@@ -1,7 +1,7 @@
 package com.example.TatMobileAnalyzer.services.impl;
 
 import com.example.TatMobileAnalyzer.services.FileStatService;
-import com.example.TatMobileAnalyzer.services.GitHubService;
+import com.example.TatMobileAnalyzer.services.impl.git.service.services.GitHubService;
 import com.example.TatMobileAnalyzer.utils.MapToCsvConverter;
 import lombok.SneakyThrows;
 import org.kohsuke.github.GHCommit;
@@ -23,7 +23,7 @@ public class FileStatServiceImpl implements FileStatService {
     @Override
     public Map<String, List<Map<String, Object>>> getContributorsByFiles(String repoUrl, Date since, Date until) {
 
-        List<GHCommit> commitsPerPeriod = gitHubService.getCommitsPerPeriod(repoUrl, since, until);
+        List<GHCommit> commitsPerPeriod = (List<GHCommit>) gitHubService.getCommitsPerPeriod(repoUrl, since, until);
 
         Map<String, List<Map<String, Object>>> fileContributorsMap = processCommits(commitsPerPeriod);
 

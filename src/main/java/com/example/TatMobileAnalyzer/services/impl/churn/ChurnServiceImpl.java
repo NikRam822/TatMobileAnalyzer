@@ -4,7 +4,7 @@ import com.example.TatMobileAnalyzer.model.Filter;
 import com.example.TatMobileAnalyzer.model.Project;
 import com.example.TatMobileAnalyzer.services.ChurnService;
 import com.example.TatMobileAnalyzer.services.FilterService;
-import com.example.TatMobileAnalyzer.services.GitHubService;
+import com.example.TatMobileAnalyzer.services.impl.git.service.services.GitHubService;
 import com.example.TatMobileAnalyzer.services.ProjectService;
 import com.example.TatMobileAnalyzer.services.impl.PatchReader;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -45,7 +45,8 @@ public class ChurnServiceImpl implements ChurnService {
             log.warn("Project with id {} not found", projectId);
             return null;
         }
-        List<GHCommit> commitsPerPeriod = gitHubService.getCommitsPerPeriod(project.getProjectLink(), since, until);
+        //TODO: проверяем hub или lab, создаем processor(hub или lab реалезации и вызываем все методы)
+        List<GHCommit> commitsPerPeriod = (List<GHCommit>)gitHubService.getCommitsPerPeriod(project.getProjectLink(), since, until);
 
         Map<String, List<Map<String, JsonNode>>> authorStats = new HashMap<>();
         Map<String, Integer> overall = new HashMap<>();
@@ -55,6 +56,7 @@ public class ChurnServiceImpl implements ChurnService {
 
         ChurnStat churnStat = new ChurnStat(authorStats, overall, general, generalResult, churn);
 
+        // TODO: создать обьект CommitProcessor и в нем реалезую processCommits
         processCommits(commitsPerPeriod, churnStat, projectId);
 
         // Create a map to hold the JSON nodes

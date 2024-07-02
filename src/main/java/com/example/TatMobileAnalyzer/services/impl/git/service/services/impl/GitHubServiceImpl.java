@@ -1,12 +1,14 @@
-package com.example.TatMobileAnalyzer.services.impl;
+package com.example.TatMobileAnalyzer.services.impl.git.service.services.impl;
 
-import com.example.TatMobileAnalyzer.services.GitHubService;
+import com.example.TatMobileAnalyzer.services.impl.git.service.IGitService;
+import com.example.TatMobileAnalyzer.services.impl.git.service.services.GitHubService;
 import com.google.common.collect.Lists;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.kohsuke.github.GHCommit;
 import org.kohsuke.github.GHCommitQueryBuilder;
 import org.kohsuke.github.GitHub;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +18,14 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@Qualifier("github")
 @Slf4j
-public class GitHubServiceImpl implements GitHubService {
-
-    @Value("${access.token}")
+public class GitHubServiceImpl implements IGitService, GitHubService {
+    @Value("${access.token.github}")
     private String accessToken;
 
-    @Override
     @SneakyThrows
+    @Override
     public List<GHCommit> getCommitsPerPeriod(String repositoryUrl, Date since, Date until) {
 
         URI uri = new URI(repositoryUrl);
@@ -59,5 +61,4 @@ public class GitHubServiceImpl implements GitHubService {
             return false;
         }
     }
-
 }
