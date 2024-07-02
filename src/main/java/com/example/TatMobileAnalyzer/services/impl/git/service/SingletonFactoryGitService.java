@@ -41,9 +41,9 @@ public class SingletonFactoryGitService {
             return null;
         }
 
-        if (repositoryUrl.contains("github.com")) {
+        if (repositoryUrl.contains("github")) {
             return (IGitService) gitHubService;
-        } else if (repositoryUrl.contains("gitlab.com")) {
+        } else if (repositoryUrl.contains("gitlab")) {
             return (IGitService) gitLabService;
         } else {
             log.warn("Repository URL is not supported: {}", repositoryUrl);
