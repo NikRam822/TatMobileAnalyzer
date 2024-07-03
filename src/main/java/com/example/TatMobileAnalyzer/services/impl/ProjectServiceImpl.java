@@ -4,8 +4,10 @@ import com.example.TatMobileAnalyzer.model.Project;
 import com.example.TatMobileAnalyzer.repository.ProjectRepository;
 import com.example.TatMobileAnalyzer.services.FavoriteProjectService;
 import com.example.TatMobileAnalyzer.services.FilterService;
-import com.example.TatMobileAnalyzer.services.GitHubService;
+import com.example.TatMobileAnalyzer.services.impl.git.apis.GitHubService;
 import com.example.TatMobileAnalyzer.services.ProjectService;
+import com.example.TatMobileAnalyzer.services.GitService;
+import com.example.TatMobileAnalyzer.services.SingletonFactoryGitService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,20 +22,18 @@ public class ProjectServiceImpl implements ProjectService, FavoriteProjectServic
     private final FilterService filterService;
     private final ProjectRepository projectRepository;
 
-    private final GitHubService gitHubService;
-
     @Autowired
     public ProjectServiceImpl(FilterService filterService, ProjectRepository projectRepository, GitHubService gitHubService) {
         this.filterService = filterService;
         this.projectRepository = projectRepository;
-        this.gitHubService = gitHubService;
     }
 
     @Override
     @Transactional
     public Project createProject(Project project) {
 
-        boolean isValidRepository = gitHubService.isValidRepository(project.getProjectLink());
+        GitService gitService = SingletonFactoryGitService.getInstance().getImplementation(project.getProjectLink());
+        boolean isValidRepository = gitService.isValidRepository(project.getProjectLink());
 
         if (!isValidRepository) {
             log.error("Invalid repository with link: {}", project.getProjectLink());

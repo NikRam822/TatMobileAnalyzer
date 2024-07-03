@@ -16,39 +16,37 @@ public class PatchReader {
             this.add = new ArrayList<>();
             this.del = new ArrayList<>();
         }
-
     }
 
-    public static PatchInfo readPatch(String patch) {
+    public static PatchInfo readPatch(String patchOrDiff) {
         PatchInfo patchInfo = new PatchInfo();
-        if (patch == null) {
+        if (patchOrDiff == null || patchOrDiff.isEmpty()) {
             return patchInfo;
         }
-        String[] lines = patch.split("\n");
-        int currentIndex = 0;
-        int addIndexOffset = 0;
-        int delIndexOffset = 0;
+
+        String[] lines = patchOrDiff.split("\n");
+        int currentAddIndex = 0;
+        int currentDelIndex = 0;
 
         for (String line : lines) {
             if (line.startsWith("@@")) {
                 String[] parts = line.split(" ");
-                String[] numbers = parts[2].split(",");
-                currentIndex = Integer.parseInt(numbers[0].substring(1));
-                addIndexOffset = 0;
-                delIndexOffset = 0;
+                String[] addNumbers = parts[2].split(",");
+                String[] delNumbers = parts[1].split(",");
+                currentAddIndex = Integer.parseInt(addNumbers[0].substring(1));
+                currentDelIndex = Math.abs(Integer.parseInt(delNumbers[0].substring(1)));
             } else if (line.startsWith("+")) {
-
-                patchInfo.getAdd().add((currentIndex + addIndexOffset) + ". " + line.substring(1));
-                addIndexOffset++;
+                patchInfo.getAdd().add(currentAddIndex + ". " + line.substring(1));
+                currentAddIndex++;
             } else if (line.startsWith("-")) {
-                patchInfo.getDel().add((currentIndex + delIndexOffset) + ". " + line.substring(1));
-                delIndexOffset++;
-            } else {
-                currentIndex++;
+                patchInfo.getDel().add(currentDelIndex + ". " + line.substring(1));
+                currentDelIndex++;
+            } else if (!line.startsWith("\\")) {
+                currentAddIndex++;
+                currentDelIndex++;
             }
         }
 
         return patchInfo;
     }
-
 }
