@@ -29,6 +29,9 @@
         ></v-btn>
         {{ rep.projectName }}
       </template>
+      <template v-slot:append>
+        <v-btn variant="outlined" @click.stop="getStatistic()"> update </v-btn>
+      </template>
       <v-container v-show="loader">
         <v-progress-linear color="rgb(92, 99, 106)" height="6" indeterminate rounded></v-progress-linear>
         <p>Analyzing reposytory</p>
@@ -53,19 +56,22 @@ export default {
   },
   props: ["rep"],
   methods: {
+    async getStatistic() {
+      this.loader = true;
+      let hostadress = server_path + "/api/statistic/churn";
+      try {
+        const statistic = await axios.post(hostadress, {
+          projectId: this.rep.projectId,
+        });
+        this.$store.commit("addStatistc", [this.rep.projectLink, statistic]);
+      } catch (error) {
+        console.error("Error " + error.message);
+      }
+      this.loader = false;
+    },
     async navigateToProjectReview() {
       if (!this.$store.state.RepoSatistic[this.rep.projectLink]) {
-        this.loader = true;
-        let hostadress = server_path + "/api/statistic/churn";
-        try {
-          const statistic = await axios.post(hostadress, {
-            projectId: this.rep.projectId,
-          });
-          this.$store.commit("addStatistc", [this.rep.projectLink, statistic]);
-        } catch (error) {
-          console.error("Error " + error.message);
-        }
-        this.loader = false;
+        this.getStatistic();
       } else {
         this.$store.commit("changeCurrentRepo", this.rep);
         this.$router.push("/project-review");
