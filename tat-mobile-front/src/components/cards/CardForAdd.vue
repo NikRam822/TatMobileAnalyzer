@@ -1,5 +1,5 @@
 <template>
-  <v-col xs="12" sm="6" md="4" lg="3" xl="2">
+  <v-col xs="12" sm="6" md="4" lg="3">
     <v-card
       @click="cardAppend = !cardAppend"
       v-if="cardAppend"
