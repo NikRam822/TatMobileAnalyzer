@@ -1,7 +1,7 @@
-package com.example.TatMobileAnalyzer.services.impl.git.service;
+package com.example.TatMobileAnalyzer.services;
 
-import com.example.TatMobileAnalyzer.services.impl.git.service.services.GitHubService;
-import com.example.TatMobileAnalyzer.services.impl.git.service.services.GitLabService;
+import com.example.TatMobileAnalyzer.services.impl.git.apis.GitHubService;
+import com.example.TatMobileAnalyzer.services.impl.git.apis.GitLabService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,7 @@ public class SingletonFactoryGitService {
     }
 
 
-    public IGitService getImplementation(String repositoryUrl) {
+    public GitService getImplementation(String repositoryUrl) {
 
         if (repositoryUrl == null || repositoryUrl.isEmpty()) {
             log.warn("Repository URL is not supported: {}", repositoryUrl);
@@ -42,9 +42,9 @@ public class SingletonFactoryGitService {
         }
 
         if (repositoryUrl.contains("github")) {
-            return (IGitService) gitHubService;
+            return (GitService) gitHubService;
         } else if (repositoryUrl.contains("gitlab")) {
-            return (IGitService) gitLabService;
+            return (GitService) gitLabService;
         } else {
             log.warn("Repository URL is not supported: {}", repositoryUrl);
             return null;

@@ -1,38 +1,36 @@
 package com.example.TatMobileAnalyzer.services.impl.churn;
 
-import com.example.TatMobileAnalyzer.model.Filter;
 import com.example.TatMobileAnalyzer.model.Project;
 import com.example.TatMobileAnalyzer.services.ChurnService;
 import com.example.TatMobileAnalyzer.services.FilterService;
-import com.example.TatMobileAnalyzer.services.impl.git.service.services.GitHubService;
 import com.example.TatMobileAnalyzer.services.ProjectService;
-import com.example.TatMobileAnalyzer.services.impl.PatchReader;
+import com.example.TatMobileAnalyzer.services.GitService;
+import com.example.TatMobileAnalyzer.services.SingletonFactoryGitService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.kohsuke.github.GHCommit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
 public class ChurnServiceImpl implements ChurnService {
 
     FilterService filterService;
-    GitHubService gitHubService;
     ObjectMapper objectMapper;
     ProjectService projectService;
 
     @Autowired
     public ChurnServiceImpl(FilterService filterService,
-                            GitHubService gitHubService,
                             ObjectMapper objectMapper,
                             ProjectService projectService) {
         this.filterService = filterService;
-        this.gitHubService = gitHubService;
         this.objectMapper = objectMapper;
         this.projectService = projectService;
     }
@@ -45,8 +43,6 @@ public class ChurnServiceImpl implements ChurnService {
             log.warn("Project with id {} not found", projectId);
             return null;
         }
-        //TODO: проверяем hub или lab, создаем processor(hub или lab реалезации и вызываем все методы)
-        List<GHCommit> commitsPerPeriod = (List<GHCommit>)gitHubService.getCommitsPerPeriod(project.getProjectLink(), since, until);
 
         Map<String, List<Map<String, JsonNode>>> authorStats = new HashMap<>();
         Map<String, Integer> overall = new HashMap<>();
@@ -56,8 +52,13 @@ public class ChurnServiceImpl implements ChurnService {
 
         ChurnStat churnStat = new ChurnStat(authorStats, overall, general, generalResult, churn);
 
-        // TODO: создать обьект CommitProcessor и в нем реалезую processCommits
-        processCommits(commitsPerPeriod, churnStat, projectId);
+
+        GitService gitService = SingletonFactoryGitService.getInstance().getImplementation(project.getProjectLink());
+        List<?> commitsPerPeriod = gitService.getCommitsPerPeriod(project.getProjectLink(), since, until);
+
+        SupportServices supportServices = new SupportServices(filterService, objectMapper, projectService);
+        gitService.processCommits(commitsPerPeriod, churnStat, projectId, supportServices);
+        calculateChurn(churnStat);
 
         // Create a map to hold the JSON nodes
         Map<String, Object> finalStats = new HashMap<>();
@@ -69,75 +70,6 @@ public class ChurnServiceImpl implements ChurnService {
         // Return ResponseEntity with the map of JSON nodes
         return finalStats;
     }
-
-
-    @SneakyThrows
-    private void processCommits(List<GHCommit> commitsPerPeriod, ChurnStat churnStat, Long projectId) {
-        for (GHCommit commit : commitsPerPeriod) {
-            String author = commit.getCommitShortInfo().getAuthor().getName();
-            List<Map<String, JsonNode>> authorCommits = churnStat.authorStats().getOrDefault(author, new ArrayList<>());
-
-            List<Map<String, JsonNode>> fileStats = processCommitFiles(commit, churnStat, author, projectId);
-
-            Map<String, JsonNode> commitStat = new HashMap<>();
-            commitStat.put("sha", objectMapper.valueToTree(commit.getSHA1()));
-            commitStat.put("date", objectMapper.valueToTree(commit.getCommitDate().toString()));
-            commitStat.put("linesDifference", objectMapper.valueToTree(commit.getLinesChanged()));
-            commitStat.put("totalAdditions", objectMapper.valueToTree(commit.getLinesAdded()));
-            commitStat.put("totalDeletions", objectMapper.valueToTree(commit.getLinesDeleted()));
-            commitStat.put("files", objectMapper.valueToTree(fileStats));
-
-            authorCommits.add(commitStat);
-            churnStat.authorStats().put(author, authorCommits);
-        }
-
-        calculateChurn(churnStat);
-    }
-
-    @SneakyThrows
-    private List<Map<String, JsonNode>> processCommitFiles(GHCommit commit, ChurnStat churnStat, String author, Long projectId) {
-        List<Map<String, JsonNode>> fileStats = new ArrayList<>();
-        List<GHCommit.File> files = commit.listFiles().toList();
-        Filter filter = filterService.getFiltersByProjectId(projectId);
-
-        if (filter == null) {
-            filter = new Filter();
-        }
-        for (GHCommit.File file : files) {
-            // Check if the file name begins with one of the lines in the filter.getGenerated() or filter.getTest() arrays
-            boolean matchesGenerated = filter.getGenerated().stream().anyMatch(file.getFileName()::startsWith);
-            boolean matchesTest = filter.getTest().stream().anyMatch(file.getFileName()::startsWith);
-            if (matchesGenerated || matchesTest) {
-                continue;
-            }
-            String patch = file.getPatch();
-            PatchReader.PatchInfo patchInfo = PatchReader.readPatch(patch);
-
-            Map<String, JsonNode> fileStat = new HashMap<>();
-            fileStat.put("filename", objectMapper.valueToTree(file.getFileName()));
-            fileStat.put("add all", objectMapper.valueToTree(file.getLinesAdded()));
-            fileStat.put("del all", objectMapper.valueToTree(file.getLinesDeleted()));
-            //fileStat.put("path", file.getPatch());
-            // fileStat.put("add", patchInfo.getAdd());
-            // fileStat.put("del", patchInfo.getDel());
-            fileStats.add(fileStat);
-            churnStat.overall().put(author, churnStat.overall().getOrDefault(author, 0) + patchInfo.getAdd().size());
-
-            updateGeneralStatistics(file, patchInfo, churnStat, author);
-        }
-        return fileStats;
-    }
-
-    @SneakyThrows
-    private void updateGeneralStatistics(GHCommit.File file, PatchReader.PatchInfo patchInfo, ChurnStat churnStat, String author) {
-        Map<Integer, String> fileLines = churnStat.general().getOrDefault(file.getFileName(), new HashMap<>());
-        for (String addedLine : patchInfo.getAdd()) {
-            int lineNumber = Integer.parseInt(addedLine.split(". ")[0]);
-            fileLines.put(lineNumber, author);
-        }
-        churnStat.general().put(file.getFileName(), fileLines);
-    }
-
 
     private void calculateChurn(ChurnStat churnStat) {
         for (Map.Entry<String, List<Map<String, JsonNode>>> entry : churnStat.authorStats().entrySet()) {

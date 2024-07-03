@@ -4,10 +4,10 @@ import com.example.TatMobileAnalyzer.model.Project;
 import com.example.TatMobileAnalyzer.repository.ProjectRepository;
 import com.example.TatMobileAnalyzer.services.FavoriteProjectService;
 import com.example.TatMobileAnalyzer.services.FilterService;
-import com.example.TatMobileAnalyzer.services.impl.git.service.services.GitHubService;
+import com.example.TatMobileAnalyzer.services.impl.git.apis.GitHubService;
 import com.example.TatMobileAnalyzer.services.ProjectService;
-import com.example.TatMobileAnalyzer.services.impl.git.service.IGitService;
-import com.example.TatMobileAnalyzer.services.impl.git.service.SingletonFactoryGitService;
+import com.example.TatMobileAnalyzer.services.GitService;
+import com.example.TatMobileAnalyzer.services.SingletonFactoryGitService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +32,7 @@ public class ProjectServiceImpl implements ProjectService, FavoriteProjectServic
     @Transactional
     public Project createProject(Project project) {
 
-        IGitService gitService = SingletonFactoryGitService.getInstance().getImplementation(project.getProjectLink());
+        GitService gitService = SingletonFactoryGitService.getInstance().getImplementation(project.getProjectLink());
         boolean isValidRepository = gitService.isValidRepository(project.getProjectLink());
 
         if (!isValidRepository) {
