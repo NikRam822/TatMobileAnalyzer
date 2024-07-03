@@ -42,7 +42,7 @@ export default {
       err: false,
       rep: "",
       cardAppend: true,
-      re: new RegExp("^https://github.com/([^/]+)/([^/]+)$"),
+      re: new RegExp("^https://git(hub|lab).com/([^/]+)/([^/]+)$"),
     };
   },
   methods: {

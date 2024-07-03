@@ -3,7 +3,6 @@
     <v-card
       :key="rep.projectName"
       @click="navigateToProjectReview()"
-      :title="rep.projectName"
       :subtitle="rep.projectLink"
       elevation="4"
       rounded="xl"
@@ -20,7 +19,7 @@
           : {}
       "
     >
-      <template v-slot:append>
+      <template v-slot:title>
         <v-btn
           variant="text"
           @click.stop="updateFavor(rep.favorite, rep.projectId)"
@@ -28,18 +27,18 @@
           class="text-amber-accent-3"
           :icon="rep.favorite ? 'mdi-star' : 'mdi-star-outline'"
         ></v-btn>
+        {{ rep.projectName }}
       </template>
       <v-container v-show="loader">
         <v-progress-linear color="rgb(92, 99, 106)" height="6" indeterminate rounded></v-progress-linear>
         <p>Analyzing reposytory</p>
       </v-container>
-      <v-btn
-        variant="text"
-        @click.stop="deleteProject"
-        flat
-        icon="mdi-trash-can-outline"
-        class="align-self-end ma-4 text-grey"
-      ></v-btn>
+      <v-spacer></v-spacer>
+      <v-card-actions class="ps-4">
+        <p>Date of last update</p>
+        <v-spacer></v-spacer>
+        <v-btn variant="text" @click.stop="deleteProject" flat icon="mdi-trash-can-outline" class="text-grey"></v-btn>
+      </v-card-actions>
     </v-card>
   </v-col>
 </template>
