@@ -36,6 +36,8 @@ Below are the instructions for running `docker-compose`:
 
    ```text
    ACCESS_TOKEN_GITHUB=your_github_access_token
+   ACCESS_TOKEN_GITLAB=your_gitlab_access_token
+   GITLAB_URL=https://gitlab.com
    DB_USER=some_user
    DB_PASSWORD=some_password
    DB_DATABASE=some_database
@@ -67,10 +69,12 @@ Below are the instructions for running `docker-compose`:
 
 1. Ensure that you have `jdk-17` with `maven` for building projects, `npm` and
    latest `postgres` database installed on your system.
-2. Create two `.env` files:
-   - In the root folder cre~~~~ate `.env` file with next content:
+2. Create two `env.properties` files:
+   - In the root folder create `env.properties` file with next content:
    ```text
-   ACCESS_TOKEN_GITHUB=<your_github_access_token>
+   ACCESS_TOKEN_GITHUB=your_github_access_token
+   ACCESS_TOKEN_GITLAB=your_gitlab_access_token
+   GITLAB_URL=https://gitlab.com
    DB_USER=some_user
    DB_PASSWORD=some_password
    DB_DATABASE=some_database
