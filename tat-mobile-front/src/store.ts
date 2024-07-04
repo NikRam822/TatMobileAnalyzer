@@ -15,6 +15,10 @@ export default createStore({
       delete state.storeParams[state.currentRepo.projectLink];
     },
 
+    delStoreParams(state) {
+      delete state.storeParams;
+    },
+
     setParams(state, param) {
       state.storeParams[state.currentRepo.projectLink] = param;
     },
