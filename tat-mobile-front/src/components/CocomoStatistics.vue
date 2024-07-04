@@ -54,7 +54,7 @@
         updateResult();
       "
     >
-      Reset simpleCoefficients <v-icon icon="mdi-autorenew"></v-icon
+      Reset Coefficients <v-icon icon="mdi-autorenew"></v-icon
     ></v-btn>
     <v-spacer></v-spacer>
     <v-btn variant="outlined" @click="currentCoefMode = Math.abs(currentCoefMode - 1)">
