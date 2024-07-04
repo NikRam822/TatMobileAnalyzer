@@ -2,7 +2,7 @@
   <v-container class="d-flex flex-column justify-space-between" style="height: 100%">
     <v-container>
       <v-btn
-        v-if="!currentRepo || this.$store.getters.getBranch != currentBranch"
+        v-if="!currentRepo || this.$store.getters.getBranch != currentBranch || datePoint"
         variant="outlined"
         elevation="5"
         width="100%"
@@ -19,14 +19,19 @@
       <v-btn
         variant="outlined"
         width="100%"
-        height="70px"
+        height="100px"
         class="text-none text-h4"
         color="rgb(197, 226, 21)"
         elevation="5"
       >
         <span class="d-flex flex-column">
           <p>{{ this.$store.state.currentRepo.projectName }}</p>
-          <p class="text-body-1">{{ currentBranch }}</p>
+          <p class="text-body-1">
+            {{ currentBranch }}
+          </p>
+          <p class="text-body-1">
+            {{ this.$store.getters.getDate.startDate }} {{ this.$store.getters.getDate.endDate }}
+          </p>
         </span>
         <v-menu activator="parent">
           <v-list>
@@ -77,6 +82,25 @@
       class="align-self-center"
       indeterminate
     ></v-progress-circular>
+    <v-container>
+      <v-expansion-panels>
+        <v-expansion-panel :style="startDate && endDate ? { background: 'rgba(197, 226, 21, 0.2)' } : {}">
+          <v-expansion-panel-title class="text-button" @click="datePoint = !datePoint">
+            Date filter
+          </v-expansion-panel-title>
+          <v-expansion-panel-text>
+            <div>
+              Start date
+              <v-text-field type="date" v-model="startDate"></v-text-field>
+              End date
+              <v-text-field type="date" v-model="endDate"></v-text-field>
+              <v-btn @click="(startDate = ''), (endDate = '')">Reset</v-btn>
+            </div>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+      </v-expansion-panels>
+    </v-container>
+
     <v-container>
       <v-menu :close-on-content-click="false">
         <template v-slot:activator="{ props }">
@@ -139,6 +163,9 @@ export default {
     config: false,
     branches: [],
     currentBranch: "",
+    startDate: "",
+    endDate: "",
+    datePoint: false,
   }),
 
   methods: {
@@ -164,11 +191,16 @@ export default {
     async getStatistic() {
       this.loader = true;
       let hostadress = server_path + "/api/statistic/churn";
+      if (this.startDate && this.endDate) {
+        hostadress += `?since=${this.startDate}&until=${this.endDate}`;
+      }
+      console.log(hostadress);
       try {
         const statistic = await axios.post(hostadress, {
           branch: this.currentBranch,
           projectId: this.$store.state.currentRepo.projectId,
         });
+        this.$store.commit("setDate", { startDate: this.startDate, endDate: this.endDate });
         this.$store.commit("addStatistc", [this.$store.state.currentRepo.projectLink, statistic]);
         this.$store.commit("setBranch", this.currentBranch);
       } catch (error) {

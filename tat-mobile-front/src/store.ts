@@ -10,8 +10,13 @@ export default createStore({
     currentStatisitc: "ChurnStatistics",
     storeParams: {},
     projectBranch: {},
+    projectDate: {},
   },
   mutations: {
+    setDate(state, date) {
+      state.projectDate[state.currentRepo.projectLink] = date;
+    },
+
     setBranch(state, branch) {
       state.projectBranch[state.currentRepo.projectLink] = branch;
     },
@@ -58,7 +63,18 @@ export default createStore({
       return state.storeParams[state.currentRepo.projectLink];
     },
     getBranch(state) {
+      if (!state.projectBranch[state.currentRepo.projectLink]) {
+        state.projectBranch[state.currentRepo.projectLink] = "";
+      }
       return state.projectBranch[state.currentRepo.projectLink];
+    },
+    getDate(state) {
+      if (!state.projectDate[state.currentRepo.projectLink]) {
+        state.projectDate[state.currentRepo.projectLink] = {};
+        state.projectDate[state.currentRepo.projectLink].startDate = "";
+        state.projectDate[state.currentRepo.projectLink].endDate = "";
+      }
+      return state.projectDate[state.currentRepo.projectLink];
     },
   },
   plugins: [createPersistedState()],
