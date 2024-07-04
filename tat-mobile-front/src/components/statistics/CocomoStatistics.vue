@@ -183,11 +183,14 @@
               ></v-text-field>
             </div>
             <v-slider
-              min="0"
-              max="2"
+              min="0.5"
+              max="1.5"
               step="0.01"
-              thumb-label="always"
+              thumb-label
               hide-details
+              :ticks="Object.fromEntries(Object.entries(param.coefficient).map(([key, value]) => [value, key]))"
+              show-ticks="always"
+              tick-size="6"
               v-model="coefficient[param.codeName].coef"
               @click="updateCoef(param.codeName)"
             ></v-slider>
