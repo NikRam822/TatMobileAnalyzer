@@ -9,8 +9,13 @@ export default createStore({
     currentRepo: "Error parsing name",
     currentStatisitc: "ChurnStatistics",
     storeParams: {},
+    projectBranch: {},
   },
   mutations: {
+    setBranch(state, branch) {
+      state.projectBranch[state.currentRepo.projectLink] = branch;
+    },
+
     delParam(state) {
       delete state.storeParams[state.currentRepo.projectLink];
     },
@@ -51,6 +56,9 @@ export default createStore({
   getters: {
     getParams(state) {
       return state.storeParams[state.currentRepo.projectLink];
+    },
+    getBranch(state) {
+      return state.projectBranch[state.currentRepo.projectLink];
     },
   },
   plugins: [createPersistedState()],

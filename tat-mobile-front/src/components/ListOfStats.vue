@@ -2,7 +2,7 @@
   <v-container class="d-flex flex-column justify-space-between" style="height: 100%">
     <v-container>
       <v-btn
-        v-if="!currentRepo"
+        v-if="!currentRepo || this.$store.getters.getBranch != currentBranch"
         variant="outlined"
         elevation="5"
         width="100%"
@@ -24,7 +24,10 @@
         color="rgb(197, 226, 21)"
         elevation="5"
       >
-        {{ this.$store.state.currentRepo.projectName }}
+        <span class="d-flex flex-column">
+          <p>{{ this.$store.state.currentRepo.projectName }}</p>
+          <p class="text-body-1">{{ currentBranch }}</p>
+        </span>
         <v-menu activator="parent">
           <v-list>
             <v-list-item v-for="(item, index) in getRepositoryes" :key="index" :value="index" @click="goToRepo(item)">
@@ -33,6 +36,28 @@
           </v-list>
         </v-menu>
       </v-btn>
+
+      <v-menu>
+        <template v-slot:activator="{ props }">
+          <v-btn
+            @click=""
+            v-bind="props"
+            variant="outlined"
+            width="100%"
+            height="40px"
+            class="text-none text-h5"
+            elevation="5"
+            style="border-top: 0px"
+          >
+            Branches
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item v-for="(branch, index) in branches" :key="index" :value="branch" @click="currentBranch = branch">
+            <v-list-item-title> {{ branch }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
 
       <v-container>
         <h3 class="align-self-center text-center">Statisitcs</h3>
@@ -112,17 +137,40 @@ export default {
     loader: false,
     path: "",
     config: false,
+    branches: [],
+    currentBranch: "",
   }),
 
   methods: {
+    async fetchBranches() {
+      try {
+        const branches = await this.getBranches();
+        this.branches = branches.data;
+      } catch (error) {
+        console.error("Error: ", error);
+      }
+    },
+    async getBranches() {
+      let hostadress = server_path + "/api/project/get-branches";
+      try {
+        const branches = await axios.post(hostadress, {
+          projectId: this.$store.state.currentRepo.projectId,
+        });
+        return branches;
+      } catch (error) {
+        console.error("Error: ", error);
+      }
+    },
     async getStatistic() {
       this.loader = true;
       let hostadress = server_path + "/api/statistic/churn";
       try {
         const statistic = await axios.post(hostadress, {
+          branch: this.currentBranch,
           projectId: this.$store.state.currentRepo.projectId,
         });
         this.$store.commit("addStatistc", [this.$store.state.currentRepo.projectLink, statistic]);
+        this.$store.commit("setBranch", this.currentBranch);
       } catch (error) {
         console.error("Error " + error.message);
       }
@@ -218,6 +266,10 @@ export default {
       }
       return allPaths;
     },
+  },
+  created() {
+    this.currentBranch = this.$store.getters.getBranch || "";
+    this.fetchBranches();
   },
 };
 </script>
