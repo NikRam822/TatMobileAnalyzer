@@ -70,12 +70,8 @@ export default {
       this.loader = false;
     },
     async navigateToProjectReview() {
-      if (!this.$store.state.RepoSatistic[this.rep.projectLink]) {
-        this.getStatistic();
-      } else {
-        this.$store.commit("changeCurrentRepo", this.rep);
-        this.$router.push("/project-review");
-      }
+      this.$store.commit("changeCurrentRepo", this.rep);
+      this.$router.push("/project-review");
     },
     async deleteProject() {
       let hostadress = server_path + "/api/project/delete-project";

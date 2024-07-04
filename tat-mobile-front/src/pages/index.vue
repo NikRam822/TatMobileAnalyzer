@@ -8,10 +8,10 @@
 import axios from "axios";
 let server_path = import.meta.env.VITE_BACKEND_URL;
 export default {
+  props: ["searchRepo"],
   data() {
     return {};
   },
-  props: ["searchRepo"],
   methods: {
     async getRepos() {
       let hostadress = server_path + "/api/project/get-projects";

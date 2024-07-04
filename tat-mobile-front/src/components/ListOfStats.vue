@@ -1,8 +1,18 @@
 <template>
   <v-container class="d-flex flex-column justify-space-between" style="height: 100%">
     <v-container>
-      <v-container>
-        <v-btn variant="text" width="100%" height="70px" class="text-none text-h4" color="rgb(197, 226, 21)">
+      <v-btn
+        variant="outlined"
+        width="100%"
+        height="70px"
+        class="text-none text-h4"
+        color="rgb(197, 226, 21)"
+        @click="getStatistic()"
+      >
+        Start Analyze</v-btn
+      >
+      <v-container class="pa-0">
+        <v-btn variant="outlined" width="100%" height="70px" class="text-none text-h4">
           {{ this.$store.state.currentRepo.projectName }}
           <v-menu activator="parent">
             <v-list>
@@ -13,6 +23,7 @@
           </v-menu>
         </v-btn>
       </v-container>
+
       <v-container>
         <h3 class="align-self-center text-center">Statisitcs</h3>
         <v-divider></v-divider>
@@ -25,7 +36,7 @@
       </v-container>
     </v-container>
     <v-progress-circular
-      v-if="loader"
+      v-if="filterLoader || loader"
       size="100"
       width="20"
       class="align-self-center"
@@ -34,7 +45,7 @@
     <v-container>
       <v-menu :close-on-content-click="false">
         <template v-slot:activator="{ props }">
-          <v-btn width="100%" v-bind="props"> Filters </v-btn>
+          <v-btn width="100%" v-bind="props" @click="currentRepo || updateFilters()"> Filters </v-btn>
         </template>
         <v-card>
           <v-list>
@@ -87,15 +98,30 @@ export default {
       { name: "Churn Statistics", link: "ChurnStatistics" },
       { name: "Project cost", link: "CocomoStatistics" },
     ],
+    filterLoader: false,
     loader: false,
     path: "",
     config: false,
   }),
 
   methods: {
+    async getStatistic() {
+      this.loader = true;
+      let hostadress = server_path + "/api/statistic/churn";
+      try {
+        const statistic = await axios.post(hostadress, {
+          projectId: this.$store.state.currentRepo.projectId,
+        });
+        this.$store.commit("addStatistc", [this.$store.state.currentRepo.projectLink, statistic]);
+      } catch (error) {
+        console.error("Error " + error.message);
+      }
+      this.loader = false;
+    },
     toPage(page) {
       this.$store.commit("changePage", page);
     },
+
     async updateFilters() {
       let hostadress = server_path + "/api/filter/get-filters-for-project";
       try {
@@ -107,8 +133,9 @@ export default {
         console.error("Error: ", error);
       }
     },
+
     async updateStatistic(repo) {
-      this.loader = true;
+      this.filterLoader = true;
       let hostadress = server_path + "/api/statistic/churn";
       try {
         const statistic = await axios.post(hostadress, {
@@ -118,7 +145,7 @@ export default {
       } catch (error) {
         console.error("Error " + error.message);
       }
-      this.loader = false;
+      this.filterLoader = false;
     },
     async addFile(filt) {
       let filts = this.$store.state.filters;
@@ -155,19 +182,14 @@ export default {
       location.reload();
     },
   },
-  created() {
-    this.updateFilters();
-  },
   computed: {
+    currentRepo() {
+      return this.$store.state.RepoSatistic[this.$store.state.currentRepo.projectLink];
+    },
     getRepositoryes() {
       const reposNames = [];
       for (let rep of this.$store.state.repositories) {
-        if (
-          rep.projectName != this.$store.state.currentRepo.projectName &&
-          this.$store.state.RepoSatistic[rep.projectLink]
-        ) {
-          reposNames.push(rep);
-        }
+        reposNames.push(rep);
       }
       return reposNames;
     },
