@@ -2,27 +2,37 @@
   <v-container class="d-flex flex-column justify-space-between" style="height: 100%">
     <v-container>
       <v-btn
+        v-if="!currentRepo"
+        variant="outlined"
+        elevation="5"
+        width="100%"
+        height="70px"
+        class="text-none text-h4"
+        @click="getStatistic()"
+        style="border-bottom: 0px"
+      >
+        Start Analyze
+      </v-btn>
+      <v-btn v-else variant="outlined" elevation="5" height="20px" style="border-bottom: 0px" @click="getStatistic()"
+        >Restart Analyze
+      </v-btn>
+      <v-btn
         variant="outlined"
         width="100%"
         height="70px"
         class="text-none text-h4"
         color="rgb(197, 226, 21)"
-        @click="getStatistic()"
+        elevation="5"
       >
-        Start Analyze</v-btn
-      >
-      <v-container class="pa-0">
-        <v-btn variant="outlined" width="100%" height="70px" class="text-none text-h4">
-          {{ this.$store.state.currentRepo.projectName }}
-          <v-menu activator="parent">
-            <v-list>
-              <v-list-item v-for="(item, index) in getRepositoryes" :key="index" :value="index" @click="goToRepo(item)">
-                <v-list-item-title>{{ item.projectName }}</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </v-btn>
-      </v-container>
+        {{ this.$store.state.currentRepo.projectName }}
+        <v-menu activator="parent">
+          <v-list>
+            <v-list-item v-for="(item, index) in getRepositoryes" :key="index" :value="index" @click="goToRepo(item)">
+              <v-list-item-title>{{ item.projectName }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-btn>
 
       <v-container>
         <h3 class="align-self-center text-center">Statisitcs</h3>

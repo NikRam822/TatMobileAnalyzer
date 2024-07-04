@@ -30,7 +30,7 @@
         {{ rep.projectName }}
       </template>
       <template v-slot:append>
-        <v-btn variant="outlined" @click.stop="getStatistic()"> update </v-btn>
+        <v-btn variant="text" @click.stop="getStatistic()" icon="mdi-autorenew"></v-btn>
       </template>
       <v-container v-show="loader">
         <v-progress-linear color="rgb(92, 99, 106)" height="6" indeterminate rounded></v-progress-linear>
