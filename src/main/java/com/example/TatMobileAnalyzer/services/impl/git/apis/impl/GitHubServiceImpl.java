@@ -31,7 +31,7 @@ public class GitHubServiceImpl implements GitService, GitHubService {
 
     @SneakyThrows
     @Override
-    public List<GHCommit> getCommitsPerPeriod(String repositoryUrl, Date since, Date until) {
+    public List<GHCommit> getCommitsPerPeriod(String repositoryUrl, Date since, Date until, String branch) {
 
         URI uri = new URI(repositoryUrl);
         String[] pathParts = uri.getPath().split("/");
@@ -39,8 +39,13 @@ public class GitHubServiceImpl implements GitService, GitHubService {
         String repositoryName = pathParts[2];
 
         GitHub github = GitHub.connectUsingOAuth(accessToken);
+        GHRepository repository = github.getRepository(owner + "/" + repositoryName);
 
-        GHCommitQueryBuilder commitQueryBuilder = github.getRepository(owner + "/" + repositoryName).queryCommits();
+        if (branch == null || branch.isEmpty()) {
+            branch = repository.getDefaultBranch();
+        }
+
+        GHCommitQueryBuilder commitQueryBuilder = repository.queryCommits().from(branch);
 
         commitQueryBuilder = (since != null) ? commitQueryBuilder.since(since) : commitQueryBuilder;
         commitQueryBuilder = (until != null) ? commitQueryBuilder.until(until) : commitQueryBuilder;

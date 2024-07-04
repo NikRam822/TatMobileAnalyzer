@@ -37,7 +37,7 @@ public class ChurnServiceImpl implements ChurnService {
 
     @SneakyThrows
     @Override
-    public Map<String, Object> getStatisticChurn(Date since, Date until, Long projectId) {
+    public Map<String, Object> getStatisticChurn(Date since, Date until, Long projectId, String branch) {
         Project project = projectService.getProjectById(projectId);
         if (project == null) {
             log.warn("Project with id {} not found", projectId);
@@ -54,7 +54,7 @@ public class ChurnServiceImpl implements ChurnService {
 
 
         GitService gitService = SingletonFactoryGitService.getInstance().getImplementation(project.getProjectLink());
-        List<?> commitsPerPeriod = gitService.getCommitsPerPeriod(project.getProjectLink(), since, until);
+        List<?> commitsPerPeriod = gitService.getCommitsPerPeriod(project.getProjectLink(), since, until, branch);
 
         SupportServices supportServices = new SupportServices(filterService, objectMapper, projectService);
         gitService.processCommits(commitsPerPeriod, churnStat, projectId, supportServices);

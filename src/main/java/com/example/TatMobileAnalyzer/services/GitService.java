@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface GitService {
 
-    List<?> getCommitsPerPeriod(String repositoryUrl, Date since, Date until);
+    List<?> getCommitsPerPeriod(String repositoryUrl, Date since, Date until, String branch);
 
     boolean isValidRepository(String repositoryUrl);
 

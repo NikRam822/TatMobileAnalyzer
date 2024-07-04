@@ -34,7 +34,7 @@ public class GitLabServiceImpl implements GitService, GitLabService {
 
     @SneakyThrows
     @Override
-    public List<Commit> getCommitsPerPeriod(String repositoryUrl, Date since, Date until) {
+    public List<Commit> getCommitsPerPeriod(String repositoryUrl, Date since, Date until, String branch) {
         GitLabApi gitLabApi = new GitLabApi(gitLabUrl, accessToken);
 
         URI uri = new URI(repositoryUrl);
@@ -42,7 +42,12 @@ public class GitLabServiceImpl implements GitService, GitLabService {
         String projectPath = pathParts[1] + "/" + pathParts[2];
 
         Project project = gitLabApi.getProjectApi().getProject(projectPath);
-        List<Commit> commits = gitLabApi.getCommitsApi().getCommits(project.getId(), null, since, until);
+
+        if (branch == null || branch.isEmpty()) {
+            branch = project.getDefaultBranch();
+        }
+
+        List<Commit> commits = gitLabApi.getCommitsApi().getCommits(project.getId(), branch, since, until);
         gitLabApi.close();
         return commits;
     }
@@ -76,7 +81,7 @@ public class GitLabServiceImpl implements GitService, GitLabService {
         String namespace = pathParts[1];
         String projectName = pathParts[2];
 
-        GitLabApi gitLabApi = new GitLabApi("https://gitlab.com", accessToken);
+        GitLabApi gitLabApi = new GitLabApi(gitLabUrl, accessToken);
         String projectPath = namespace + "/" + projectName;
         List<Branch> branches = gitLabApi.getRepositoryApi().getBranches(projectPath);
         gitLabApi.close();
