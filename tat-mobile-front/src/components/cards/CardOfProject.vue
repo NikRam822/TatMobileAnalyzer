@@ -62,11 +62,8 @@ export default {
       try {
         const statistic = await axios.post(hostadress, {
           branch: "",
-          branch: "",
           projectId: this.rep.projectId,
         });
-        this.$store.commit("setParams", {});
-        this.$store.commit("setDate", "");
         this.$store.commit("setBranch", "");
         this.$store.commit("addStatistc", [this.rep.projectLink, statistic]);
       } catch (error) {

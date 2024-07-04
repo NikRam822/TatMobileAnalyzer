@@ -3,12 +3,7 @@
     <v-container class="pb-0">
       <v-progress-linear v-if="filterLoader || loader" size="20" indeterminate rounded></v-progress-linear>
       <v-btn
-        v-if="
-          !currentRepo ||
-          this.$store.getters.getBranch != currentBranch ||
-          startDate != this.$store.getters.getDate.startDate ||
-          endDate != this.$store.getters.getDate.endDate
-        "
+        v-if="!currentRepo || this.$store.getters.getBranch != currentBranch"
         variant="outlined"
         elevation="5"
         width="100%"
@@ -43,21 +38,7 @@
       >
         <span class="d-flex flex-column">
           <p>{{ this.$store.state.currentRepo.projectName }}</p>
-          <p class="text-body-1">
-            {{ this.$store.getters.getBranch }}
-          </p>
-          <p class="text-body-1">
-            {{ this.$store.getters.getDate }}
-          </p>
-        </span>
-        <span class="d-flex flex-column">
-          <p>{{ this.$store.state.currentRepo.projectName }}</p>
-          <p class="text-body-1">
-            {{ this.$store.getters.getBranch }}
-          </p>
-          <p class="text-body-1">
-            {{ this.$store.getters.getDate }}
-          </p>
+          <p class="text-body-1">{{ currentBranch }}</p>
         </span>
         <v-menu activator="parent">
           <v-list>
@@ -67,28 +48,6 @@
           </v-list>
         </v-menu>
       </v-btn>
-
-      <v-menu>
-        <template v-slot:activator="{ props }">
-          <v-btn
-            @click=""
-            v-bind="props"
-            variant="outlined"
-            width="100%"
-            height="40px"
-            class="text-none text-h5"
-            elevation="5"
-            style="border-top: 0px"
-          >
-            Branches
-          </v-btn>
-        </template>
-        <v-list>
-          <v-list-item v-for="(branch, index) in branches" :key="index" :value="branch" @click="currentBranch = branch">
-            <v-list-item-title> {{ branch }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
 
       <v-menu>
         <template v-slot:activator="{ props }">
@@ -209,8 +168,6 @@ export default {
     config: false,
     branches: [],
     currentBranch: "",
-    startDate: "",
-    endDate: "",
   }),
 
   methods: {
@@ -233,47 +190,6 @@ export default {
         console.error("Error: ", error);
       }
     },
-    dateFormating(since, until) {
-      if (since && until) {
-        return `?since=${since}&until=${until}`;
-      }
-      if (since) {
-        return `?since=${since}`;
-      }
-      if (until) {
-        return `?until=${until}`;
-      }
-    },
-    async fetchBranches() {
-      try {
-        const branches = await this.getBranches();
-        this.branches = branches.data;
-      } catch (error) {
-        console.error("Error: ", error);
-      }
-    },
-    async getBranches() {
-      let hostadress = server_path + "/api/project/get-branches";
-      try {
-        const branches = await axios.post(hostadress, {
-          projectId: this.$store.state.currentRepo.projectId,
-        });
-        return branches;
-      } catch (error) {
-        console.error("Error: ", error);
-      }
-    },
-    dateFormating(since, until) {
-      if (since && until) {
-        return `?since=${since}&until=${until}`;
-      }
-      if (since) {
-        return `?since=${since}`;
-      }
-      if (until) {
-        return `?until=${until}`;
-      }
-    },
     async getStatistic() {
       this.loader = true;
       let hostadress = server_path + "/api/statistic/churn";
@@ -286,13 +202,11 @@ export default {
       try {
         const statistic = await axios.post(hostadress, {
           branch: this.currentBranch,
-          branch: this.currentBranch,
           projectId: this.$store.state.currentRepo.projectId,
         });
         this.$store.commit("setDate", this.dateDisplay);
         this.$store.commit("setDate", this.dateDisplay);
         this.$store.commit("addStatistc", [this.$store.state.currentRepo.projectLink, statistic]);
-        this.$store.commit("setBranch", this.currentBranch);
         this.$store.commit("setBranch", this.currentBranch);
       } catch (error) {
         console.error("Error " + error.message);
@@ -413,10 +327,6 @@ export default {
       }
       return allPaths;
     },
-  },
-  created() {
-    this.currentBranch = this.$store.getters.getBranch || "";
-    this.fetchBranches();
   },
   created() {
     this.currentBranch = this.$store.getters.getBranch || "";
