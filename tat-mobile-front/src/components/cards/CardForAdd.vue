@@ -49,6 +49,9 @@ export default {
     async addCard() {
       let hostadress = server_path + "/api/project/create";
       try {
+        if (!this.re.test(this.rep)) {
+          throw new Error("Invalid url: " + this.rep);
+        }
         await axios.post(hostadress, {
           projectId: 0,
           projectLink: this.rep,
