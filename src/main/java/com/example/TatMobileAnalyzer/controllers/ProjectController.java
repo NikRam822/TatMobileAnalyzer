@@ -4,7 +4,9 @@ import com.example.TatMobileAnalyzer.dto.ProjectDto;
 import com.example.TatMobileAnalyzer.dto.ProjectIdDto;
 import com.example.TatMobileAnalyzer.model.Project;
 import com.example.TatMobileAnalyzer.services.FavoriteProjectService;
+import com.example.TatMobileAnalyzer.services.GitService;
 import com.example.TatMobileAnalyzer.services.ProjectService;
+import com.example.TatMobileAnalyzer.services.SingletonFactoryGitService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,6 +57,16 @@ public class ProjectController {
         List<Project> projects = projectService.getAllProjects();
         List<ProjectDto> projectsDto = projects.stream().map(ProjectDto::toProjectDto).toList();
         return new ResponseEntity<>(projectsDto, HttpStatus.OK);
+    }
+
+    @PostMapping("/get-branches")
+    ResponseEntity<List<String>> getBranches(@RequestBody ProjectIdDto projectIdDto) {
+        Project project = projectService.getProjectById(projectIdDto.getProjectId());
+        String projectLink = project.getProjectLink();
+
+        GitService gitService = SingletonFactoryGitService.getInstance().getImplementation(project.getProjectLink());
+        List<String> branches = gitService.getBranches(projectLink);
+        return new ResponseEntity<>(branches, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete-project")

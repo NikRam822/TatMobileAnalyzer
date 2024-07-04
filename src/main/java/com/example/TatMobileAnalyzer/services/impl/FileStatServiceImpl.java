@@ -3,11 +3,9 @@ package com.example.TatMobileAnalyzer.services.impl;
 import com.example.TatMobileAnalyzer.services.FileStatService;
 import com.example.TatMobileAnalyzer.services.GitService;
 import com.example.TatMobileAnalyzer.services.SingletonFactoryGitService;
-import com.example.TatMobileAnalyzer.services.impl.git.apis.GitHubService;
 import com.example.TatMobileAnalyzer.utils.MapToCsvConverter;
 import lombok.SneakyThrows;
 import org.kohsuke.github.GHCommit;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -15,18 +13,11 @@ import java.util.*;
 @Service
 public class FileStatServiceImpl implements FileStatService {
 
-    private final GitHubService gitHubService;
-
-    @Autowired
-    public FileStatServiceImpl(GitHubService gitHubService) {
-        this.gitHubService = gitHubService;
-    }
-
     @Override
-    public Map<String, List<Map<String, Object>>> getContributorsByFiles(String repoUrl, Date since, Date until) {
+    public Map<String, List<Map<String, Object>>> getContributorsByFiles(String repoUrl, Date since, Date until, String branch) {
 
         GitService gitService = SingletonFactoryGitService.getInstance().getImplementation(repoUrl);
-        List<?> commitsPerPeriod = gitService.getCommitsPerPeriod(repoUrl, since, until);
+        List<?> commitsPerPeriod = gitService.getCommitsPerPeriod(repoUrl, since, until, branch);
 
         Map<String, List<Map<String, Object>>> fileContributorsMap = processCommits((List<GHCommit>) commitsPerPeriod);
 
