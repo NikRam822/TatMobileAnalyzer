@@ -3,18 +3,23 @@
 </template>
 
 <script>
-import CocomoStatistics from "../components/CocomoStatistics.vue";
-import ChurnStatistics from "../components/ChurnStatistics.vue";
+import noStatistics from "../components/statistics/noStatistics.vue";
+import CocomoStatistics from "../components/statistics/CocomoStatistics.vue";
+import ChurnStatistics from "../components/statistics/ChurnStatistics.vue";
 
 export default {
-  props: ["searchRepo"],
   components: {
     CocomoStatistics,
     ChurnStatistics,
+    noStatistics,
   },
   computed: {
     currentPage() {
-      return this.$store.state.currentStatisitc;
+      if (this.$store.state.RepoSatistic[this.$store.state.currentRepo.projectLink]) {
+        return this.$store.state.currentStatisitc;
+      } else {
+        return "noStatistics";
+      }
     },
   },
 };

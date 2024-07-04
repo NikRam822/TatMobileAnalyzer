@@ -1,5 +1,5 @@
 <template>
-  <v-col xs="12" sm="6" md="4" lg="3" xl="2">
+  <v-col xs="12" sm="6" md="4" lg="3">
     <v-card
       @click="cardAppend = !cardAppend"
       v-if="cardAppend"
@@ -42,13 +42,16 @@ export default {
       err: false,
       rep: "",
       cardAppend: true,
-      re: new RegExp("^https://github.com/([^/]+)/([^/]+)$"),
+      re: new RegExp("^https://git(hub|lab).com/([^/]+)/([^/]+)$"),
     };
   },
   methods: {
     async addCard() {
       let hostadress = server_path + "/api/project/create";
       try {
+        if (!this.re.test(this.rep)) {
+          throw new Error("Invalid url: " + this.rep);
+        }
         await axios.post(hostadress, {
           projectId: 0,
           projectLink: this.rep,
