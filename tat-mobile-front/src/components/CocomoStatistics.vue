@@ -457,6 +457,9 @@ export default {
     currentTeam() {
       this.updateResult();
     },
+    LOC() {
+      this.updateResult();
+    },
   },
 };
 </script>
