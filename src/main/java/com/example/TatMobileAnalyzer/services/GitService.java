@@ -12,6 +12,7 @@ public interface GitService {
 
     boolean isValidRepository(String repositoryUrl);
 
+    List<String> getBranches(String repositoryUrl);
 
     void processCommits(List<?> commitsPerPeriod, ChurnStat churnStat, Long projectId, SupportServices supportServices);
 }

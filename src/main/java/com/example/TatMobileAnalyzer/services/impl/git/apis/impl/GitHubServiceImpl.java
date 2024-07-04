@@ -1,10 +1,10 @@
 package com.example.TatMobileAnalyzer.services.impl.git.apis.impl;
 
 import com.example.TatMobileAnalyzer.model.Filter;
+import com.example.TatMobileAnalyzer.services.GitService;
 import com.example.TatMobileAnalyzer.services.impl.PatchReader;
 import com.example.TatMobileAnalyzer.services.impl.churn.ChurnStat;
 import com.example.TatMobileAnalyzer.services.impl.churn.SupportServices;
-import com.example.TatMobileAnalyzer.services.GitService;
 import com.example.TatMobileAnalyzer.services.impl.git.apis.GitHubService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.Lists;
@@ -12,6 +12,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.kohsuke.github.GHCommit;
 import org.kohsuke.github.GHCommitQueryBuilder;
+import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -64,6 +65,20 @@ public class GitHubServiceImpl implements GitService, GitHubService {
             log.warn("Repository not found or validation error with link: {}", repositoryUrl, e);
             return false;
         }
+    }
+
+    @SneakyThrows
+    @Override
+    public List<String> getBranches(String repositoryUrl) {
+        URI uri = new URI(repositoryUrl);
+        String[] pathParts = uri.getPath().split("/");
+        String owner = pathParts[1];
+        String repositoryName = pathParts[2];
+
+        GitHub github = GitHub.connectUsingOAuth(accessToken);
+        GHRepository repository = github.getRepository(owner + "/" + repositoryName);
+
+        return new ArrayList<>(repository.getBranches().keySet());
     }
 
     @Override
