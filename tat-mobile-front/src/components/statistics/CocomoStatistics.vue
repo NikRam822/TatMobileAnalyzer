@@ -445,12 +445,13 @@ export default {
     storeCoef(this.$store.getters.getParams);
   },
   created() {
+    this.LOC = this.calculateLOC();
     if (this.$store.getters.getParams) {
-      this.LOC = this.$store.getters.getParams.LOC;
+      // this.LOC = this.$store.getters.getParams.LOC;
       this.coefficient = this.$store.getters.getParams.coefficient;
       this.currentTeam = this.$store.getters.getParams.currentTeam;
     } else {
-      this.LOC = this.calculateLOC();
+      // this.LOC = this.calculateLOC();
       this.coefficient = this.resetCoef();
       this.$store.commit("setParams", { LOC: this.LOC, coefficient: this.coefficient, currentTeam: this.currentTeam });
     }
