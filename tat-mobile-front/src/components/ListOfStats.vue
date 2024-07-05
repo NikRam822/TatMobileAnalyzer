@@ -302,6 +302,18 @@ export default {
     },
   },
   computed: {
+    dateDisplay() {
+      if (this.startDate && this.endDate) {
+        return `${this.startDate} - ${this.endDate}`;
+      }
+      if (this.startDate) {
+        return `since ${this.startDate}`;
+      }
+      if (this.endDate) {
+        return `until ${this.endDate}`;
+      }
+      return "all time";
+    },
     currentRepo() {
       return this.$store.state.RepoSatistic[this.$store.state.currentRepo.projectLink];
     },
