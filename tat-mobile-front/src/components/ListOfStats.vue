@@ -1,17 +1,22 @@
 <template>
   <v-container class="d-flex flex-column justify-space-between" style="height: 100%">
     <v-container>
+      <v-progress-linear v-if="filterLoader || loader" size="20" indeterminate rounded></v-progress-linear>
       <v-btn
         v-if="!currentRepo || this.$store.getters.getBranch != currentBranch || datePoint"
         variant="outlined"
         elevation="5"
         width="100%"
-        height="70px"
+        height="100px"
         class="text-none text-h4"
         @click="getStatistic()"
         style="border-bottom: 0px"
       >
-        Start Analyze
+        <span class="d-flex flex-column">
+          <p>Start Analyze</p>
+          <p class="text-body-1">{{ currentBranch }}</p>
+          <p class="text-body-1">{{ dateDisplay }}</p>
+        </span>
       </v-btn>
       <v-btn v-else variant="outlined" elevation="5" height="20px" style="border-bottom: 0px" @click="getStatistic()"
         >Restart Analyze
@@ -27,10 +32,10 @@
         <span class="d-flex flex-column">
           <p>{{ this.$store.state.currentRepo.projectName }}</p>
           <p class="text-body-1">
-            {{ currentBranch }}
+            {{ this.$store.getters.getBranch }}
           </p>
           <p class="text-body-1">
-            {{ this.$store.getters.getDate.startDate }} {{ this.$store.getters.getDate.endDate }}
+            {{ this.$store.getters.getDate }}
           </p>
         </span>
         <v-menu activator="parent">
@@ -84,7 +89,7 @@
     ></v-progress-circular>
     <v-container>
       <v-expansion-panels>
-        <v-expansion-panel :style="startDate && endDate ? { background: 'rgba(197, 226, 21, 0.2)' } : {}">
+        <v-expansion-panel>
           <v-expansion-panel-title class="text-button" @click="datePoint = !datePoint">
             Date filter
           </v-expansion-panel-title>
@@ -188,19 +193,29 @@ export default {
         console.error("Error: ", error);
       }
     },
+    dateFormating(since, until) {
+      if (since && until) {
+        return `?since=${since}&until=${until}`;
+      }
+      if (since) {
+        return `?since=${since}`;
+      }
+      if (until) {
+        return `?until=${until}`;
+      }
+    },
     async getStatistic() {
       this.loader = true;
       let hostadress = server_path + "/api/statistic/churn";
-      if (this.startDate && this.endDate) {
-        hostadress += `?since=${this.startDate}&until=${this.endDate}`;
+      if (this.startDate || this.endDate) {
+        hostadress += this.dateFormating(this.startDate, this.endDate);
       }
-      console.log(hostadress);
       try {
         const statistic = await axios.post(hostadress, {
           branch: this.currentBranch,
           projectId: this.$store.state.currentRepo.projectId,
         });
-        this.$store.commit("setDate", { startDate: this.startDate, endDate: this.endDate });
+        this.$store.commit("setDate", this.dateDisplay);
         this.$store.commit("addStatistc", [this.$store.state.currentRepo.projectLink, statistic]);
         this.$store.commit("setBranch", this.currentBranch);
       } catch (error) {
@@ -273,6 +288,18 @@ export default {
     },
   },
   computed: {
+    dateDisplay() {
+      if (this.startDate && this.endDate) {
+        return `${this.startDate}   ${this.endDate}`;
+      }
+      if (this.startDate) {
+        return `since ${this.startDate}`;
+      }
+      if (this.endDate) {
+        return `until ${this.endDate}`;
+      }
+      return "all time";
+    },
     currentRepo() {
       return this.$store.state.RepoSatistic[this.$store.state.currentRepo.projectLink];
     },
