@@ -20,27 +20,50 @@
       </v-sheet>
     </div>
 
-    <div class="d-flex flex-row justify-space-around ma-2 mt-16" style="width: 100%">
-      <v-sheet class="text-center">
-        <p style="color: rgb(197, 226, 21)">Labor intensity with risk</p>
-        <v-chip size="x-large">
-          {{ laborIntensityWithRisk }}
-        </v-chip>
-      </v-sheet>
-      <v-sheet class="text-center">
-        <p>Person-months</p>
-        <v-chip size="large">
-          {{ personMonths }}
-        </v-chip>
-      </v-sheet>
-      <v-sheet class="text-center">
-        <p>Months</p>
-        <v-chip size="large"> {{ months }}</v-chip>
-      </v-sheet>
-      <v-sheet class="text-center">
-        <p>Personnel</p>
-        <v-chip size="large"> {{ personel }}</v-chip>
-      </v-sheet>
+    <div class="ma-2 d-flex flex-column justify-space-around" style="width: 100%">
+      <div class="d-flex flex-row justify-space-around">
+        <v-sheet class="text-center">
+          <p style="color: rgb(197, 226, 21)">Labor intensity with risk</p>
+          <v-chip size="x-large">
+            {{ laborIntensityWithRisk }}
+          </v-chip>
+        </v-sheet>
+        <v-sheet class="text-center">
+          <p>Person-months</p>
+          <v-chip size="large">
+            {{ personMonths }}
+          </v-chip>
+        </v-sheet>
+        <v-sheet class="text-center">
+          <p>Months</p>
+          <v-chip size="large"> {{ months }}</v-chip>
+        </v-sheet>
+        <v-sheet class="text-center">
+          <p>Personnel</p>
+          <v-chip size="large"> {{ personel }}</v-chip>
+        </v-sheet>
+      </div>
+
+      <div class="d-flex flex-row justify-space-around">
+        <div class="d-flex flex-row">
+          <v-sheet class="text-center d-flex flex-column">
+            <p>Pay</p>
+            <v-text-field
+              min="0"
+              type="number"
+              hide-details
+              v-model="pay"
+              density="compact"
+              style="width: 120px"
+            ></v-text-field>
+          </v-sheet>
+          <v-icon icon="mdi-arrow-right" class="align-self-end pb-4"></v-icon>
+          <v-sheet class="text-center d-flex flex-column">
+            <p>Cost</p>
+            <v-chip size="large">{{ Math.round(pay * laborIntensityWithRisk) }}</v-chip>
+          </v-sheet>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -389,6 +412,7 @@ export default {
       laborIntensityWithRisk: 0,
       modes: ["Go to extend mode", "Go to simple mode"],
       currentCoefMode: 0,
+      pay: 0,
     };
   },
   methods: {
