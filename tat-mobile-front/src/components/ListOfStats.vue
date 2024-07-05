@@ -290,7 +290,7 @@ export default {
   computed: {
     dateDisplay() {
       if (this.startDate && this.endDate) {
-        return `${this.startDate}   ${this.endDate}`;
+        return `${this.startDate} - ${this.endDate}`;
       }
       if (this.startDate) {
         return `since ${this.startDate}`;
