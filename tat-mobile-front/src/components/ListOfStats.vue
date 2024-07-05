@@ -1,17 +1,22 @@
 <template>
   <v-container class="d-flex flex-column justify-space-between" style="height: 100%">
     <v-container>
+      <v-progress-linear v-if="filterLoader || loader" size="20" indeterminate rounded></v-progress-linear>
       <v-btn
-        v-if="!currentRepo"
+        v-if="!currentRepo || this.$store.getters.getBranch != currentBranch || datePoint"
         variant="outlined"
         elevation="5"
         width="100%"
-        height="70px"
+        height="100px"
         class="text-none text-h4"
         @click="getStatistic()"
         style="border-bottom: 0px"
       >
-        Start Analyze
+        <span class="d-flex flex-column">
+          <p>Start Analyze</p>
+          <p class="text-body-1">{{ currentBranch }}</p>
+          <p class="text-body-1">{{ dateDisplay }}</p>
+        </span>
       </v-btn>
       <v-btn v-else variant="outlined" elevation="5" height="20px" style="border-bottom: 0px" @click="getStatistic()"
         >Restart Analyze
@@ -19,12 +24,20 @@
       <v-btn
         variant="outlined"
         width="100%"
-        height="70px"
+        height="100px"
         class="text-none text-h4"
         color="rgb(197, 226, 21)"
         elevation="5"
       >
-        {{ this.$store.state.currentRepo.projectName }}
+        <span class="d-flex flex-column">
+          <p>{{ this.$store.state.currentRepo.projectName }}</p>
+          <p class="text-body-1">
+            {{ this.$store.getters.getBranch }}
+          </p>
+          <p class="text-body-1">
+            {{ this.$store.getters.getDate }}
+          </p>
+        </span>
         <v-menu activator="parent">
           <v-list>
             <v-list-item v-for="(item, index) in getRepositoryes" :key="index" :value="index" @click="goToRepo(item)">
@@ -33,6 +46,28 @@
           </v-list>
         </v-menu>
       </v-btn>
+
+      <v-menu>
+        <template v-slot:activator="{ props }">
+          <v-btn
+            @click=""
+            v-bind="props"
+            variant="outlined"
+            width="100%"
+            height="40px"
+            class="text-none text-h5"
+            elevation="5"
+            style="border-top: 0px"
+          >
+            Branches
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item v-for="(branch, index) in branches" :key="index" :value="branch" @click="currentBranch = branch">
+            <v-list-item-title> {{ branch }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
 
       <v-container>
         <h3 class="align-self-center text-center">Statisitcs</h3>
@@ -52,6 +87,25 @@
       class="align-self-center"
       indeterminate
     ></v-progress-circular>
+    <v-container>
+      <v-expansion-panels>
+        <v-expansion-panel>
+          <v-expansion-panel-title class="text-button" @click="datePoint = !datePoint">
+            Date filter
+          </v-expansion-panel-title>
+          <v-expansion-panel-text>
+            <div>
+              Start date
+              <v-text-field type="date" v-model="startDate"></v-text-field>
+              End date
+              <v-text-field type="date" v-model="endDate"></v-text-field>
+              <v-btn @click="(startDate = ''), (endDate = '')">Reset</v-btn>
+            </div>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+      </v-expansion-panels>
+    </v-container>
+
     <v-container>
       <v-menu :close-on-content-click="false">
         <template v-slot:activator="{ props }">
@@ -112,17 +166,58 @@ export default {
     loader: false,
     path: "",
     config: false,
+    branches: [],
+    currentBranch: "",
+    startDate: "",
+    endDate: "",
+    datePoint: false,
   }),
 
   methods: {
+    async fetchBranches() {
+      try {
+        const branches = await this.getBranches();
+        this.branches = branches.data;
+      } catch (error) {
+        console.error("Error: ", error);
+      }
+    },
+    async getBranches() {
+      let hostadress = server_path + "/api/project/get-branches";
+      try {
+        const branches = await axios.post(hostadress, {
+          projectId: this.$store.state.currentRepo.projectId,
+        });
+        return branches;
+      } catch (error) {
+        console.error("Error: ", error);
+      }
+    },
+    dateFormating(since, until) {
+      if (since && until) {
+        return `?since=${since}&until=${until}`;
+      }
+      if (since) {
+        return `?since=${since}`;
+      }
+      if (until) {
+        return `?until=${until}`;
+      }
+    },
     async getStatistic() {
       this.loader = true;
       let hostadress = server_path + "/api/statistic/churn";
+      if (this.startDate || this.endDate) {
+        hostadress += this.dateFormating(this.startDate, this.endDate);
+      }
       try {
         const statistic = await axios.post(hostadress, {
+          branch: this.currentBranch,
           projectId: this.$store.state.currentRepo.projectId,
         });
+        this.$store.commit("setDate", this.dateDisplay);
         this.$store.commit("addStatistc", [this.$store.state.currentRepo.projectLink, statistic]);
+        this.$store.commit("setBranch", this.currentBranch);
       } catch (error) {
         console.error("Error " + error.message);
       }
@@ -193,6 +288,18 @@ export default {
     },
   },
   computed: {
+    dateDisplay() {
+      if (this.startDate && this.endDate) {
+        return `${this.startDate} - ${this.endDate}`;
+      }
+      if (this.startDate) {
+        return `since ${this.startDate}`;
+      }
+      if (this.endDate) {
+        return `until ${this.endDate}`;
+      }
+      return "all time";
+    },
     currentRepo() {
       return this.$store.state.RepoSatistic[this.$store.state.currentRepo.projectLink];
     },
@@ -218,6 +325,10 @@ export default {
       }
       return allPaths;
     },
+  },
+  created() {
+    this.currentBranch = this.$store.getters.getBranch || "";
+    this.fetchBranches();
   },
 };
 </script>

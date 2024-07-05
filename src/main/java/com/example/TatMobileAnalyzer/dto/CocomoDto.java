@@ -27,4 +27,7 @@ public class CocomoDto {
     double developmentMethods;
     double developmentSchedule;
 
+    double months;
+    double personal;
+
 }

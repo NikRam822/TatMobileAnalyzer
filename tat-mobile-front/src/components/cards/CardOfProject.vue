@@ -61,8 +61,11 @@ export default {
       let hostadress = server_path + "/api/statistic/churn";
       try {
         const statistic = await axios.post(hostadress, {
+          branch: "",
           projectId: this.rep.projectId,
         });
+        this.$store.commit("setDate", "");
+        this.$store.commit("setBranch", "");
         this.$store.commit("addStatistc", [this.rep.projectLink, statistic]);
       } catch (error) {
         console.error("Error " + error.message);
@@ -73,6 +76,7 @@ export default {
       this.$store.commit("changeCurrentRepo", this.rep);
       this.$router.push("/project-review");
     },
+
     async deleteProject() {
       let hostadress = server_path + "/api/project/delete-project";
       try {
