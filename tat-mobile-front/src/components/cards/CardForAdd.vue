@@ -15,7 +15,7 @@
       <v-form @submit.prevent="addCard()" class="d-flex flex-column">
         <v-text-field
           required
-          :rules="[re.test(rep) || 'Wrong URL, needed https://github.com/AUTHOR/REPO']"
+          :rules="[re.test(rep) || 'Wrong URL']"
           v-model="rep"
           label="Reposytory URL"
           hint="Enter URL GitHub repository"
@@ -42,16 +42,16 @@ export default {
       err: false,
       rep: "",
       cardAppend: true,
-      re: new RegExp("^https://git(hub|lab).com/([^/]+)/([^/]+)$"),
+      re: new RegExp("^https://(github.com|gitlab([^/]+))/([^/]+)/([^/]+)$"),
     };
   },
   methods: {
     async addCard() {
       let hostadress = server_path + "/api/project/create";
       try {
-        // if (!this.re.test(this.rep)) {
-        //   throw new Error("Invalid url: " + this.rep);
-        // }
+        if (!this.re.test(this.rep)) {
+          throw new Error("Invalid url: " + this.rep);
+        }
         await axios.post(hostadress, {
           projectId: 0,
           projectLink: this.rep,
