@@ -49,8 +49,8 @@
           <v-sheet class="text-center d-flex flex-column">
             <p>Pay</p>
             <v-text-field
-              min="0"
               type="number"
+              min="0"
               hide-details
               v-model="pay"
               density="compact"
@@ -61,6 +61,23 @@
           <v-sheet class="text-center d-flex flex-column">
             <p>Cost</p>
             <v-chip size="large">{{ Math.round(pay * laborIntensityWithRisk) }}</v-chip>
+          </v-sheet>
+          <v-icon icon="mdi-minus" class="align-self-end pb-4"></v-icon>
+          <v-sheet class="text-center d-flex flex-column">
+            <p>Your cost</p>
+            <v-text-field
+              type="number"
+              min="0"
+              hide-details
+              v-model="yourCost"
+              density="compact"
+              style="width: 120px"
+            ></v-text-field>
+          </v-sheet>
+          <v-icon icon="mdi-equal" class="align-self-end pb-4"></v-icon>
+          <v-sheet class="text-center d-flex flex-column">
+            <p>Difference</p>
+            <v-chip size="large">{{ yourCost - Math.round(pay * laborIntensityWithRisk) }}</v-chip>
           </v-sheet>
         </div>
       </div>
@@ -412,7 +429,9 @@ export default {
       laborIntensityWithRisk: 0,
       modes: ["Go to extend mode", "Go to simple mode"],
       currentCoefMode: 0,
+      yourCost: 0,
       pay: 0,
+      costDiference: 0,
     };
   },
   methods: {
