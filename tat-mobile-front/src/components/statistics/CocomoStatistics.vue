@@ -20,7 +20,7 @@
       </v-sheet>
     </div>
 
-    <div class="ma-2 d-flex flex-column justify-space-around" style="width: 100%">
+    <v-container class="ma-2 d-flex flex-column justify-space-around" width=" 50%">
       <div class="d-flex flex-row justify-space-around">
         <v-sheet class="text-center">
           <p style="color: rgb(197, 226, 21)">Labor intensity with risk</p>
@@ -43,45 +43,59 @@
           <v-chip size="large"> {{ personel }}</v-chip>
         </v-sheet>
       </div>
-
-      <div class="d-flex flex-row justify-space-around">
-        <div class="d-flex flex-row">
-          <v-sheet class="text-center d-flex flex-column">
-            <p>Pay</p>
-            <v-text-field
-              type="number"
-              min="0"
-              hide-details
-              v-model="pay"
-              density="compact"
-              style="width: 120px"
-            ></v-text-field>
-          </v-sheet>
-          <v-icon icon="mdi-arrow-right" class="align-self-end pb-4"></v-icon>
-          <v-sheet class="text-center d-flex flex-column">
-            <p>Cost</p>
-            <v-chip size="large">{{ Math.round(pay * laborIntensityWithRisk) }}</v-chip>
-          </v-sheet>
-          <v-icon icon="mdi-minus" class="align-self-end pb-4"></v-icon>
-          <v-sheet class="text-center d-flex flex-column">
-            <p>Your cost</p>
-            <v-text-field
-              type="number"
-              min="0"
-              hide-details
-              v-model="yourCost"
-              density="compact"
-              style="width: 120px"
-            ></v-text-field>
-          </v-sheet>
-          <v-icon icon="mdi-equal" class="align-self-end pb-4"></v-icon>
-          <v-sheet class="text-center d-flex flex-column">
-            <p>Difference</p>
-            <v-chip size="large">{{ yourCost - Math.round(pay * laborIntensityWithRisk) }}</v-chip>
-          </v-sheet>
-        </div>
-      </div>
-    </div>
+    </v-container>
+    <v-container width="50%" height="100%">
+      <v-expansion-panels>
+        <v-expansion-panel>
+          <v-expansion-panel-title>Calculate cost</v-expansion-panel-title>
+          <v-expansion-panel-text>
+            <div class="d-flex flex-row justify-space-around">
+              <div class="d-flex flex-row">
+                <v-sheet class="text-center d-flex flex-column" title="Your cost of project">
+                  <p>Your cost</p>
+                  <v-text-field
+                    type="number"
+                    min="0"
+                    hide-details
+                    v-model="yourCost"
+                    density="compact"
+                    style="width: 120px"
+                  ></v-text-field>
+                </v-sheet>
+                <v-icon icon="mdi-minus" class="align-self-end pb-4"></v-icon>
+                <v-sheet class="text-center d-flex flex-column" title="Your pay for person">
+                  <p>Pay</p>
+                  <v-text-field
+                    type="number"
+                    min="0"
+                    hide-details
+                    v-model="pay"
+                    density="compact"
+                    style="width: 120px"
+                  ></v-text-field>
+                </v-sheet>
+                <v-icon icon="mdi-arrow-right" class="align-self-end pb-4"></v-icon>
+                <v-sheet class="text-center d-flex flex-column" title="labor intensity with risk * pay">
+                  <p>Cost</p>
+                  <v-chip size="large">{{ Math.round(pay * laborIntensityWithRisk) }}</v-chip>
+                </v-sheet>
+                <v-icon icon="mdi-equal" class="align-self-end pb-4"></v-icon>
+                <v-sheet class="text-center d-flex flex-column" title="Your cost minus Pay">
+                  <p>Difference</p>
+                  <v-chip
+                    size="large"
+                    :style="
+                      yourCost - Math.round(pay * laborIntensityWithRisk) >= 0 ? { color: 'green' } : { color: 'red' }
+                    "
+                    >{{ yourCost - Math.round(pay * laborIntensityWithRisk) }}</v-chip
+                  >
+                </v-sheet>
+              </div>
+            </div>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+      </v-expansion-panels>
+    </v-container>
   </div>
 
   <v-divider class="pb-7"></v-divider>
@@ -425,7 +439,9 @@ export default {
       coefficient: {},
       personMonths: 0,
       months: 0,
+      editingMonths: 0,
       personel: 0,
+      editingPersonel: 0,
       laborIntensityWithRisk: 0,
       modes: ["Go to extend mode", "Go to simple mode"],
       currentCoefMode: 0,
@@ -488,13 +504,12 @@ export default {
     storeCoef(this.$store.getters.getParams);
   },
   created() {
-    this.LOC = this.calculateLOC();
     if (this.$store.getters.getParams) {
-      // this.LOC = this.$store.getters.getParams.LOC;
+      this.LOC = this.$store.getters.getParams.LOC;
       this.coefficient = this.$store.getters.getParams.coefficient;
       this.currentTeam = this.$store.getters.getParams.currentTeam;
     } else {
-      // this.LOC = this.calculateLOC();
+      this.LOC = this.calculateLOC();
       this.coefficient = this.resetCoef();
       this.$store.commit("setParams", { LOC: this.LOC, coefficient: this.coefficient, currentTeam: this.currentTeam });
     }

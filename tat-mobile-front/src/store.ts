@@ -8,8 +8,8 @@ export default createStore({
     currentRepo: "Error parsing name",
     currentStatisitc: "ChurnStatistics",
     RepoSatistic: {},
-    storeParams: {},
     projectBranch: {},
+    storeParams: {},
     projectDate: {},
   },
   mutations: {

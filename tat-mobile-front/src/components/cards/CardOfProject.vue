@@ -64,6 +64,7 @@ export default {
           branch: "",
           projectId: this.rep.projectId,
         });
+        this.$store.commit("setParams", {});
         this.$store.commit("setDate", "");
         this.$store.commit("setBranch", "");
         this.$store.commit("addStatistc", [this.rep.projectLink, statistic]);

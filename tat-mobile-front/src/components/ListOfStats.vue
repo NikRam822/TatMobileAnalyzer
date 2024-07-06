@@ -1,9 +1,14 @@
 <template>
   <v-container class="d-flex flex-column justify-space-between" style="height: 100%">
-    <v-container>
+    <v-container class="pb-0">
       <v-progress-linear v-if="filterLoader || loader" size="20" indeterminate rounded></v-progress-linear>
       <v-btn
-        v-if="!currentRepo || this.$store.getters.getBranch != currentBranch || datePoint"
+        v-if="
+          !currentRepo ||
+          this.$store.getters.getBranch != currentBranch ||
+          startDate != this.$store.getters.getDate.startDate ||
+          endDate != this.$store.getters.getDate.endDate
+        "
         variant="outlined"
         elevation="5"
         width="100%"
@@ -87,26 +92,24 @@
       class="align-self-center"
       indeterminate
     ></v-progress-circular>
-    <v-container>
-      <v-expansion-panels>
-        <v-expansion-panel>
-          <v-expansion-panel-title class="text-button" @click="datePoint = !datePoint">
-            Date filter
-          </v-expansion-panel-title>
-          <v-expansion-panel-text>
-            <div>
-              Start date
-              <v-text-field type="date" v-model="startDate"></v-text-field>
-              End date
-              <v-text-field type="date" v-model="endDate"></v-text-field>
-              <v-btn @click="(startDate = ''), (endDate = '')">Reset</v-btn>
-            </div>
-          </v-expansion-panel-text>
-        </v-expansion-panel>
-      </v-expansion-panels>
-    </v-container>
 
-    <v-container>
+    <v-container class="pt-0">
+      <v-container>
+        <v-expansion-panels>
+          <v-expansion-panel>
+            <v-expansion-panel-title class="text-button"> Date filter </v-expansion-panel-title>
+            <v-expansion-panel-text>
+              <div>
+                Start date
+                <v-text-field type="date" v-model="startDate"></v-text-field>
+                End date
+                <v-text-field type="date" v-model="endDate"></v-text-field>
+                <v-btn @click="(startDate = ''), (endDate = '')">Reset</v-btn>
+              </div>
+            </v-expansion-panel-text>
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </v-container>
       <v-menu :close-on-content-click="false">
         <template v-slot:activator="{ props }">
           <v-btn width="100%" v-bind="props" @click="currentRepo || updateFilters()"> Filters </v-btn>
@@ -170,7 +173,6 @@ export default {
     currentBranch: "",
     startDate: "",
     endDate: "",
-    datePoint: false,
   }),
 
   methods: {
