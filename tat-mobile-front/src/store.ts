@@ -10,15 +10,11 @@ export default createStore({
     RepoSatistic: {},
     projectBranch: {},
     storeParams: {},
-    projectBranch: {},
+    projectDate: {},
   },
   mutations: {
-    setBranch(state, branch) {
-      state.projectBranch[state.currentRepo.projectLink] = branch;
-    },
-
-    delParam(state) {
-      delete state.storeParams[state.currentRepo.projectLink];
+    setDate(state, date) {
+      state.projectDate[state.currentRepo.projectLink] = date;
     },
 
     setBranch(state, branch) {
@@ -62,7 +58,28 @@ export default createStore({
       return state.storeParams[state.currentRepo.projectLink];
     },
     getBranch(state) {
+      if (!state.projectBranch[state.currentRepo.projectLink]) {
+        state.projectBranch[state.currentRepo.projectLink] = "";
+      }
       return state.projectBranch[state.currentRepo.projectLink];
+    },
+    getDate(state) {
+      if (!state.projectDate[state.currentRepo.projectLink]) {
+        state.projectDate[state.currentRepo.projectLink] = "";
+      }
+      return state.projectDate[state.currentRepo.projectLink];
+    },
+    getBranch(state) {
+      if (!state.projectBranch[state.currentRepo.projectLink]) {
+        state.projectBranch[state.currentRepo.projectLink] = "";
+      }
+      return state.projectBranch[state.currentRepo.projectLink];
+    },
+    getDate(state) {
+      if (!state.projectDate[state.currentRepo.projectLink]) {
+        state.projectDate[state.currentRepo.projectLink] = "";
+      }
+      return state.projectDate[state.currentRepo.projectLink];
     },
   },
   plugins: [createPersistedState()],
