@@ -2,12 +2,7 @@ package com.example.TatMobileAnalyzer.services.impl;
 
 import com.example.TatMobileAnalyzer.model.Project;
 import com.example.TatMobileAnalyzer.repository.ProjectRepository;
-import com.example.TatMobileAnalyzer.services.FavoriteProjectService;
-import com.example.TatMobileAnalyzer.services.FilterService;
-import com.example.TatMobileAnalyzer.services.impl.git.apis.GitHubService;
-import com.example.TatMobileAnalyzer.services.ProjectService;
-import com.example.TatMobileAnalyzer.services.GitService;
-import com.example.TatMobileAnalyzer.services.SingletonFactoryGitService;
+import com.example.TatMobileAnalyzer.services.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +18,7 @@ public class ProjectServiceImpl implements ProjectService, FavoriteProjectServic
     private final ProjectRepository projectRepository;
 
     @Autowired
-    public ProjectServiceImpl(FilterService filterService, ProjectRepository projectRepository, GitHubService gitHubService) {
+    public ProjectServiceImpl(FilterService filterService, ProjectRepository projectRepository) {
         this.filterService = filterService;
         this.projectRepository = projectRepository;
     }
