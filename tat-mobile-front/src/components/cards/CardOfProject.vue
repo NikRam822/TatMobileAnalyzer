@@ -65,7 +65,7 @@ export default {
           projectId: this.rep.projectId,
         });
         this.$store.commit("setParams", {});
-        this.$store.commit("setDate", "");
+        this.$store.commit("setDate", { startDate: "", endDate: "" });
         this.$store.commit("setBranch", "");
         this.$store.commit("addStatistc", [this.rep.projectLink, statistic]);
       } catch (error) {
@@ -81,7 +81,7 @@ export default {
     async deleteProject() {
       let hostadress = server_path + "/api/project/delete-project";
       try {
-        const statistic = await axios.delete(hostadress, {
+        await axios.delete(hostadress, {
           data: {
             projectId: this.rep.projectId,
           },

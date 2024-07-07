@@ -65,7 +65,7 @@ export default createStore({
     },
     getDate(state) {
       if (!state.projectDate[state.currentRepo.projectLink]) {
-        state.projectDate[state.currentRepo.projectLink] = "";
+        state.projectDate[state.currentRepo.projectLink] = { startDate: "", endDate: "" };
       }
       return state.projectDate[state.currentRepo.projectLink];
     },

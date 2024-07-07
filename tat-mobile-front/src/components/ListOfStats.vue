@@ -20,7 +20,7 @@
         <span class="d-flex flex-column">
           <p>Start Analyze</p>
           <p class="text-body-1">{{ currentBranch }}</p>
-          <p class="text-body-1">{{ dateDisplay }}</p>
+          <p class="text-body-1">{{ dateDisplay(this.startDate, this.endDate) }}</p>
         </span>
       </v-btn>
       <v-btn v-else variant="outlined" elevation="5" height="20px" style="border-bottom: 0px" @click="getStatistic()"
@@ -40,7 +40,7 @@
             {{ this.$store.getters.getBranch }}
           </p>
           <p class="text-body-1">
-            {{ this.$store.getters.getDate }}
+            {{ dateDisplay(...Object.values(this.$store.getters.getDate)) }}
           </p>
         </span>
         <v-menu activator="parent">
@@ -55,7 +55,7 @@
       <v-menu>
         <template v-slot:activator="{ props }">
           <v-btn
-            @click=""
+            @click="fetchBranches()"
             v-bind="props"
             variant="outlined"
             width="100%"
@@ -217,7 +217,7 @@ export default {
           branch: this.currentBranch,
           projectId: this.$store.state.currentRepo.projectId,
         });
-        this.$store.commit("setDate", this.dateDisplay);
+        this.$store.commit("setDate", { startDate: this.startDate, endDate: this.endDate });
         this.$store.commit("addStatistc", [this.$store.state.currentRepo.projectLink, statistic]);
         this.$store.commit("setBranch", this.currentBranch);
       } catch (error) {
@@ -288,20 +288,20 @@ export default {
       this.$store.commit("changeCurrentRepo", item);
       location.reload();
     },
-  },
-  computed: {
-    dateDisplay() {
-      if (this.startDate && this.endDate) {
-        return `${this.startDate} - ${this.endDate}`;
+    dateDisplay(startDate, endDate) {
+      if (startDate && endDate) {
+        return `${startDate} - ${endDate}`;
       }
-      if (this.startDate) {
-        return `since ${this.startDate}`;
+      if (startDate) {
+        return `since ${startDate}`;
       }
-      if (this.endDate) {
-        return `until ${this.endDate}`;
+      if (endDate) {
+        return `until ${endDate}`;
       }
       return "all time";
     },
+  },
+  computed: {
     currentRepo() {
       return this.$store.state.RepoSatistic[this.$store.state.currentRepo.projectLink];
     },
@@ -330,7 +330,6 @@ export default {
   },
   created() {
     this.currentBranch = this.$store.getters.getBranch || "";
-    this.fetchBranches();
   },
 };
 </script>

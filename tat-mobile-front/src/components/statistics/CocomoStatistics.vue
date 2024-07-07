@@ -34,13 +34,15 @@
             {{ personMonths }}
           </v-chip>
         </v-sheet>
-        <v-sheet class="text-center">
-          <p>Months</p>
-          <v-chip size="large"> {{ months }}</v-chip>
-        </v-sheet>
-        <v-sheet class="text-center">
-          <p>Personnel</p>
-          <v-chip size="large"> {{ personel }}</v-chip>
+        <v-sheet class="d-flex flex-row justify-space-around" style="border: 2px, red">
+          <v-div class="text-center">
+            <p>Months</p>
+            <v-chip size="large"> {{ months }}</v-chip>
+          </v-div>
+          <v-div class="text-center">
+            <p>Personnel</p>
+            <v-chip size="large"> {{ personel }}</v-chip>
+          </v-div>
         </v-sheet>
       </div>
     </v-container>

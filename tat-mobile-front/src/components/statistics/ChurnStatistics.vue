@@ -16,6 +16,7 @@
             <v-card id="value" @click="sortStatistic(statsForGraph, $event.target.id)">Value</v-card>
           </th>
           <th>
+            <!-- rename not vlue -->
             <v-card id="notValue" @click="sortStatistic(statsForGraph, $event.target.id)">Not value</v-card>
           </th>
         </tr>
