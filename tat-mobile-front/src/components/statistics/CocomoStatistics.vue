@@ -207,6 +207,11 @@
       <tr>
         <th width="30%">Cost Drivers</th>
         <th>Coefficients</th>
+        <th>Very low</th>
+        <th>Low</th>
+        <th>Nominal</th>
+        <th>High</th>
+        <th>Very high</th>
       </tr>
     </thead>
     <tbody>
@@ -224,33 +229,76 @@
           </v-expansion-panels>
         </td>
         <td>
-          <div class="d-flex flex-row">
-            <div>
-              <v-text-field
-                density="compact"
-                @change="updateCoef(param.codeName)"
-                type="number"
-                variant="plain"
-                v-model="coefficient[param.codeName].coef"
-                min="0"
-                max="2"
-                step="0.01"
-                hide-details
-              ></v-text-field>
-            </div>
-            <v-slider
-              min="0.5"
-              max="1.5"
-              step="0.01"
-              thumb-label
-              hide-details
-              :ticks="Object.fromEntries(Object.entries(param.coefficient).map(([key, value]) => [value, key]))"
-              show-ticks="always"
-              tick-size="6"
-              v-model="coefficient[param.codeName].coef"
-              @click="updateCoef(param.codeName)"
-            ></v-slider>
-          </div>
+          <v-text-field
+            density="compact"
+            @change="updateCoef(param.codeName)"
+            type="number"
+            v-model="coefficient[param.codeName].coef"
+            min="0"
+            max="2"
+            step="0.01"
+            hide-details
+          ></v-text-field>
+        </td>
+        <td>
+          <v-radio
+            v-if="param.coefficient.vl"
+            @click="
+              coefficient[param.codeName] = { simpleCoef: 'vl', coef: param.coefficient.vl };
+              updateResult();
+            "
+            v-model="coefficient[param.codeName].simpleCoef"
+            true-value="vl"
+            :label="param.coefficient.vl"
+          ></v-radio>
+        </td>
+        <td>
+          <v-radio
+            v-if="param.coefficient.l"
+            @click="
+              coefficient[param.codeName] = { simpleCoef: 'l', coef: param.coefficient.l };
+              updateResult();
+            "
+            v-model="coefficient[param.codeName].simpleCoef"
+            true-value="l"
+            :label="param.coefficient.l"
+          ></v-radio>
+        </td>
+        <td>
+          <v-radio
+            v-if="param.coefficient.n"
+            @click="
+              coefficient[param.codeName] = { simpleCoef: 'n', coef: param.coefficient.n };
+              updateResult();
+            "
+            v-model="coefficient[param.codeName].simpleCoef"
+            true-value="n"
+            :label="param.coefficient.n"
+          ></v-radio>
+        </td>
+        <td>
+          <v-radio
+            v-if="param.coefficient.h"
+            @click="
+              coefficient[param.codeName] = { simpleCoef: 'h', coef: param.coefficient.h };
+              updateResult();
+            "
+            v-model="coefficient[param.codeName].simpleCoef"
+            true-value="h"
+            :label="param.coefficient.h"
+          ></v-radio>
+        </td>
+        <td>
+          <v-radio
+            v-if="param.coefficient.vh"
+            @click="
+              coefficient[param.codeName] = { simpleCoef: 'vh', coef: param.coefficient.vh };
+              updateResult();
+            "
+            v-model="coefficient[param.codeName].simpleCoef"
+            true-value="vh"
+            :label="param.coefficient.vh"
+          ></v-radio>
         </td>
       </tr>
     </tbody>
