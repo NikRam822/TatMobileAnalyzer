@@ -7,7 +7,6 @@ import com.example.TatMobileAnalyzer.services.impl.churn.SupportServices;
 import com.example.TatMobileAnalyzer.services.GitService;
 import com.example.TatMobileAnalyzer.services.impl.git.apis.GitLabService;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.google.common.collect.Lists;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.gitlab4j.api.GitLabApi;
@@ -50,7 +49,7 @@ public class GitLabServiceImpl implements GitService, GitLabService {
 
         List<Commit> commits = gitLabApi.getCommitsApi().getCommits(project.getId(), branch, since, until);
         gitLabApi.close();
-        return Lists.reverse(commits);
+        return commits;
     }
 
     @SneakyThrows

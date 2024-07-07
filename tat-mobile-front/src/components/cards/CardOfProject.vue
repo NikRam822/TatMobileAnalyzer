@@ -77,6 +77,7 @@ export default {
       this.$store.commit("changeCurrentRepo", this.rep);
       this.$router.push("/project-review");
     },
+
     async deleteProject() {
       let hostadress = server_path + "/api/project/delete-project";
       try {

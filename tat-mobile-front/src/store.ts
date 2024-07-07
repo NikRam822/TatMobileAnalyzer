@@ -69,18 +69,6 @@ export default createStore({
       }
       return state.projectDate[state.currentRepo.projectLink];
     },
-    getBranch(state) {
-      if (!state.projectBranch[state.currentRepo.projectLink]) {
-        state.projectBranch[state.currentRepo.projectLink] = "";
-      }
-      return state.projectBranch[state.currentRepo.projectLink];
-    },
-    getDate(state) {
-      if (!state.projectDate[state.currentRepo.projectLink]) {
-        state.projectDate[state.currentRepo.projectLink] = "";
-      }
-      return state.projectDate[state.currentRepo.projectLink];
-    },
   },
   plugins: [createPersistedState()],
 });
