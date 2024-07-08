@@ -66,6 +66,7 @@ export default {
         });
         this.$store.commit("setParams", {});
         this.$store.commit("setDate", { startDate: "", endDate: "" });
+
         this.$store.commit("setBranch", "");
         this.$store.commit("addStatistc", [this.rep.projectLink, statistic]);
       } catch (error) {
