@@ -9,7 +9,6 @@
           startDate != this.$store.getters.getDate.startDate ||
           endDate != this.$store.getters.getDate.endDate
         "
-
         variant="outlined"
         elevation="5"
         width="100%"
@@ -22,7 +21,6 @@
           <p>Start Analyze</p>
           <p class="text-body-1">{{ currentBranch }}</p>
           <p class="text-body-1">{{ dateDisplay(this.startDate, this.endDate) }}</p>
-
         </span>
       </v-btn>
       <v-btn v-else variant="outlined" elevation="5" height="20px" style="border-bottom: 0px" @click="getStatistic()"
@@ -43,7 +41,6 @@
           </p>
           <p class="text-body-1">
             {{ dateDisplay(...Object.values(this.$store.getters.getDate)) }}
-
           </p>
         </span>
         <v-menu activator="parent">
@@ -59,7 +56,6 @@
         <template v-slot:activator="{ props }">
           <v-btn
             @click="fetchBranches()"
-
             v-bind="props"
             variant="outlined"
             width="100%"
@@ -308,18 +304,6 @@ export default {
     },
   },
   computed: {
-    dateDisplay() {
-      if (this.startDate && this.endDate) {
-        return `${this.startDate} - ${this.endDate}`;
-      }
-      if (this.startDate) {
-        return `since ${this.startDate}`;
-      }
-      if (this.endDate) {
-        return `until ${this.endDate}`;
-      }
-      return "all time";
-    },
     currentRepo() {
       return this.$store.state.RepoSatistic[this.$store.state.currentRepo.projectLink];
     },
