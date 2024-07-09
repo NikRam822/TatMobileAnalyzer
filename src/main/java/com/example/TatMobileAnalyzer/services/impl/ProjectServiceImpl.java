@@ -56,8 +56,6 @@ public class ProjectServiceImpl implements ProjectService, FavoriteProjectServic
         Project project = projectRepository.findById(id).orElse(null);
         if (project == null) {
             log.warn("Project with id {} not found", id);
-        } else {
-            log.info("Found project with id: {}", id);
         }
         return project;
     }

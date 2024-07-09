@@ -9,10 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.Lists;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.kohsuke.github.GHCommit;
-import org.kohsuke.github.GHCommitQueryBuilder;
-import org.kohsuke.github.GHRepository;
-import org.kohsuke.github.GitHub;
+import org.kohsuke.github.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -31,7 +28,6 @@ public class GitHubService implements GitService {
     @SneakyThrows
     @Override
     public List<GHCommit> getCommitsPerPeriod(String repositoryUrl, Date since, Date until, String branch) {
-
         URI uri = new URI(repositoryUrl);
         String[] pathParts = uri.getPath().split("/");
         String owner = pathParts[1];
@@ -49,9 +45,18 @@ public class GitHubService implements GitService {
         commitQueryBuilder = (since != null) ? commitQueryBuilder.since(since) : commitQueryBuilder;
         commitQueryBuilder = (until != null) ? commitQueryBuilder.until(until) : commitQueryBuilder;
 
-        List<GHCommit> commitsPerPeriod = Lists.reverse(commitQueryBuilder.list().toList());
-        return commitsPerPeriod;
+        List<GHCommit> allCommits = Lists.reverse(commitQueryBuilder.list().toList());
+        List<GHCommit> nonMergeCommits = new ArrayList<>();
+
+        for (GHCommit commit : allCommits) {
+            if (commit.getParentSHA1s().size() <= 1) {
+                nonMergeCommits.add(commit);
+            }
+        }
+
+        return nonMergeCommits;
     }
+
 
     @SneakyThrows
     @Override
