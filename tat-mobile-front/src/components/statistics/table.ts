@@ -1,0 +1,175 @@
+const tableParams = [
+  {
+    codeName: "reliability",
+    name: "Reliability",
+    description: "Required software reliability",
+    coefficient: {
+      vl: 0.75,
+      l: 0.88,
+      n: 1.0,
+      h: 1.15,
+      vh: 1.4,
+    },
+  },
+  {
+    codeName: "databaseSize",
+    name: "Database Size",
+    description: "Size of application database",
+    coefficient: {
+      l: 0.94,
+      n: 1.0,
+      h: 1.08,
+      vh: 1.16,
+    },
+  },
+  {
+    codeName: "productComplexity",
+    name: "Product Complexity",
+    description: "Complexity of the product",
+    coefficient: {
+      vl: 0.7,
+      l: 0.85,
+      n: 1.0,
+      h: 1.15,
+      vh: 1.3,
+    },
+  },
+  {
+    codeName: "performance",
+    name: "Performance",
+    description: "Run-time performance constraints",
+    coefficient: {
+      n: 1.0,
+      h: 1.11,
+      vh: 1.3,
+    },
+  },
+  {
+    codeName: "memoryLimit",
+    name: "Memory limit",
+    description: "Memory constraints",
+    coefficient: {
+      n: 1.0,
+      h: 1.06,
+      vh: 1.21,
+    },
+  },
+  {
+    codeName: "unstableEnvironment",
+    name: "Unstable environment",
+    description: "Volatility of the virtual machine environment",
+    coefficient: {
+      l: 0.87,
+      n: 1.0,
+      h: 1.15,
+      vh: 1.3,
+    },
+  },
+  {
+    codeName: "recoveryTime",
+    name: "Recovery time",
+    description: "Required turnabout time",
+    coefficient: {
+      l: 0.94,
+      n: 1.0,
+      h: 1.07,
+      vh: 1.15,
+    },
+  },
+  {
+    codeName: "analyticalSkills",
+    name: "Analytical skill",
+    description: "Analyst capability",
+    coefficient: {
+      vl: 1.46,
+      l: 1.19,
+      n: 1.0,
+      h: 0.86,
+      vh: 0.71,
+    },
+  },
+  {
+    codeName: "developmentSkills",
+    name: "Development skills",
+    description: "Applications experience",
+    coefficient: {
+      vl: 1.29,
+      l: 1.13,
+      n: 1.0,
+      h: 0.91,
+      vh: 0.82,
+    },
+  },
+  {
+    codeName: "developmentExperience",
+    name: "Development experience",
+    description: "Software engineer capability",
+    coefficient: {
+      vl: 1.42,
+      l: 1.17,
+      n: 1.0,
+      h: 0.86,
+      vh: 0.7,
+    },
+  },
+  {
+    codeName: "virtualMachinesExperience",
+    name: "Virtual machine experience",
+    description: "Virtual machine experience",
+    coefficient: {
+      vl: 1.21,
+      l: 1.1,
+      n: 1.0,
+      h: 0.9,
+    },
+  },
+  {
+    codeName: "languageExperience",
+    name: "language experience",
+    description: "Programming language experience",
+    coefficient: {
+      vl: 1.14,
+      l: 1.07,
+      n: 1.0,
+      h: 0.95,
+    },
+  },
+  {
+    codeName: "developmentTools",
+    name: "Development tools",
+    description: "Application of software engineering methods",
+    coefficient: {
+      vl: 1.24,
+      l: 1.1,
+      n: 1.0,
+      h: 0.91,
+      vh: 0.82,
+    },
+  },
+  {
+    codeName: "developmentMethods",
+    name: "Development methods",
+    description: "Use of software tools",
+    coefficient: {
+      vl: 1.24,
+      l: 1.1,
+      n: 1.0,
+      h: 0.91,
+      vh: 0.83,
+    },
+  },
+  {
+    codeName: "developmentSchedule",
+    name: "Development schedule",
+    description: "Required development schedule",
+    coefficient: {
+      vl: 1.23,
+      l: 1.08,
+      n: 1.0,
+      h: 1.04,
+      vh: 1.1,
+    },
+  },
+];
+
+export default tableParams;
