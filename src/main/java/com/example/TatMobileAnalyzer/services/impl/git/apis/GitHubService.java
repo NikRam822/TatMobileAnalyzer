@@ -9,7 +9,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.Lists;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.kohsuke.github.*;
+import org.kohsuke.github.GHCommit;
+import org.kohsuke.github.GHCommitQueryBuilder;
+import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GitHub;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -54,7 +57,7 @@ public class GitHubService implements GitService {
             }
         }
 
-        return nonMergeCommits;
+        return Lists.reverse(nonMergeCommits);
     }
 
 

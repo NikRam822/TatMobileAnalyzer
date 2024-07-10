@@ -56,13 +56,6 @@ public class GitLabService implements GitService {
 
         gitLabApi.close();
 
-        for(Commit commit : nonMergeCommits){
-            System.out.println(commit.getMessage());
-        }
-
-        System.out.println(allCommits.size());
-
-        System.out.println(nonMergeCommits.size());
         return Lists.reverse(nonMergeCommits);
     }
 
@@ -186,11 +179,27 @@ public class GitLabService implements GitService {
     @SneakyThrows
     private void updateGeneralStatistics(Diff diff, PatchReader.PatchInfo patchInfo, ChurnStat churnStat, String author) {
         Map<Integer, String> fileLines = churnStat.general().getOrDefault(diff.getNewPath(), new HashMap<>());
+
+        int shift = 0;
+        for (String deletedLine : patchInfo.getDel()) {
+            int lineNumber = Integer.parseInt(deletedLine.split(". ")[0]);
+            fileLines.remove(lineNumber + shift);
+            shift--;
+        }
+
+        Map<Integer, String> updatedFileLines = new HashMap<>();
+        for (Map.Entry<Integer, String> entry : fileLines.entrySet()) {
+            int newLineNumber = entry.getKey() + shift;
+            if (newLineNumber > 0) {
+                updatedFileLines.put(newLineNumber, entry.getValue());
+            }
+        }
+
         for (String addedLine : patchInfo.getAdd()) {
             int lineNumber = Integer.parseInt(addedLine.split(". ")[0]);
-            fileLines.put(lineNumber, author);
+            updatedFileLines.put(lineNumber, author);
         }
-        churnStat.general().put(diff.getNewPath(), fileLines);
+        churnStat.general().put(diff.getNewPath(), updatedFileLines);
     }
 
     @SneakyThrows
