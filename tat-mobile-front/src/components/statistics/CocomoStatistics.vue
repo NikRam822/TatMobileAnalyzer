@@ -3,7 +3,13 @@
     <div class="d-flex flex-column justify-space-around">
       <v-sheet width="150px" class="text-center ma-2">
         <p>Your team type:</p>
-        <v-select v-model="currentTeam" :items="teamTeamType" variant="solo-inverted" hide-details="true"> </v-select>
+        <v-select
+          v-model="currentTeam"
+          :items="teamTeamType"
+          variant="solo-inverted"
+          hide-details="true"
+        >
+        </v-select>
       </v-sheet>
       <v-sheet width="150px" class="text-center ma-2">
         <p>Lines of code:</p>
@@ -20,28 +26,122 @@
       </v-sheet>
     </div>
 
-    <div class="d-flex flex-row justify-space-around ma-2 mt-16" style="width: 100%">
-      <v-sheet class="text-center">
-        <p style="color: rgb(197, 226, 21)">Labor intensity with risk</p>
-        <v-chip size="x-large">
-          {{ laborIntensityWithRisk }}
-        </v-chip>
-      </v-sheet>
-      <v-sheet class="text-center">
-        <p>Person-months</p>
-        <v-chip size="large">
-          {{ personMonths }}
-        </v-chip>
-      </v-sheet>
-      <v-sheet class="text-center">
-        <p>Months</p>
-        <v-chip size="large"> {{ months }}</v-chip>
-      </v-sheet>
-      <v-sheet class="text-center">
-        <p>Personnel</p>
-        <v-chip size="large"> {{ personel }}</v-chip>
-      </v-sheet>
-    </div>
+    <v-container
+      class="ma-2 d-flex flex-column justify-space-around"
+      width=" 50%"
+    >
+      <div class="d-flex flex-row justify-space-around">
+        <div class="d-flex flex-column">
+          <v-sheet class="text-center">
+            <p style="color: rgb(197, 226, 21)">Labor intensity with risk</p>
+            <v-chip size="x-large">
+              {{ laborIntensityWithRisk }}
+            </v-chip>
+          </v-sheet>
+          <v-sheet class="text-center">
+            <p>Person-months</p>
+            <v-chip size="x-large">{{ personMonths }} </v-chip>
+          </v-sheet>
+        </div>
+        <div class="d-flex flex-column">
+          <v-sheet class="text-center">
+            <p>Months</p>
+            <v-chip variant="outlined" size="x-large">
+              <v-text-field
+                hide-spin-buttons
+                type="number"
+                variant="text"
+                min="0"
+                @input="updateResult('months')"
+                v-model="months"
+                style="width: 70px"
+                hide-details
+              ></v-text-field>
+            </v-chip>
+          </v-sheet>
+          <v-sheet class="text-center">
+            <p>Personnel</p>
+            <v-chip variant="outlined" size="x-large"
+              ><v-text-field
+                hide-spin-buttons
+                type="number"
+                variant="text"
+                min="0"
+                @input="updateResult('personal')"
+                style="width: 70px"
+                v-model="personel"
+                hide-details
+              ></v-text-field
+            ></v-chip>
+          </v-sheet>
+        </div>
+      </div>
+    </v-container>
+    <v-container width="50%" height="100%">
+      <v-expansion-panels>
+        <v-expansion-panel>
+          <v-expansion-panel-title>Calculate cost</v-expansion-panel-title>
+          <v-expansion-panel-text>
+            <div class="d-flex flex-row justify-space-around">
+              <div class="d-flex flex-row">
+                <v-sheet
+                  class="text-center d-flex flex-column"
+                  title="Your cost of project"
+                >
+                  <p>Your cost</p>
+                  <v-text-field
+                    type="number"
+                    min="0"
+                    hide-details
+                    v-model="yourCost"
+                    density="compact"
+                    style="width: 120px"
+                  ></v-text-field>
+                </v-sheet>
+                <v-icon icon="mdi-minus" class="align-self-end pb-4"></v-icon>
+                <v-sheet
+                  class="text-center d-flex flex-column"
+                  title="Your pay for person"
+                >
+                  <p>Pay</p>
+                  <v-text-field
+                    type="number"
+                    min="0"
+                    hide-details
+                    v-model="pay"
+                    density="compact"
+                    style="width: 120px"
+                  ></v-text-field>
+                </v-sheet>
+                <v-icon
+                  icon="mdi-arrow-right"
+                  class="align-self-end pb-4"
+                ></v-icon>
+                <v-sheet
+                  class="text-center d-flex flex-column"
+                  title="labor intensity with risk * pay"
+                >
+                  <p>Cost</p>
+                  <v-chip size="large">{{
+                    Math.round(pay * laborIntensityWithRisk)
+                  }}</v-chip>
+                </v-sheet>
+                <v-icon icon="mdi-equal" class="align-self-end pb-4"></v-icon>
+                <v-sheet
+                  class="text-center d-flex flex-column"
+                  title="Your cost minus Pay"
+                >
+                  <p>Difference</p>
+                  <v-chip size="large">{{
+                    yourCost - Math.round(pay * laborIntensityWithRisk)
+                  }}</v-chip>
+                </v-sheet>
+              </div>
+            </div>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+      </v-expansion-panels>
+    </v-container>
   </div>
 
   <v-divider class="pb-7"></v-divider>
@@ -57,7 +157,10 @@
       Reset Coefficients <v-icon icon="mdi-autorenew"></v-icon
     ></v-btn>
     <v-spacer></v-spacer>
-    <v-btn variant="outlined" @click="currentCoefMode = Math.abs(currentCoefMode - 1)">
+    <v-btn
+      variant="outlined"
+      @click="currentCoefMode = Math.abs(currentCoefMode - 1)"
+    >
       {{ modes[currentCoefMode] }}
     </v-btn>
   </div>
@@ -91,7 +194,10 @@
           <v-radio
             v-if="param.coefficient.vl"
             @click="
-              coefficient[param.codeName] = { simpleCoef: 'vl', coef: param.coefficient.vl };
+              coefficient[param.codeName] = {
+                simpleCoef: 'vl',
+                coef: param.coefficient.vl,
+              };
               updateResult();
             "
             v-model="coefficient[param.codeName].simpleCoef"
@@ -102,7 +208,10 @@
           <v-radio
             v-if="param.coefficient.l"
             @click="
-              coefficient[param.codeName] = { simpleCoef: 'l', coef: param.coefficient.l };
+              coefficient[param.codeName] = {
+                simpleCoef: 'l',
+                coef: param.coefficient.l,
+              };
               updateResult();
             "
             v-model="coefficient[param.codeName].simpleCoef"
@@ -113,7 +222,10 @@
           <v-radio
             v-if="param.coefficient.n"
             @click="
-              coefficient[param.codeName] = { simpleCoef: 'n', coef: param.coefficient.n };
+              coefficient[param.codeName] = {
+                simpleCoef: 'n',
+                coef: param.coefficient.n,
+              };
               updateResult();
             "
             v-model="coefficient[param.codeName].simpleCoef"
@@ -124,7 +236,10 @@
           <v-radio
             v-if="param.coefficient.h"
             @click="
-              coefficient[param.codeName] = { simpleCoef: 'h', coef: param.coefficient.h };
+              coefficient[param.codeName] = {
+                simpleCoef: 'h',
+                coef: param.coefficient.h,
+              };
               updateResult();
             "
             v-model="coefficient[param.codeName].simpleCoef"
@@ -135,7 +250,10 @@
           <v-radio
             v-if="param.coefficient.vh"
             @click="
-              coefficient[param.codeName] = { simpleCoef: 'vh', coef: param.coefficient.vh };
+              coefficient[param.codeName] = {
+                simpleCoef: 'vh',
+                coef: param.coefficient.vh,
+              };
               updateResult();
             "
             v-model="coefficient[param.codeName].simpleCoef"
@@ -183,16 +301,27 @@
               ></v-text-field>
             </div>
             <v-slider
-              min="0.5"
-              max="1.5"
+              :min="Math.min(...Object.values(param.coefficient))"
+              :max="Math.max(...Object.values(param.coefficient))"
               step="0.01"
+              append-icon="mdi-plus-circle"
+              prepend-icon="mdi-minus-circle"
+              @click:append="next(param.codeName, param.coefficient)"
+              @click:prepend="prev(param.codeName, param.coefficient)"
               thumb-label
               hide-details
-              :ticks="Object.fromEntries(Object.entries(param.coefficient).map(([key, value]) => [value, key]))"
+              :ticks="
+                Object.fromEntries(
+                  Object.entries(param.coefficient).map(([key, value]) => [
+                    value,
+                    key,
+                  ])
+                )
+              "
               show-ticks="always"
               tick-size="6"
               v-model="coefficient[param.codeName].coef"
-              @click="updateCoef(param.codeName)"
+              @click="updateCoef(param.codeName, param.coefficient)"
             ></v-slider>
           </div>
         </td>
@@ -202,216 +331,103 @@
 </template>
 <script>
 import axios from "axios";
+import tableParams from "./table.ts";
 let server_path = import.meta.env.VITE_BACKEND_URL;
 export default {
   data() {
     return {
-      table: [
-        {
-          codeName: "reliability",
-          name: "Reliability",
-          description: "Required software reliability",
-          coefficient: {
-            vl: 0.75,
-            l: 0.88,
-            n: 1.0,
-            h: 1.15,
-            vh: 1.4,
-          },
-        },
-        {
-          codeName: "databaseSize",
-          name: "Database Size",
-          description: "Size of application database",
-          coefficient: {
-            l: 0.94,
-            n: 1.0,
-            h: 1.08,
-            vh: 1.16,
-          },
-        },
-        {
-          codeName: "productComplexity",
-          name: "Product Complexity",
-          description: "Complexity of the product",
-          coefficient: {
-            vl: 0.7,
-            l: 0.85,
-            n: 1.0,
-            h: 1.15,
-            vh: 1.3,
-          },
-        },
-        {
-          codeName: "performance",
-          name: "Performance",
-          description: "Run-time performance constraints",
-          coefficient: {
-            n: 1.0,
-            h: 1.11,
-            vh: 1.3,
-          },
-        },
-        {
-          codeName: "memoryLimit",
-          name: "Memory limit",
-          description: "Memory constraints",
-          coefficient: {
-            n: 1.0,
-            h: 1.06,
-            vh: 1.21,
-          },
-        },
-        {
-          codeName: "unstableEnvironment",
-          name: "Unstable environment",
-          description: "Volatility of the virtual machine environment",
-          coefficient: {
-            l: 0.87,
-            n: 1.0,
-            h: 1.15,
-            vh: 1.3,
-          },
-        },
-        {
-          codeName: "recoveryTime",
-          name: "Recovery time",
-          description: "Required turnabout time",
-          coefficient: {
-            l: 0.94,
-            n: 1.0,
-            h: 1.07,
-            vh: 1.15,
-          },
-        },
-        {
-          codeName: "analyticalSkills",
-          name: "Analytical skill",
-          description: "Analyst capability",
-          coefficient: {
-            vl: 1.46,
-            l: 1.19,
-            n: 1.0,
-            h: 0.86,
-            vh: 0.71,
-          },
-        },
-        {
-          codeName: "developmentSkills",
-          name: "Development skills",
-          description: "Applications experience",
-          coefficient: {
-            vl: 1.29,
-            l: 1.13,
-            n: 1.0,
-            h: 0.91,
-            vh: 0.82,
-          },
-        },
-        {
-          codeName: "developmentExperience",
-          name: "Development experience",
-          description: "Software engineer capability",
-          coefficient: {
-            vl: 1.42,
-            l: 1.17,
-            n: 1.0,
-            h: 0.86,
-            vh: 0.7,
-          },
-        },
-        {
-          codeName: "virtualMachinesExperience",
-          name: "Virtual machine experience",
-          description: "Virtual machine experience",
-          coefficient: {
-            vl: 1.21,
-            l: 1.1,
-            n: 1.0,
-            h: 0.9,
-          },
-        },
-        {
-          codeName: "languageExperience",
-          name: "language experience",
-          description: "Programming language experience",
-          coefficient: {
-            vl: 1.14,
-            l: 1.07,
-            n: 1.0,
-            h: 0.95,
-          },
-        },
-        {
-          codeName: "developmentTools",
-          name: "Development tools",
-          description: "Application of software engineering methods",
-          coefficient: {
-            vl: 1.24,
-            l: 1.1,
-            n: 1.0,
-            h: 0.91,
-            vh: 0.82,
-          },
-        },
-        {
-          codeName: "developmentMethods",
-          name: "Development methods",
-          description: "Use of software tools",
-          coefficient: {
-            vl: 1.24,
-            l: 1.1,
-            n: 1.0,
-            h: 0.91,
-            vh: 0.83,
-          },
-        },
-        {
-          codeName: "developmentSchedule",
-          name: "Development schedule",
-          description: "Required development schedule",
-          coefficient: {
-            vl: 1.23,
-            l: 1.08,
-            n: 1.0,
-            h: 1.04,
-            vh: 1.1,
-          },
-        },
-      ],
+      table: tableParams,
       teamTeamType: ["ORGANIC", "SEMIDETACH", "EMBEDDED"],
       currentTeam: "ORGANIC",
       LOC: 0,
       coefficient: {},
       personMonths: 0,
       months: 0,
+      editingMonths: 0,
       personel: 0,
+      editingPersonel: 0,
       laborIntensityWithRisk: 0,
       modes: ["Go to extend mode", "Go to simple mode"],
       currentCoefMode: 0,
+      yourCost: 0,
+      pay: 0,
+      costDiference: 0,
     };
   },
   methods: {
-    updateCoef(name) {
-      this.coefficient[name].simpleCoef = "pass";
+    next(name, coefTable) {
+      const currCoef = this.coefficient[name].coef;
+      const coefs = Object.values(coefTable).sort((a, b) => a - b);
+      for (let value of coefs) {
+        if (value > currCoef) {
+          this.coefficient[name].coef = value;
+          break;
+        }
+      }
+    },
+    prev(name, coefTable) {
+      const currCoef = this.coefficient[name].coef;
+      const coefs = Object.values(coefTable).sort((a, b) => a - b);
+      for (let value of coefs.reverse()) {
+        if (value < currCoef) {
+          this.coefficient[name].coef = value;
+          break;
+        }
+      }
+    },
+    updateCoef(name, coefTable) {
+      const currCoef = this.coefficient[name].coef;
+      const coefs = Object.entries(coefTable);
+      let min = 1000;
+      for (let index in coefs) {
+        if (Math.abs(coefs[index][1] - currCoef) >= min) {
+          this.coefficient[name].simpleCoef = coefs[index - 1][0];
+          break;
+        } else {
+          min = Math.abs(coefs[index][1] - currCoef);
+        }
+        this.coefficient[name].simpleCoef = coefs[index][0];
+      }
       this.updateResult();
     },
 
-    async updateResult() {
-      this.$store.commit("setParams", { LOC: this.LOC, coefficient: this.coefficient, currentTeam: this.currentTeam });
-      const resp = {};
+    async updateResult(option = null) {
+      this.$store.commit("setParams", {
+        LOC: this.LOC,
+        coefficient: this.coefficient,
+        currentTeam: this.currentTeam,
+      });
+      const payload = {};
       for (let item of this.table) {
-        resp[item.codeName] = this.coefficient[item.codeName].coef;
+        payload[item.codeName] = this.coefficient[item.codeName].coef;
       }
-      resp.kloc = this.LOC;
-      resp.projectType = this.currentTeam;
+      payload.kloc = this.LOC;
+      payload.projectType = this.currentTeam;
+      switch (option) {
+        case "months":
+          if (!this.months) {
+            return;
+          }
+          payload.months = this.months;
+          break;
+        case "personal":
+          if (!this.personel) {
+            return;
+          }
+          payload.personal = this.personel;
+          break;
+      }
       let hostadress = server_path + "/api/cocomo/calculate";
       try {
-        let response = await axios.post(hostadress, resp);
+        let response = await axios.post(hostadress, payload);
         response = response.data;
         this.personMonths = response.personMonths;
-        this.months = response.months;
-        this.personel = response.personnel;
+        if (option !== "months") {
+          this.months = response.months;
+        }
+        if (option !== "personal") {
+          this.personel = response.personnel;
+        }
         this.laborIntensityWithRisk = response.laborIntensityWithRisk;
       } catch (error) {
         console.error("Error: ", error);
@@ -420,7 +436,10 @@ export default {
 
     calculateLOC() {
       let totalValue = 0;
-      const statsRepo = this.$store.state.RepoSatistic[this.$store.state.currentRepo.projectLink].data;
+      const statsRepo =
+        this.$store.state.RepoSatistic[
+          this.$store.state.currentRepo.projectLink
+        ].data;
       for (let name in statsRepo.churn) {
         let churn = statsRepo.churn[name];
         let overall = statsRepo.overall[name];
@@ -445,14 +464,20 @@ export default {
     storeCoef(this.$store.getters.getParams);
   },
   created() {
+    this.LOC = this.calculateLOC();
+
     if (this.$store.getters.getParams) {
-      this.LOC = this.$store.getters.getParams.LOC;
+      // this.LOC = this.$store.getters.getParams.LOC;
       this.coefficient = this.$store.getters.getParams.coefficient;
       this.currentTeam = this.$store.getters.getParams.currentTeam;
     } else {
-      this.LOC = this.calculateLOC();
+      // this.LOC = this.calculateLOC();
       this.coefficient = this.resetCoef();
-      this.$store.commit("setParams", { LOC: this.LOC, coefficient: this.coefficient, currentTeam: this.currentTeam });
+      this.$store.commit("setParams", {
+        LOC: this.LOC,
+        coefficient: this.coefficient,
+        currentTeam: this.currentTeam,
+      });
     }
     this.updateResult();
   },

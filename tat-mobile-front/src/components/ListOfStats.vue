@@ -1,9 +1,14 @@
 <template>
   <v-container class="d-flex flex-column justify-space-between" style="height: 100%">
-    <v-container>
+    <v-container class="pb-0">
       <v-progress-linear v-if="filterLoader || loader" size="20" indeterminate rounded></v-progress-linear>
       <v-btn
-        v-if="!currentRepo || this.$store.getters.getBranch != currentBranch || datePoint"
+        v-if="
+          !currentRepo ||
+          this.$store.getters.getBranch != currentBranch ||
+          startDate != this.$store.getters.getDate.startDate ||
+          endDate != this.$store.getters.getDate.endDate
+        "
         variant="outlined"
         elevation="5"
         width="100%"
@@ -15,7 +20,7 @@
         <span class="d-flex flex-column">
           <p>Start Analyze</p>
           <p class="text-body-1">{{ currentBranch }}</p>
-          <p class="text-body-1">{{ dateDisplay }}</p>
+          <p class="text-body-1">{{ dateDisplay(this.startDate, this.endDate) }}</p>
         </span>
       </v-btn>
       <v-btn v-else variant="outlined" elevation="5" height="20px" style="border-bottom: 0px" @click="getStatistic()"
@@ -35,7 +40,7 @@
             {{ this.$store.getters.getBranch }}
           </p>
           <p class="text-body-1">
-            {{ this.$store.getters.getDate }}
+            {{ dateDisplay(...Object.values(this.$store.getters.getDate)) }}
           </p>
         </span>
         <v-menu activator="parent">
@@ -50,7 +55,7 @@
       <v-menu>
         <template v-slot:activator="{ props }">
           <v-btn
-            @click=""
+            @click="fetchBranches()"
             v-bind="props"
             variant="outlined"
             width="100%"
@@ -63,6 +68,9 @@
           </v-btn>
         </template>
         <v-list>
+          <v-list-item v-if="branchLoader">
+            <v-progress-circular indeterminate></v-progress-circular>
+          </v-list-item>
           <v-list-item v-for="(branch, index) in branches" :key="index" :value="branch" @click="currentBranch = branch">
             <v-list-item-title> {{ branch }}</v-list-item-title>
           </v-list-item>
@@ -87,26 +95,25 @@
       class="align-self-center"
       indeterminate
     ></v-progress-circular>
-    <v-container>
-      <v-expansion-panels>
-        <v-expansion-panel>
-          <v-expansion-panel-title class="text-button" @click="datePoint = !datePoint">
-            Date filter
-          </v-expansion-panel-title>
-          <v-expansion-panel-text>
-            <div>
-              Start date
-              <v-text-field type="date" v-model="startDate"></v-text-field>
-              End date
-              <v-text-field type="date" v-model="endDate"></v-text-field>
-              <v-btn @click="(startDate = ''), (endDate = '')">Reset</v-btn>
-            </div>
-          </v-expansion-panel-text>
-        </v-expansion-panel>
-      </v-expansion-panels>
-    </v-container>
 
-    <v-container>
+    <v-container class="pt-0">
+      <v-container>
+        <v-expansion-panels>
+          <v-expansion-panel>
+            <v-expansion-panel-title class="text-button"> Date filter </v-expansion-panel-title>
+            <v-expansion-panel-text>
+              <div>
+                Start date
+                <v-text-field type="date" v-model="startDate"></v-text-field>
+                End date
+                <v-text-field type="date" v-model="endDate"></v-text-field>
+                <v-btn @click="(startDate = ''), (endDate = '')">Reset</v-btn>
+              </div>
+            </v-expansion-panel-text>
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </v-container>
+
       <v-menu :close-on-content-click="false">
         <template v-slot:activator="{ props }">
           <v-btn width="100%" v-bind="props" @click="currentRepo || updateFilters()"> Filters </v-btn>
@@ -170,17 +177,19 @@ export default {
     currentBranch: "",
     startDate: "",
     endDate: "",
-    datePoint: false,
+    branchLoader: false,
   }),
 
   methods: {
     async fetchBranches() {
+      this.branchLoader = true;
       try {
         const branches = await this.getBranches();
         this.branches = branches.data;
       } catch (error) {
         console.error("Error: ", error);
       }
+      this.branchLoader = false;
     },
     async getBranches() {
       let hostadress = server_path + "/api/project/get-branches";
@@ -215,7 +224,8 @@ export default {
           branch: this.currentBranch,
           projectId: this.$store.state.currentRepo.projectId,
         });
-        this.$store.commit("setDate", this.dateDisplay);
+        this.$store.commit("setDate", { startDate: this.startDate, endDate: this.endDate });
+
         this.$store.commit("addStatistc", [this.$store.state.currentRepo.projectLink, statistic]);
         this.$store.commit("setBranch", this.currentBranch);
       } catch (error) {
@@ -286,20 +296,20 @@ export default {
       this.$store.commit("changeCurrentRepo", item);
       location.reload();
     },
-  },
-  computed: {
-    dateDisplay() {
-      if (this.startDate && this.endDate) {
-        return `${this.startDate} - ${this.endDate}`;
+    dateDisplay(startDate, endDate) {
+      if (startDate && endDate) {
+        return `${startDate} - ${endDate}`;
       }
-      if (this.startDate) {
-        return `since ${this.startDate}`;
+      if (startDate) {
+        return `since ${startDate}`;
       }
-      if (this.endDate) {
-        return `until ${this.endDate}`;
+      if (endDate) {
+        return `until ${endDate}`;
       }
       return "all time";
     },
+  },
+  computed: {
     currentRepo() {
       return this.$store.state.RepoSatistic[this.$store.state.currentRepo.projectLink];
     },
@@ -328,7 +338,6 @@ export default {
   },
   created() {
     this.currentBranch = this.$store.getters.getBranch || "";
-    this.fetchBranches();
   },
 };
 </script>

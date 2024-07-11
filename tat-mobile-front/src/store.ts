@@ -4,12 +4,12 @@ import createPersistedState from "vuex-persistedstate";
 export default createStore({
   state: {
     repositories: [],
-    RepoSatistic: {},
     filters: [],
     currentRepo: "Error parsing name",
     currentStatisitc: "ChurnStatistics",
-    storeParams: {},
+    RepoSatistic: {},
     projectBranch: {},
+    storeParams: {},
     projectDate: {},
   },
   mutations: {
@@ -19,14 +19,6 @@ export default createStore({
 
     setBranch(state, branch) {
       state.projectBranch[state.currentRepo.projectLink] = branch;
-    },
-
-    delParam(state) {
-      delete state.storeParams[state.currentRepo.projectLink];
-    },
-
-    delStoreParams(state) {
-      delete state.storeParams;
     },
 
     setParams(state, param) {
@@ -48,6 +40,9 @@ export default createStore({
 
     delStatistic(state, rep) {
       delete state.RepoSatistic[rep];
+      delete state.storeParams[rep];
+      delete state.projectDate[rep];
+      delete state.projectBranch[rep];
     },
 
     refreshRepos(state, repos) {
@@ -70,7 +65,7 @@ export default createStore({
     },
     getDate(state) {
       if (!state.projectDate[state.currentRepo.projectLink]) {
-        state.projectDate[state.currentRepo.projectLink] = "";
+        state.projectDate[state.currentRepo.projectLink] = { startDate: "", endDate: "" };
       }
       return state.projectDate[state.currentRepo.projectLink];
     },

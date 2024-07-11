@@ -30,17 +30,32 @@
         {{ rep.projectName }}
       </template>
       <template v-slot:append>
-        <v-btn variant="text" @click.stop="getStatistic()" icon="mdi-autorenew"></v-btn>
+        <v-btn
+          variant="text"
+          @click.stop="getStatistic()"
+          icon="mdi-autorenew"
+        ></v-btn>
       </template>
       <v-container v-show="loader">
-        <v-progress-linear color="rgb(92, 99, 106)" height="6" indeterminate rounded></v-progress-linear>
+        <v-progress-linear
+          color="rgb(92, 99, 106)"
+          height="6"
+          indeterminate
+          rounded
+        ></v-progress-linear>
         <p>Analyzing reposytory</p>
       </v-container>
       <v-spacer></v-spacer>
       <v-card-actions class="ps-4">
         <p>Date of last update</p>
         <v-spacer></v-spacer>
-        <v-btn variant="text" @click.stop="deleteProject" flat icon="mdi-trash-can-outline" class="text-grey"></v-btn>
+        <v-btn
+          variant="text"
+          @click.stop="deleteProject"
+          flat
+          icon="mdi-trash-can-outline"
+          class="text-grey"
+        ></v-btn>
       </v-card-actions>
     </v-card>
   </v-col>
@@ -64,7 +79,8 @@ export default {
           branch: "",
           projectId: this.rep.projectId,
         });
-        this.$store.commit("setDate", "");
+        this.$store.commit("setDate", { startDate: "", endDate: "" });
+
         this.$store.commit("setBranch", "");
         this.$store.commit("addStatistc", [this.rep.projectLink, statistic]);
       } catch (error) {
@@ -80,7 +96,7 @@ export default {
     async deleteProject() {
       let hostadress = server_path + "/api/project/delete-project";
       try {
-        const statistic = await axios.delete(hostadress, {
+        await axios.delete(hostadress, {
           data: {
             projectId: this.rep.projectId,
           },
