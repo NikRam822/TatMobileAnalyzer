@@ -53,8 +53,8 @@
                 variant="text"
                 min="0"
                 @input="updateResult('months')"
-                style="min-width: 70px"
                 v-model="months"
+                style="width: 70px"
                 hide-details
               ></v-text-field>
             </v-chip>
@@ -68,8 +68,8 @@
                 variant="text"
                 min="0"
                 @input="updateResult('personal')"
+                style="width: 70px"
                 v-model="personel"
-                max-width="70"
                 hide-details
               ></v-text-field
             ></v-chip>
