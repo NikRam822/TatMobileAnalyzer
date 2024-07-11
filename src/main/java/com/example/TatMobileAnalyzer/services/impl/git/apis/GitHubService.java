@@ -31,7 +31,6 @@ public class GitHubService implements GitService {
     @SneakyThrows
     @Override
     public List<GHCommit> getCommitsPerPeriod(String repositoryUrl, Date since, Date until, String branch) {
-
         URI uri = new URI(repositoryUrl);
         String[] pathParts = uri.getPath().split("/");
         String owner = pathParts[1];
@@ -49,9 +48,18 @@ public class GitHubService implements GitService {
         commitQueryBuilder = (since != null) ? commitQueryBuilder.since(since) : commitQueryBuilder;
         commitQueryBuilder = (until != null) ? commitQueryBuilder.until(until) : commitQueryBuilder;
 
-        List<GHCommit> commitsPerPeriod = Lists.reverse(commitQueryBuilder.list().toList());
-        return commitsPerPeriod;
+        List<GHCommit> allCommits = Lists.reverse(commitQueryBuilder.list().toList());
+        List<GHCommit> nonMergeCommits = new ArrayList<>();
+
+        for (GHCommit commit : allCommits) {
+            if (commit.getParentSHA1s().size() <= 1) {
+                nonMergeCommits.add(commit);
+            }
+        }
+
+        return Lists.reverse(nonMergeCommits);
     }
+
 
     @SneakyThrows
     @Override

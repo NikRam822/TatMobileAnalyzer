@@ -29,15 +29,13 @@ public class GitLabService implements GitService {
     @Value("${access.token.gitlab}")
     private String accessToken;
 
-    @Value("${gitlab.url}")
-    private String gitLabUrl;
-
     @SneakyThrows
     @Override
     public List<Commit> getCommitsPerPeriod(String repositoryUrl, Date since, Date until, String branch) {
+        URI uri = new URI(repositoryUrl);
+        String gitLabUrl = uri.getScheme() + "://" + uri.getHost();
         GitLabApi gitLabApi = new GitLabApi(gitLabUrl, accessToken);
 
-        URI uri = new URI(repositoryUrl);
         String[] pathParts = uri.getPath().split("/");
         String projectPath = pathParts[1] + "/" + pathParts[2];
 
@@ -47,17 +45,28 @@ public class GitLabService implements GitService {
             branch = project.getDefaultBranch();
         }
 
-        List<Commit> commits = gitLabApi.getCommitsApi().getCommits(project.getId(), branch, since, until);
+        List<Commit> allCommits = gitLabApi.getCommitsApi().getCommits(project.getId(), branch, since, until);
+        List<Commit> nonMergeCommits = new ArrayList<>();
+
+        for (Commit commit : allCommits) {
+            if (commit.getParentIds().size() <= 1) {
+                nonMergeCommits.add(commit);
+            }
+        }
+
         gitLabApi.close();
-        return Lists.reverse(commits);
+
+        return Lists.reverse(nonMergeCommits);
     }
+
 
     @SneakyThrows
     @Override
     public boolean isValidRepository(String repositoryUrl) {
+        URI uri = new URI(repositoryUrl);
+        String gitLabUrl = uri.getScheme() + "://" + uri.getHost();
         GitLabApi gitLabApi = new GitLabApi(gitLabUrl, accessToken);
 
-        URI uri = new URI(repositoryUrl);
         String[] pathParts = uri.getPath().split("/");
         String projectPath = pathParts[1] + "/" + pathParts[2];
 
@@ -76,7 +85,9 @@ public class GitLabService implements GitService {
     @SneakyThrows
     @Override
     public List<String> getBranches(String repositoryUrl) {
+
         URI uri = new URI(repositoryUrl);
+        String gitLabUrl = uri.getScheme() + "://" + uri.getHost();
         String[] pathParts = uri.getPath().split("/");
         String namespace = pathParts[1];
         String projectName = pathParts[2];
@@ -168,16 +179,33 @@ public class GitLabService implements GitService {
     @SneakyThrows
     private void updateGeneralStatistics(Diff diff, PatchReader.PatchInfo patchInfo, ChurnStat churnStat, String author) {
         Map<Integer, String> fileLines = churnStat.general().getOrDefault(diff.getNewPath(), new HashMap<>());
+
+        int shift = 0;
+        for (String deletedLine : patchInfo.getDel()) {
+            int lineNumber = Integer.parseInt(deletedLine.split(". ")[0]);
+            fileLines.remove(lineNumber + shift);
+            shift--;
+        }
+
+        Map<Integer, String> updatedFileLines = new HashMap<>();
+        for (Map.Entry<Integer, String> entry : fileLines.entrySet()) {
+            int newLineNumber = entry.getKey() + shift;
+            if (newLineNumber > 0) {
+                updatedFileLines.put(newLineNumber, entry.getValue());
+            }
+        }
+
         for (String addedLine : patchInfo.getAdd()) {
             int lineNumber = Integer.parseInt(addedLine.split(". ")[0]);
-            fileLines.put(lineNumber, author);
+            updatedFileLines.put(lineNumber, author);
         }
-        churnStat.general().put(diff.getNewPath(), fileLines);
+        churnStat.general().put(diff.getNewPath(), updatedFileLines);
     }
 
     @SneakyThrows
     private List<Diff> getDiffs(String repositoryUrl, Commit commit) {
         URI uri = new URI(repositoryUrl);
+        String gitLabUrl = uri.getScheme() + "://" + uri.getHost();
         String[] pathParts = uri.getPath().split("/");
         String projectPath = pathParts[1] + "/" + pathParts[2];
 
