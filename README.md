@@ -37,7 +37,6 @@ Below are the instructions for running `docker-compose`:
    ```text
    ACCESS_TOKEN_GITHUB=your_github_access_token
    ACCESS_TOKEN_GITLAB=your_gitlab_access_token
-   GITLAB_URL=https://gitlab.com
    DB_USER=some_user
    DB_PASSWORD=some_password
    DB_DATABASE=some_database
@@ -74,14 +73,13 @@ Below are the instructions for running `docker-compose`:
    ```text
    ACCESS_TOKEN_GITHUB=your_github_access_token
    ACCESS_TOKEN_GITLAB=your_gitlab_access_token
-   GITLAB_URL=https://gitlab.com
    DB_USER=some_user
    DB_PASSWORD=some_password
    DB_DATABASE=some_database
    DB_URL=jdbc:postgresql://localhost:5432/some_database
    FRONTEND_HOST=http://localhost:3000/
    ```
-   - Replace `<your_github_access_token>` to your github access token. `DB_USER`, `DB_PASSWORD`,
+   - Replace `<your_github_access_token>`\ `<your_gitlab_access_token>` to your github\gitlab access token. `DB_USER`, `DB_PASSWORD`,
      `DB_DATABASE`, and `DB_URL` should be real one and relevant for your `postgres` database.
      Note! The database should be created before running the backend. `FRONTEND_HOST` should be replaced with the address of your frontend.
    - Go to `./tat-mobile-front` and create `.env` file with next content:
