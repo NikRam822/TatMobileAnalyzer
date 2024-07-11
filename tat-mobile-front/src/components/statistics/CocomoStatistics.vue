@@ -46,10 +46,14 @@
         <div class="d-flex flex-column">
           <v-sheet class="text-center">
             <p>Months</p>
-            <v-chip size="x-large">
+            <v-chip variant="outlined" size="x-large">
               <v-text-field
+                hide-spin-buttons
+                type="number"
+                variant="text"
+                min="0"
                 @input="updateResult('months')"
-                style="min-width: 100px"
+                style="min-width: 70px"
                 v-model="months"
                 hide-details
               ></v-text-field>
@@ -57,11 +61,15 @@
           </v-sheet>
           <v-sheet class="text-center">
             <p>Personnel</p>
-            <v-chip size="x-large"
+            <v-chip variant="outlined" size="x-large"
               ><v-text-field
+                hide-spin-buttons
+                type="number"
+                variant="text"
+                min="0"
                 @input="updateResult('personal')"
-                style="min-width: 100px"
                 v-model="personel"
+                max-width="70"
                 hide-details
               ></v-text-field
             ></v-chip>
@@ -397,9 +405,15 @@ export default {
       payload.projectType = this.currentTeam;
       switch (option) {
         case "months":
+          if (!this.months) {
+            return;
+          }
           payload.months = this.months;
           break;
         case "personal":
+          if (!this.personel) {
+            return;
+          }
           payload.personal = this.personel;
           break;
       }
@@ -408,8 +422,12 @@ export default {
         let response = await axios.post(hostadress, payload);
         response = response.data;
         this.personMonths = response.personMonths;
-        this.months = response.months;
-        this.personel = response.personnel;
+        if (option !== "months") {
+          this.months = response.months;
+        }
+        if (option !== "personal") {
+          this.personel = response.personnel;
+        }
         this.laborIntensityWithRisk = response.laborIntensityWithRisk;
       } catch (error) {
         console.error("Error: ", error);
