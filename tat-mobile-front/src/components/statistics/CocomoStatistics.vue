@@ -34,16 +34,14 @@
             {{ personMonths }}
           </v-chip>
         </v-sheet>
-        <v-sheet class="d-flex flex-row justify-space-around" style="border: 2px, red">
-          <v-div class="text-center">
-            <p>Months</p>
-            <v-chip size="large"> {{ months }}</v-chip>
-          </v-div>
-          <v-div class="text-center">
-            <p>Personnel</p>
-            <v-chip size="large"> {{ personel }}</v-chip>
-          </v-div>
-        </v-sheet>
+        <v-div class="text-center">
+          <p>Months</p>
+          <v-chip size="large"> {{ months }}</v-chip>
+        </v-div>
+        <v-div class="text-center">
+          <p>Personnel</p>
+          <v-chip size="large"> {{ personel }}</v-chip>
+        </v-div>
       </div>
     </v-container>
     <v-container width="50%" height="100%">
@@ -318,7 +316,6 @@ export default {
     updateCoef(name, coefTable) {
       const currCoef = this.coefficient[name].coef;
       const coefs = Object.entries(coefTable);
-      console.log(coefs);
       let min = 1000;
       for (let index in coefs) {
         if (Math.abs(coefs[index][1] - currCoef) >= min) {

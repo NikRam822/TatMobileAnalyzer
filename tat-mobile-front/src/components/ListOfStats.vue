@@ -68,6 +68,9 @@
           </v-btn>
         </template>
         <v-list>
+          <v-list-item v-if="branchLoader">
+            <v-progress-circular indeterminate></v-progress-circular>
+          </v-list-item>
           <v-list-item v-for="(branch, index) in branches" :key="index" :value="branch" @click="currentBranch = branch">
             <v-list-item-title> {{ branch }}</v-list-item-title>
           </v-list-item>
@@ -174,16 +177,19 @@ export default {
     currentBranch: "",
     startDate: "",
     endDate: "",
+    branchLoader: false,
   }),
 
   methods: {
     async fetchBranches() {
+      this.branchLoader = true;
       try {
         const branches = await this.getBranches();
         this.branches = branches.data;
       } catch (error) {
         console.error("Error: ", error);
       }
+      this.branchLoader = false;
     },
     async getBranches() {
       let hostadress = server_path + "/api/project/get-branches";

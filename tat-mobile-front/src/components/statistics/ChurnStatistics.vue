@@ -3,21 +3,20 @@
     <v-table fixed-header>
       <thead>
         <tr>
-          <th>
+          <th title="Name">
             <v-card id="name" @click="sortStatistic(statsForGraph, $event.target.id)"> Name</v-card>
           </th>
-          <th>
+          <th title="Total commits">
             <v-card id="overall" @click="sortStatistic(statsForGraph, $event.target.id)"> Overall</v-card>
           </th>
-          <th>
+          <th title="Procent of churn">
             <v-card id="churn" @click="sortStatistic(statsForGraph, $event.target.id)">Churn</v-card>
           </th>
-          <th>
-            <v-card id="value" @click="sortStatistic(statsForGraph, $event.target.id)">Value</v-card>
+          <th title="Include commits">
+            <v-card id="value" @click="sortStatistic(statsForGraph, $event.target.id)">Include</v-card>
           </th>
-          <th>
-            <!-- rename not vlue -->
-            <v-card id="notValue" @click="sortStatistic(statsForGraph, $event.target.id)">Not value</v-card>
+          <th title="Exnclude commits">
+            <v-card id="notValue" @click="sortStatistic(statsForGraph, $event.target.id)">Exclude</v-card>
           </th>
         </tr>
       </thead>
@@ -36,6 +35,19 @@
           <td>{{ author.churn }}%</td>
           <td>{{ author.value }}</td>
           <td>{{ author.notValue }}</td>
+        </tr>
+        <tr>
+          <td>Total</td>
+          <td>{{ statsForGraph.reduce((sum, curr) => sum + curr.overall, 0) }}</td>
+          <td title="Average percentage">
+            {{
+              Math.floor(
+                statsForGraph.reduce((sum, curr) => sum + curr.churn, 0) / Object.entries(statsForGraph).length
+              )
+            }}%
+          </td>
+          <td>{{ statsForGraph.reduce((sum, curr) => sum + curr.value, 0) }}</td>
+          <td>{{ statsForGraph.reduce((sum, curr) => sum + curr.notValue, 0) }}</td>
         </tr>
       </tbody>
     </v-table>
@@ -88,6 +100,7 @@ export default {
         statsForGraph[statsForGraph.length - 1].notValue = Math.round((overall * churn) / 100);
         statsForGraph[statsForGraph.length - 1].enable = true;
       }
+      console.log(statsForGraph);
       return statsForGraph;
     },
   },
