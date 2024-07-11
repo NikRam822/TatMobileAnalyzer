@@ -20,7 +20,7 @@
             >
           </th>
           <th
-            title="Percent of LOC that was NOT included to the final version of project"
+            title="Percentage of LOC that was not included in the final version of the analysis"
           >
             <v-card
               id="churn"
@@ -29,7 +29,7 @@
             >
           </th>
           <th
-            title="Number of LOC that was included to the final version of project"
+            title="Number of LOC that was included to the final version of the analysis"
           >
             <v-card
               id="value"
@@ -38,7 +38,7 @@
             >
           </th>
           <th
-            title="Number of LOC that was NOT included to the final version of project"
+            title="Number of LOC that was NOT included to the final version of the analysis"
           >
             <v-card
               id="notValue"
