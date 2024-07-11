@@ -3,13 +3,7 @@
     <div class="d-flex flex-column justify-space-around">
       <v-sheet width="150px" class="text-center ma-2">
         <p>Your team type:</p>
-        <v-select
-          v-model="currentTeam"
-          :items="teamTeamType"
-          variant="solo-inverted"
-          hide-details="true"
-        >
-        </v-select>
+        <v-select v-model="currentTeam" :items="teamTeamType" variant="solo-inverted" hide-details="true"> </v-select>
       </v-sheet>
       <v-sheet width="150px" class="text-center ma-2">
         <p>Lines of code:</p>
@@ -26,10 +20,7 @@
       </v-sheet>
     </div>
 
-    <v-container
-      class="ma-2 d-flex flex-column justify-space-around"
-      width=" 50%"
-    >
+    <v-container class="ma-2 d-flex flex-column justify-space-around" width=" 50%">
       <div class="d-flex flex-row justify-space-around">
         <v-sheet class="text-center">
           <p style="color: rgb(197, 226, 21)">Labor intensity with risk</p>
@@ -43,10 +34,7 @@
             {{ personMonths }}
           </v-chip>
         </v-sheet>
-        <v-sheet
-          class="d-flex flex-row justify-space-around"
-          style="border: 2px, red"
-        >
+        <v-sheet class="d-flex flex-row justify-space-around" style="border: 2px, red">
           <v-div class="text-center">
             <p>Months</p>
             <v-chip size="large"> {{ months }}</v-chip>
@@ -65,10 +53,7 @@
           <v-expansion-panel-text>
             <div class="d-flex flex-row justify-space-around">
               <div class="d-flex flex-row">
-                <v-sheet
-                  class="text-center d-flex flex-column"
-                  title="Your cost of project"
-                >
+                <v-sheet class="text-center d-flex flex-column" title="Your cost of project">
                   <p>Your cost</p>
                   <v-text-field
                     type="number"
@@ -80,10 +65,7 @@
                   ></v-text-field>
                 </v-sheet>
                 <v-icon icon="mdi-minus" class="align-self-end pb-4"></v-icon>
-                <v-sheet
-                  class="text-center d-flex flex-column"
-                  title="Your pay for person"
-                >
+                <v-sheet class="text-center d-flex flex-column" title="Your pay for person">
                   <p>Pay</p>
                   <v-text-field
                     type="number"
@@ -94,36 +76,15 @@
                     style="width: 120px"
                   ></v-text-field>
                 </v-sheet>
-                <v-icon
-                  icon="mdi-arrow-right"
-                  class="align-self-end pb-4"
-                ></v-icon>
-                <v-sheet
-                  class="text-center d-flex flex-column"
-                  title="labor intensity with risk * pay"
-                >
+                <v-icon icon="mdi-arrow-right" class="align-self-end pb-4"></v-icon>
+                <v-sheet class="text-center d-flex flex-column" title="labor intensity with risk * pay">
                   <p>Cost</p>
-                  <v-chip size="large">{{
-                    Math.round(pay * laborIntensityWithRisk)
-                  }}</v-chip>
+                  <v-chip size="large">{{ Math.round(pay * laborIntensityWithRisk) }}</v-chip>
                 </v-sheet>
                 <v-icon icon="mdi-equal" class="align-self-end pb-4"></v-icon>
-                <v-sheet
-                  class="text-center d-flex flex-column"
-                  title="Your cost minus Pay"
-                >
+                <v-sheet class="text-center d-flex flex-column" title="Your cost minus Pay">
                   <p>Difference</p>
-                  <v-chip
-                    size="large"
-                    :style="
-                      yourCost - Math.round(pay * laborIntensityWithRisk) >= 0
-                        ? { color: 'green' }
-                        : { color: 'red' }
-                    "
-                    >{{
-                      yourCost - Math.round(pay * laborIntensityWithRisk)
-                    }}</v-chip
-                  >
+                  <v-chip size="large">{{ yourCost - Math.round(pay * laborIntensityWithRisk) }}</v-chip>
                 </v-sheet>
               </div>
             </div>
@@ -146,10 +107,7 @@
       Reset Coefficients <v-icon icon="mdi-autorenew"></v-icon
     ></v-btn>
     <v-spacer></v-spacer>
-    <v-btn
-      variant="outlined"
-      @click="currentCoefMode = Math.abs(currentCoefMode - 1)"
-    >
+    <v-btn variant="outlined" @click="currentCoefMode = Math.abs(currentCoefMode - 1)">
       {{ modes[currentCoefMode] }}
     </v-btn>
   </div>
@@ -299,14 +257,7 @@
               @click:prepend="prev(param.codeName, param.coefficient)"
               thumb-label
               hide-details
-              :ticks="
-                Object.fromEntries(
-                  Object.entries(param.coefficient).map(([key, value]) => [
-                    value,
-                    key,
-                  ])
-                )
-              "
+              :ticks="Object.fromEntries(Object.entries(param.coefficient).map(([key, value]) => [value, key]))"
               show-ticks="always"
               tick-size="6"
               v-model="coefficient[param.codeName].coef"
@@ -346,7 +297,7 @@ export default {
   methods: {
     next(name, coefTable) {
       const currCoef = this.coefficient[name].coef;
-      const coefs = Object.values(coefTable);
+      const coefs = Object.values(coefTable).sort((a, b) => a - b);
       for (let value of coefs) {
         if (value > currCoef) {
           this.coefficient[name].coef = value;
@@ -356,7 +307,7 @@ export default {
     },
     prev(name, coefTable) {
       const currCoef = this.coefficient[name].coef;
-      const coefs = Object.values(coefTable);
+      const coefs = Object.values(coefTable).sort((a, b) => a - b);
       for (let value of coefs.reverse()) {
         if (value < currCoef) {
           this.coefficient[name].coef = value;
@@ -367,7 +318,8 @@ export default {
     updateCoef(name, coefTable) {
       const currCoef = this.coefficient[name].coef;
       const coefs = Object.entries(coefTable);
-      let min = 10;
+      console.log(coefs);
+      let min = 1000;
       for (let index in coefs) {
         if (Math.abs(coefs[index][1] - currCoef) >= min) {
           this.coefficient[name].simpleCoef = coefs[index - 1][0];
@@ -407,10 +359,7 @@ export default {
 
     calculateLOC() {
       let totalValue = 0;
-      const statsRepo =
-        this.$store.state.RepoSatistic[
-          this.$store.state.currentRepo.projectLink
-        ].data;
+      const statsRepo = this.$store.state.RepoSatistic[this.$store.state.currentRepo.projectLink].data;
       for (let name in statsRepo.churn) {
         let churn = statsRepo.churn[name];
         let overall = statsRepo.overall[name];
