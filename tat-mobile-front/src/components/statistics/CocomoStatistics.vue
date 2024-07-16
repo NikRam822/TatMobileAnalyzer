@@ -51,7 +51,7 @@
                 min="0"
                 @input="updateResult('months')"
                 v-model="months"
-                style="width: 70px; border-top: 0px"
+                style="width: 80px; border-top: 0px"
               ></v-text-field>
             </div>
           </v-sheet>
@@ -69,7 +69,7 @@
                 variant="outlined"
                 min="0"
                 @input="updateResult('personal')"
-                style="width: 70px; border-top: 0px"
+                style="width: 80px; border-top: 0px"
                 v-model="personel"
                 hide-details
               ></v-text-field>
