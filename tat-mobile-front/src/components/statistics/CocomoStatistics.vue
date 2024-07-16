@@ -3,13 +3,7 @@
     <div class="d-flex flex-column justify-space-around">
       <v-sheet width="150px" class="text-center ma-2">
         <p>Your team type:</p>
-        <v-select
-          v-model="currentTeam"
-          :items="teamTeamType"
-          variant="solo-inverted"
-          hide-details="true"
-        >
-        </v-select>
+        <v-select v-model="currentTeam" :items="teamTeamType" variant="solo-inverted" hide-details="true"> </v-select>
       </v-sheet>
       <v-sheet width="150px" class="text-center ma-2">
         <p>Lines of code:</p>
@@ -26,14 +20,11 @@
       </v-sheet>
     </div>
 
-    <v-container
-      class="ma-2 d-flex flex-column justify-space-around"
-      width=" 50%"
-    >
+    <v-container class="ma-2 d-flex flex-column justify-space-around" width=" 50%">
       <div class="d-flex flex-row justify-space-around">
         <div class="d-flex flex-column">
-          <v-sheet class="text-center">
-            <p style="color: rgb(197, 226, 21)">Labor intensity with risk</p>
+          <v-sheet class="text-center pa-2" style="border: solid, 1px, white; border-radius: 15px">
+            <p style="color: rgb(197, 226, 21)">Person-months with risk</p>
             <v-chip size="x-large">
               {{ laborIntensityWithRisk }}
             </v-chip>
@@ -43,36 +34,46 @@
             <v-chip size="x-large">{{ personMonths }} </v-chip>
           </v-sheet>
         </div>
-        <div class="d-flex flex-column">
-          <v-sheet class="text-center">
+        <div class="d-flex flex-row ga-3">
+          <v-sheet class="text-center d-flex flex-column">
             <p>Months</p>
-            <v-chip variant="outlined" size="x-large">
+            <v-chip size="x-large" style="width: 100px" variant="outlined" @click="this.$refs.months.focus()">
+              {{ Math.round(months) }}
+            </v-chip>
+            <div style="align-self: center">
               <v-text-field
+                ref="months"
+                density="compact"
                 hide-spin-buttons
+                hide-details
                 type="number"
-                variant="text"
+                variant="outlined"
                 min="0"
                 @input="updateResult('months')"
                 v-model="months"
-                style="width: 70px"
-                hide-details
+                style="width: 70px; border-top: 0px"
               ></v-text-field>
-            </v-chip>
+            </div>
           </v-sheet>
-          <v-sheet class="text-center">
+          <v-sheet class="text-center d-flex flex-column">
             <p>Personnel</p>
-            <v-chip variant="outlined" size="x-large"
-              ><v-text-field
+            <v-chip size="x-large" variant="outlined" style="width: 100px" @click="this.$refs.persons.focus()">
+              {{ Math.round(personel) }}
+            </v-chip>
+            <div style="align-self: center">
+              <v-text-field
+                ref="persons"
+                density="compact"
                 hide-spin-buttons
                 type="number"
-                variant="text"
+                variant="outlined"
                 min="0"
                 @input="updateResult('personal')"
-                style="width: 70px"
+                style="width: 70px; border-top: 0px"
                 v-model="personel"
                 hide-details
-              ></v-text-field
-            ></v-chip>
+              ></v-text-field>
+            </div>
           </v-sheet>
         </div>
       </div>
@@ -84,10 +85,7 @@
           <v-expansion-panel-text>
             <div class="d-flex flex-row justify-space-around">
               <div class="d-flex flex-row">
-                <v-sheet
-                  class="text-center d-flex flex-column"
-                  title="Your cost of project"
-                >
+                <v-sheet class="text-center d-flex flex-column" title="Your cost of project">
                   <p>Your cost</p>
                   <v-text-field
                     type="number"
@@ -99,11 +97,8 @@
                   ></v-text-field>
                 </v-sheet>
                 <v-icon icon="mdi-minus" class="align-self-end pb-4"></v-icon>
-                <v-sheet
-                  class="text-center d-flex flex-column"
-                  title="Your pay for person"
-                >
-                  <p>Pay</p>
+                <v-sheet class="text-center d-flex flex-column" title="Your pay for person">
+                  <p>Pay for person</p>
                   <v-text-field
                     type="number"
                     min="0"
@@ -113,28 +108,15 @@
                     style="width: 120px"
                   ></v-text-field>
                 </v-sheet>
-                <v-icon
-                  icon="mdi-arrow-right"
-                  class="align-self-end pb-4"
-                ></v-icon>
-                <v-sheet
-                  class="text-center d-flex flex-column"
-                  title="labor intensity with risk * pay"
-                >
+                <v-icon icon="mdi-arrow-right" class="align-self-end pb-4"></v-icon>
+                <v-sheet class="text-center d-flex flex-column" title="labor intensity with risk * pay">
                   <p>Cost</p>
-                  <v-chip size="large">{{
-                    Math.round(pay * laborIntensityWithRisk)
-                  }}</v-chip>
+                  <v-chip size="large">{{ Math.round(pay * laborIntensityWithRisk) }}</v-chip>
                 </v-sheet>
                 <v-icon icon="mdi-equal" class="align-self-end pb-4"></v-icon>
-                <v-sheet
-                  class="text-center d-flex flex-column"
-                  title="Your cost minus Pay"
-                >
+                <v-sheet class="text-center d-flex flex-column" title="Your cost minus Pay">
                   <p>Difference</p>
-                  <v-chip size="large">{{
-                    yourCost - Math.round(pay * laborIntensityWithRisk)
-                  }}</v-chip>
+                  <v-chip size="large">{{ yourCost - Math.round(pay * laborIntensityWithRisk) }}</v-chip>
                 </v-sheet>
               </div>
             </div>
@@ -157,10 +139,7 @@
       Reset Coefficients <v-icon icon="mdi-autorenew"></v-icon
     ></v-btn>
     <v-spacer></v-spacer>
-    <v-btn
-      variant="outlined"
-      @click="currentCoefMode = Math.abs(currentCoefMode - 1)"
-    >
+    <v-btn variant="outlined" @click="currentCoefMode = Math.abs(currentCoefMode - 1)">
       {{ modes[currentCoefMode] }}
     </v-btn>
   </div>
@@ -310,14 +289,7 @@
               @click:prepend="prev(param.codeName, param.coefficient)"
               thumb-label
               hide-details
-              :ticks="
-                Object.fromEntries(
-                  Object.entries(param.coefficient).map(([key, value]) => [
-                    value,
-                    key,
-                  ])
-                )
-              "
+              :ticks="Object.fromEntries(Object.entries(param.coefficient).map(([key, value]) => [value, key]))"
               show-ticks="always"
               tick-size="6"
               v-model="coefficient[param.codeName].coef"
@@ -436,10 +408,7 @@ export default {
 
     calculateLOC() {
       let totalValue = 0;
-      const statsRepo =
-        this.$store.state.RepoSatistic[
-          this.$store.state.currentRepo.projectLink
-        ].data;
+      const statsRepo = this.$store.state.RepoSatistic[this.$store.state.currentRepo.projectLink].data;
       for (let name in statsRepo.churn) {
         let churn = statsRepo.churn[name];
         let overall = statsRepo.overall[name];
