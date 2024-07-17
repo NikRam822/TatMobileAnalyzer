@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - new-env
       - features/deploy
 
 jobs:
@@ -49,8 +50,10 @@ jobs:
             echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env;
             echo "DB_URL=${{ secrets.DB_URL }}" >> .env;
             echo "DB_URL=${{ secrets.DB_URL }}" >> .env;
-            echo "VITE_BACKEND_URL=http://java_app" > ./src/main/resources/env.properties;
-            echo "VITE_BACKEND_URL=http://java_app" > ./tat-mobile-front/.env;
+            echo "FRONTEND_HOST=http://${{ secrets.CLOUD_ADDRESS }}:3000" >> .env;
+            echo "VITE_BACKEND_URL=http://${{ secrets.CLOUD_ADDRESS }}:8080" > ./src/main/resources/env.properties;
+            echo "FRONTEND_HOST=http://${{ secrets.CLOUD_ADDRESS }}:3000" >> ./src/main/resources/env.properties;
+            echo "VITE_BACKEND_URL=http://${{ secrets.CLOUD_ADDRESS }}:8080" > ./tat-mobile-front/.env;
             git fetch;
             git checkout master;
             git pull origin master;
