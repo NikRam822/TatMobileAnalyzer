@@ -11,6 +11,7 @@ public interface ProjectService {
     Project getProjectById(Long id);
 
     List<Project> getAllProjects();
+
     Project findByProjectLink(String projectLink);
 
     Project updateProject(Project project);

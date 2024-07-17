@@ -72,8 +72,6 @@ public class ProjectServiceImpl implements ProjectService, FavoriteProjectServic
         Project project = projectRepository.findByProjectLink(projectLink);
         if (project == null) {
             log.warn("Project with link {} not found", projectLink);
-        } else {
-            log.info("Found project with link: {}", projectLink);
         }
         return project;
     }
@@ -89,7 +87,6 @@ public class ProjectServiceImpl implements ProjectService, FavoriteProjectServic
     public void deleteProject(Long id) {
         if (id != null) {
             projectRepository.deleteById(id);
-            log.info("Deleted project with id: {}", id);
         } else {
             log.warn("Id of project to be deleted is null");
         }
@@ -101,7 +98,7 @@ public class ProjectServiceImpl implements ProjectService, FavoriteProjectServic
         Project project = projectRepository.findById(projectId).orElse(null);
 
         if (project == null) {
-            log.warn("Project with id {} not found", projectId);
+            log.warn("Project is not found. Id: {}", projectId);
         } else {
             project.setFavorite(true);
             projectRepository.save(project);
