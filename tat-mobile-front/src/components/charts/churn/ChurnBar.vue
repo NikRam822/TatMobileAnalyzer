@@ -27,7 +27,7 @@ export default {
             display: true,
             title: {
               display: true,
-              text: "Overall",
+              text: "Lines of code",
             },
           },
           y: {
@@ -43,7 +43,7 @@ export default {
         labels: [],
         datasets: [
           {
-            label: "Value",
+            label: "Included",
             backgroundColor: "#C3FFA5",
             color: "#000",
             data: [],
@@ -52,7 +52,7 @@ export default {
             barPercentage: 0.5,
           },
           {
-            label: "Not value",
+            label: "Excluded",
             backgroundColor: "#F2A582",
             data: [],
             borderRadius: 5,

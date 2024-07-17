@@ -5,7 +5,7 @@
         v-show="this.$vuetify.display.xs || this.$vuetify.display.sm"
         @click="showdrawer = !showdrawer"
       ></v-app-bar-nav-icon>
-      <v-btn variant="plain" to="/" title="Go dashboard" size="x-large">
+      <v-btn variant="plain" to="/" title="Go to dashboard" size="x-large">
         <v-icon size="x-large">
           <v-img src="./assets/logo.svg"></v-img>
         </v-icon>
@@ -27,7 +27,7 @@
         label="Search reposytory"
         v-model="searchRepo"
       ></v-text-field>
-      <v-icon icon="mdi-account" size="40px" class="mr-10"></v-icon>
+      <!-- <v-icon icon="mdi-account" size="40px" class="mr-10"></v-icon> -->
     </v-app-bar>
     <v-navigation-drawer v-if="currentPage != 'Dashboard'" width="400">
       <ListOfStats />
