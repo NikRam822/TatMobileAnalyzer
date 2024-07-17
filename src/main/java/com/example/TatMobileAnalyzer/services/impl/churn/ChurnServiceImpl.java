@@ -2,6 +2,7 @@ package com.example.TatMobileAnalyzer.services.impl.churn;
 
 import com.example.TatMobileAnalyzer.model.Project;
 import com.example.TatMobileAnalyzer.services.*;
+import com.example.TatMobileAnalyzer.services.FactoryGitService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
@@ -18,17 +19,19 @@ import java.util.Map;
 @Slf4j
 public class ChurnServiceImpl implements ChurnService {
 
-    FilterService filterService;
-    ObjectMapper objectMapper;
-    ProjectService projectService;
+    private final FilterService filterService;
+    private final ObjectMapper objectMapper;
+    private final ProjectService projectService;
+    private final FactoryGitService factoryGitService;
 
     @Autowired
     public ChurnServiceImpl(FilterService filterService,
                             ObjectMapper objectMapper,
-                            ProjectService projectService) {
+                            ProjectService projectService, FactoryGitService factoryGitService) {
         this.filterService = filterService;
         this.objectMapper = objectMapper;
         this.projectService = projectService;
+        this.factoryGitService = factoryGitService;
     }
 
     @SneakyThrows
@@ -49,7 +52,7 @@ public class ChurnServiceImpl implements ChurnService {
         ChurnStat churnStat = new ChurnStat(authorStats, overall, general, generalResult, churn);
 
 
-        GitService gitService = SingletonFactoryGitService.getInstance().getImplementation(project.getProjectLink());
+        GitService gitService = factoryGitService.getImplementation(project.getProjectLink());
         List<?> commitsPerPeriod = gitService.getCommitsPerPeriod(project.getProjectLink(), since, until, branch);
 
         SupportServices supportServices = new SupportServices(filterService, objectMapper, projectService);
@@ -82,9 +85,7 @@ public class ChurnServiceImpl implements ChurnService {
 
             for (String fileName : churnStat.general().keySet()) {
                 Map<String, Integer> generalStats = new HashMap<>();
-                churnStat.general().get(fileName).forEach((lineNumber, authorOfAdd) -> {
-                    generalStats.merge(authorOfAdd, 1, Integer::sum);
-                });
+                churnStat.general().get(fileName).forEach((lineNumber, authorOfAdd) -> generalStats.merge(authorOfAdd, 1, Integer::sum));
                 churnStat.generalResult().put(fileName, generalStats);
             }
             if (totalLines != null && totalLines != 0) {

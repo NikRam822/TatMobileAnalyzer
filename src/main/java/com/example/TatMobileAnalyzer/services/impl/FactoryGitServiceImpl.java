@@ -1,5 +1,7 @@
-package com.example.TatMobileAnalyzer.services;
+package com.example.TatMobileAnalyzer.services.impl;
 
+import com.example.TatMobileAnalyzer.services.FactoryGitService;
+import com.example.TatMobileAnalyzer.services.GitService;
 import com.example.TatMobileAnalyzer.services.impl.git.apis.GitHubService;
 import com.example.TatMobileAnalyzer.services.impl.git.apis.GitLabService;
 import lombok.extern.slf4j.Slf4j;
@@ -12,33 +14,26 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @Slf4j
-public class SingletonFactoryGitService {
+public class FactoryGitServiceImpl implements FactoryGitService {
 
     private final GitHubService gitHubService;
     private final GitLabService gitLabService;
 
     private final Map<String, GitService> serviceMap = new ConcurrentHashMap<>();
 
-    private static SingletonFactoryGitService instance;
-
     @Autowired
-    public SingletonFactoryGitService(GitHubService gitHubService, GitLabService gitLabService) {
+    public FactoryGitServiceImpl(GitHubService gitHubService, GitLabService gitLabService) {
         this.gitHubService = gitHubService;
         this.gitLabService = gitLabService;
     }
 
     @PostConstruct
     public void init() {
-        serviceMap.put("github", (GitService) gitHubService);
-        serviceMap.put("gitlab", (GitService) gitLabService);
-        instance = this;
+        serviceMap.put("github", gitHubService);
+        serviceMap.put("gitlab", gitLabService);
     }
 
-    public static synchronized SingletonFactoryGitService getInstance() {
-
-        return instance;
-    }
-
+    @Override
     public GitService getImplementation(String repositoryUrl) {
         if (repositoryUrl == null || repositoryUrl.isEmpty()) {
             log.warn("Repository URL is not supported: {}", repositoryUrl);

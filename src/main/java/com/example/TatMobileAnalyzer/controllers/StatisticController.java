@@ -36,10 +36,10 @@ public class StatisticController {
     ResponseEntity<Map<String, Object>> getStatisticChurn(@RequestParam(required = false) String since,
                                                           @RequestParam(required = false) String until,
                                                           @RequestBody ProjectAnalysisDto projectAnalyseDto) throws ParseException {
-        since = since != null ? since + " 00:00:00" : since;
-        until = until != null ? until + " 23:59:59" : until;
-        Date startDate = DateUtils.parseDate(since, "yyyy-MM-dd HH:mm:ss");
-        Date endDate = DateUtils.parseDate(until, "yyyy-MM-dd HH:mm:ss");
+        since = since != null ? since + " 00:00:00" : null;
+        until = until != null ? until + " 23:59:59" : null;
+        Date startDate = DateUtils.parseDate(since, DateUtils.getDATE_FORMAT());
+        Date endDate = DateUtils.parseDate(until, DateUtils.getDATE_FORMAT());
 
         Map<String, Object> statisticChurn = churnService.getStatisticChurn(startDate, endDate, projectAnalyseDto.getProjectId(), projectAnalyseDto.getBranch());
 
@@ -56,8 +56,8 @@ public class StatisticController {
                                             @RequestBody String repositoryLink,
                                             @RequestBody String branch) throws ParseException {
 
-        Date startDate = DateUtils.parseDate(since + " 00:00:00", "yyyy-MM-dd HH:mm:ss");
-        Date endDate = DateUtils.parseDate(until + " 23:59:59", "yyyy-MM-dd HH:mm:ss");
+        Date startDate = DateUtils.parseDate(since + " 00:00:00", DateUtils.getDATE_FORMAT());
+        Date endDate = DateUtils.parseDate(until + " 23:59:59", DateUtils.getDATE_FORMAT());
 
         Map<String, List<Map<String, Object>>> fileStatistic = fileStatService.getContributorsByFiles(repositoryLink, startDate, endDate, branch);
         return new ResponseEntity<>(fileStatistic.toString(), HttpStatus.OK);

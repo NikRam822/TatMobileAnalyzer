@@ -16,18 +16,20 @@ public class ProjectServiceImpl implements ProjectService, FavoriteProjectServic
 
     private final FilterService filterService;
     private final ProjectRepository projectRepository;
+    private final FactoryGitService factoryGitService;
 
     @Autowired
-    public ProjectServiceImpl(FilterService filterService, ProjectRepository projectRepository) {
+    public ProjectServiceImpl(FilterService filterService, ProjectRepository projectRepository, FactoryGitService factoryGitService) {
         this.filterService = filterService;
         this.projectRepository = projectRepository;
+        this.factoryGitService = factoryGitService;
     }
 
     @Override
     @Transactional
     public Project createProject(Project project) {
 
-        GitService gitService = SingletonFactoryGitService.getInstance().getImplementation(project.getProjectLink());
+        GitService gitService = factoryGitService.getImplementation(project.getProjectLink());
         boolean isValidRepository = gitService.isValidRepository(project.getProjectLink());
 
         if (!isValidRepository) {
@@ -62,9 +64,7 @@ public class ProjectServiceImpl implements ProjectService, FavoriteProjectServic
 
     @Override
     public List<Project> getAllProjects() {
-        List<Project> projects = projectRepository.findAll();
-        log.info("Found {} projects", projects.size());
-        return projects;
+        return projectRepository.findAll();
     }
 
     @Override
@@ -72,8 +72,6 @@ public class ProjectServiceImpl implements ProjectService, FavoriteProjectServic
         Project project = projectRepository.findByProjectLink(projectLink);
         if (project == null) {
             log.warn("Project with link {} not found", projectLink);
-        } else {
-            log.info("Found project with link: {}", projectLink);
         }
         return project;
     }
@@ -89,7 +87,6 @@ public class ProjectServiceImpl implements ProjectService, FavoriteProjectServic
     public void deleteProject(Long id) {
         if (id != null) {
             projectRepository.deleteById(id);
-            log.info("Deleted project with id: {}", id);
         } else {
             log.warn("Id of project to be deleted is null");
         }
@@ -101,7 +98,7 @@ public class ProjectServiceImpl implements ProjectService, FavoriteProjectServic
         Project project = projectRepository.findById(projectId).orElse(null);
 
         if (project == null) {
-            log.warn("Project with id {} not found", projectId);
+            log.warn("Project is not found. Id: {}", projectId);
         } else {
             project.setFavorite(true);
             projectRepository.save(project);
