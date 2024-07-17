@@ -24,23 +24,23 @@ public class FilterController {
     }
 
     @PostMapping("/get-filters-for-project")
-    ResponseEntity<?> getAll(@RequestBody ProjectIdDto projectIdDto) {
+    ResponseEntity<FilterDto> getAll(@RequestBody ProjectIdDto projectIdDto) {
         Filter filter = filterService.getFiltersByProjectId(projectIdDto.getProjectId());
         if (filter == null) {
-            log.error("No filters found for project " + projectIdDto.getProjectId());
-            return new ResponseEntity<>("No filters found for project " + projectIdDto.getProjectId(), HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("No filter found for project {}", projectIdDto.getProjectId());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
         return new ResponseEntity<>(FilterDto.toFilterDto(filter), HttpStatus.OK);
     }
 
     @PutMapping("/update-filter")
-    ResponseEntity<?> updateFilter(@RequestBody FilterDto filterDto) {
+    ResponseEntity<FilterDto> updateFilter(@RequestBody FilterDto filterDto) {
 
         Filter filter = filterService.getFiltersByProjectId(filterDto.getProjectId());
         if (filter == null) {
-            log.error("No filters found for project " + filterDto.getProjectId());
-            return new ResponseEntity<>("No filters found for project " + filterDto.getProjectId(), HttpStatus.NOT_FOUND);
+            log.error("No filters found for project {}", filterDto.getProjectId());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         }
         filter.setTest(filterDto.getTest());

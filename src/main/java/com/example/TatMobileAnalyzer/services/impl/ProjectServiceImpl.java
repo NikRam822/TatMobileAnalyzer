@@ -16,18 +16,20 @@ public class ProjectServiceImpl implements ProjectService, FavoriteProjectServic
 
     private final FilterService filterService;
     private final ProjectRepository projectRepository;
+    private final FactoryGitService factoryGitService;
 
     @Autowired
-    public ProjectServiceImpl(FilterService filterService, ProjectRepository projectRepository) {
+    public ProjectServiceImpl(FilterService filterService, ProjectRepository projectRepository, FactoryGitService factoryGitService) {
         this.filterService = filterService;
         this.projectRepository = projectRepository;
+        this.factoryGitService = factoryGitService;
     }
 
     @Override
     @Transactional
     public Project createProject(Project project) {
 
-        GitService gitService = SingletonFactoryGitService.getInstance().getImplementation(project.getProjectLink());
+        GitService gitService = factoryGitService.getImplementation(project.getProjectLink());
         boolean isValidRepository = gitService.isValidRepository(project.getProjectLink());
 
         if (!isValidRepository) {
@@ -62,9 +64,7 @@ public class ProjectServiceImpl implements ProjectService, FavoriteProjectServic
 
     @Override
     public List<Project> getAllProjects() {
-        List<Project> projects = projectRepository.findAll();
-        log.info("Found {} projects", projects.size());
-        return projects;
+        return projectRepository.findAll();
     }
 
     @Override
