@@ -214,6 +214,7 @@ export default {
       }
     },
     async getStatistic() {
+      const projectLink = this.$store.state.currentRepo.projectLink;
       this.loader = true;
       let hostadress = server_path + "/api/statistic/churn";
       if (this.startDate || this.endDate) {
@@ -226,7 +227,7 @@ export default {
         });
         this.$store.commit("setDate", { startDate: this.startDate, endDate: this.endDate });
 
-        this.$store.commit("addStatistc", [this.$store.state.currentRepo.projectLink, statistic]);
+        this.$store.commit("addStatistc", [projectLink, statistic]);
         this.$store.commit("setBranch", this.currentBranch);
       } catch (error) {
         console.error("Error " + error.message);

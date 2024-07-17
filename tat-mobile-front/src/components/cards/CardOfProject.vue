@@ -30,32 +30,17 @@
         {{ rep.projectName }}
       </template>
       <template v-slot:append>
-        <v-btn
-          variant="text"
-          @click.stop="getStatistic()"
-          icon="mdi-autorenew"
-        ></v-btn>
+        <v-btn variant="text" @click.stop="getStatistic()" icon="mdi-autorenew"></v-btn>
       </template>
       <v-container v-show="loader">
-        <v-progress-linear
-          color="rgb(92, 99, 106)"
-          height="6"
-          indeterminate
-          rounded
-        ></v-progress-linear>
+        <v-progress-linear color="rgb(92, 99, 106)" height="6" indeterminate rounded></v-progress-linear>
         <p>Analyzing reposytory</p>
       </v-container>
       <v-spacer></v-spacer>
       <v-card-actions class="ps-4">
         <p>Date of last update</p>
         <v-spacer></v-spacer>
-        <v-btn
-          variant="text"
-          @click.stop="deleteProject"
-          flat
-          icon="mdi-trash-can-outline"
-          class="text-grey"
-        ></v-btn>
+        <v-btn variant="text" @click.stop="deleteProject" flat icon="mdi-trash-can-outline" class="text-grey"></v-btn>
       </v-card-actions>
     </v-card>
   </v-col>
@@ -72,6 +57,7 @@ export default {
   props: ["rep"],
   methods: {
     async getStatistic() {
+      const projectLink = this.rep.projectLink;
       this.loader = true;
       let hostadress = server_path + "/api/statistic/churn";
       try {
@@ -82,7 +68,7 @@ export default {
         this.$store.commit("setDate", { startDate: "", endDate: "" });
 
         this.$store.commit("setBranch", "");
-        this.$store.commit("addStatistc", [this.rep.projectLink, statistic]);
+        this.$store.commit("addStatistc", [projectLink, statistic]);
       } catch (error) {
         console.error("Error " + error.message);
       }
