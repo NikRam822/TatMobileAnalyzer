@@ -4,65 +4,28 @@
       <thead>
         <tr>
           <th title="Name of the commiter">
-            <v-card
-              id="name"
-              @click="sortStatistic(statsForGraph, $event.target.id)"
-            >
-              Name</v-card
-            >
+            <v-card id="name" @click="sortStatistic(statsForGraph, $event.target.id)"> Name</v-card>
           </th>
           <th title="Total LOC that was analyzed">
-            <v-card
-              id="overall"
-              @click="sortStatistic(statsForGraph, $event.target.id)"
-            >
-              Overall</v-card
-            >
+            <v-card id="overall" @click="sortStatistic(statsForGraph, $event.target.id)"> Total LOC</v-card>
           </th>
-          <th
-            title="Percentage of LOC that was not included in the final version of the analysis"
-          >
-            <v-card
-              id="churn"
-              @click="sortStatistic(statsForGraph, $event.target.id)"
-              >Churn</v-card
-            >
+          <th title="Percentage of LOC that was not included in the final version of the analysis">
+            <v-card id="churn" @click="sortStatistic(statsForGraph, $event.target.id)">Churn</v-card>
           </th>
-          <th
-            title="Number of LOC that was included to the final version of the analysis"
-          >
-            <v-card
-              id="value"
-              @click="sortStatistic(statsForGraph, $event.target.id)"
-              >Include</v-card
-            >
+          <th title="Number of LOC that was included to the final version of the analysis">
+            <v-card id="value" @click="sortStatistic(statsForGraph, $event.target.id)">Included</v-card>
           </th>
-          <th
-            title="Number of LOC that was NOT included to the final version of the analysis"
-          >
-            <v-card
-              id="notValue"
-              @click="sortStatistic(statsForGraph, $event.target.id)"
-              >Exclude</v-card
-            >
+          <th title="Number of LOC that was NOT included to the final version of the analysis">
+            <v-card id="notValue" @click="sortStatistic(statsForGraph, $event.target.id)">Excluded</v-card>
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="author in statsForGraph"
-          :key="author.projectLink"
-          @click="author.enable = !author.enable"
-        >
+        <tr v-for="author in statsForGraph" :key="author.projectLink" @click="author.enable = !author.enable">
           <td>
             <div class="d-flex flex-row">
               <div class="align-self-center">
-                <v-checkbox-btn
-                  density="compact"
-                  true-icon="mdi-eye"
-                  false-icon="mdi-eye-off"
-                  v-model="author.enable"
-                >
+                <v-checkbox-btn density="compact" true-icon="mdi-eye" false-icon="mdi-eye-off" v-model="author.enable">
                 </v-checkbox-btn>
               </div>
               <div class="align-self-center">{{ author.name }}</div>
@@ -81,8 +44,7 @@
           <td title="Average percentage">
             {{
               Math.floor(
-                statsForGraph.reduce((sum, curr) => sum + curr.churn, 0) /
-                  Object.entries(statsForGraph).length
+                statsForGraph.reduce((sum, curr) => sum + curr.churn, 0) / Object.entries(statsForGraph).length
               )
             }}%
           </td>
@@ -97,10 +59,7 @@
     </v-table>
     <div
       :style="{
-        height:
-          70 * statsForGraph.reduce((sum, curr) => sum + curr.enable, 0) +
-          60 +
-          'px',
+        height: 70 * statsForGraph.reduce((sum, curr) => sum + curr.enable, 0) + 60 + 'px',
         minWidth: 50 + '%',
       }"
     >
@@ -135,10 +94,7 @@ export default {
       this.prevCol = sortParam;
     },
     getChurnStatistic() {
-      const statsRepo =
-        this.$store.state.RepoSatistic[
-          this.$store.state.currentRepo.projectLink
-        ].data;
+      const statsRepo = this.$store.state.RepoSatistic[this.$store.state.currentRepo.projectLink].data;
       const statsForGraph = [];
       for (let name in statsRepo.churn) {
         let churn = statsRepo.churn[name];
@@ -146,12 +102,8 @@ export default {
         statsForGraph.push({ name: name });
         statsForGraph[statsForGraph.length - 1].churn = Math.round(churn);
         statsForGraph[statsForGraph.length - 1].overall = overall;
-        statsForGraph[statsForGraph.length - 1].value = Math.round(
-          overall * ((100 - churn) / 100)
-        );
-        statsForGraph[statsForGraph.length - 1].notValue = Math.round(
-          (overall * churn) / 100
-        );
+        statsForGraph[statsForGraph.length - 1].value = Math.round(overall * ((100 - churn) / 100));
+        statsForGraph[statsForGraph.length - 1].notValue = Math.round((overall * churn) / 100);
         statsForGraph[statsForGraph.length - 1].enable = true;
       }
       console.log(statsForGraph);
