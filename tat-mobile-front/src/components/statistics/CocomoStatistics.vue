@@ -37,40 +37,46 @@
         <div class="d-flex flex-column ga-3">
           <v-sheet class="text-center d-flex flex-column">
             <p>Months</p>
-            <v-chip size="x-large" style="width: 100px" variant="outlined" @click="this.$refs.months.focus()">
-              <div style="align-self: center">
-                <v-text-field
-                  ref="months"
-                  density="compact"
-                  hide-spin-buttons
-                  hide-details
-                  type="number"
-                  variant="text"
-                  min="0"
-                  @input="updateResult('months')"
-                  v-model="months"
-                  style="width: 80px; border-top: 0px"
-                ></v-text-field>
-              </div>
+            <v-chip
+              class="pa-0"
+              size="x-large"
+              style="width: 100px"
+              variant="outlined"
+              @click="this.$refs.months.focus()"
+            >
+              <v-text-field
+                ref="months"
+                density="compact"
+                hide-spin-buttons
+                hide-details
+                type="number"
+                variant="text"
+                min="0"
+                @input="updateResult('months')"
+                v-model="months"
+              ></v-text-field>
             </v-chip>
           </v-sheet>
           <v-sheet class="text-center d-flex flex-column ga-2">
             <p>Personnel</p>
-            <v-chip size="x-large" variant="outlined" style="width: 100px" @click="this.$refs.persons.focus()">
-              <div style="align-self: center">
-                <v-text-field
-                  ref="persons"
-                  density="compact"
-                  hide-spin-buttons
-                  type="number"
-                  variant="text"
-                  min="0"
-                  @input="updateResult('personal')"
-                  style="width: 80px; border-top: 0px"
-                  v-model="personel"
-                  hide-details
-                ></v-text-field>
-              </div>
+            <v-chip
+              class="pa-0"
+              size="x-large"
+              variant="outlined"
+              style="width: 100px"
+              @click="this.$refs.persons.focus()"
+            >
+              <v-text-field
+                ref="persons"
+                density="compact"
+                hide-spin-buttons
+                type="number"
+                variant="text"
+                min="0"
+                @input="updateResult('personal')"
+                v-model="personel"
+                hide-details
+              ></v-text-field>
             </v-chip>
             <v-chip size="x-large" style="width: 100px" @click="this.$refs.persons.focus()">
               {{ Math.round(personel) }}
@@ -82,10 +88,10 @@
     <v-container width="50%" height="100%">
       <v-expansion-panels>
         <v-expansion-panel>
-          <v-expansion-panel-title>Actual vs estimated cost</v-expansion-panel-title>
+          <v-expansion-panel-title class="text-h6">Actual vs estimated cost</v-expansion-panel-title>
           <v-expansion-panel-text>
             <div class="d-flex flex-row justify-space-around">
-              <div class="d-flex flex-row">
+              <div class="d-flex flex-row align-end">
                 <v-sheet class="text-center d-flex flex-column" title="Your cost of project">
                   <p style="width: 120px">Actual project cost</p>
                   <v-text-field
@@ -98,7 +104,7 @@
                   ></v-text-field>
                 </v-sheet>
                 <v-icon icon="mdi-minus" class="align-self-end pb-4"></v-icon>
-                <v-sheet class="text-center d-flex flex-column" title="Your pay for person">
+                <v-sheet class="text-center d-flex flex-column" title="Your pay per person">
                   <p style="width: 120px">Average pay per person</p>
                   <v-text-field
                     type="number"
@@ -110,12 +116,15 @@
                   ></v-text-field>
                 </v-sheet>
                 <v-icon icon="mdi-arrow-right" class="align-self-end pb-4"></v-icon>
-                <v-sheet class="text-center d-flex flex-column" title="labor intensity with risk * pay">
+                <v-sheet
+                  class="text-center d-flex flex-column"
+                  title="Work cost in person-months * Average pay per person"
+                >
                   <p>Estimated cost</p>
                   <v-chip size="large">{{ Math.round(pay * laborIntensityWithRisk) }}</v-chip>
                 </v-sheet>
                 <v-icon icon="mdi-equal" class="align-self-end pb-4"></v-icon>
-                <v-sheet class="text-center d-flex flex-column" title="Your cost minus Pay">
+                <v-sheet class="text-center d-flex flex-column" title="Your Actual project cost minus Estimated cost">
                   <p>Difference</p>
                   <v-chip size="large">{{ yourCost - Math.round(pay * laborIntensityWithRisk) }}</v-chip>
                 </v-sheet>
