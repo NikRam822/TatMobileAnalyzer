@@ -14,6 +14,7 @@ class TatMobileAnalyzerApplicationTests {
     void contextLoads() {
     }
 
+
     @Test
     void mainMethodLoadsContext() {
         String[] args = {};
