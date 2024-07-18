@@ -27,9 +27,6 @@ jobs:
           echo "ACCESS_TOKEN_GITLAB=gitlab" >> src/main/resources/env.properties
           echo "FRONTEND_HOST=front" >> src/main/resources/env.properties
 
-      - name: Build with Maven
-        run: mvn clean install
-
       - name: Run Tests
         run: mvn test -Dspring.profiles.active=test
 
