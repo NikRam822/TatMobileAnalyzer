@@ -5,7 +5,7 @@
 ## What is TatMobileAnalyzer?
 
 TatMobileAnalyzer is a comprehensive solution for analyzing developers' work and estimating project labor costs. This solution is designed primarily for senior managers and product owners and is a tool that provides statistics on project participants as well as the COCOMO2 project estimation model
-For more information visit our [Software Requirement Specification document](docs/SPECIFICATION.md).
+For more information visit our [Software Requirement Specification document](docs/outdated/SPECIFICATION.md).
 
 ## Functions represented in our system
 
@@ -111,8 +111,8 @@ Below are the instructions for running `docker-compose`:
 ### Links
 
 - [TatMobile Analyzer](http://178.154.240.54:3000/)
-- [Tat Mobile Specification](docs/SPECIFICATION.md)
-- [GitHub Workflow Rules](docs/WORKFLOW.md)
+- [Tat Mobile Specification](docs/outdated/SPECIFICATION.md)
+- [GitHub Workflow Rules](docs/outdated/WORKFLOW.md)
 - [Figma Prototype](https://www.figma.com/file/OE0pQL3mn4wlcng6o10AK3/ServiceDesign?type=design&node-id=264%3A1251&mode=design&t=XG83iR2C8fcI6gXF-1)
 - [Other Artifacts](https://drive.google.com/drive/folders/1RKxz5tozCQmqkwWamR1bCjz847XtSwqx?usp=sharing)
 

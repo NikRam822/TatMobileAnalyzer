@@ -23,7 +23,6 @@
 4. [Architectural_Views](#architectural-views)
    - [Static](#static-perspective)
    - [Dynamic](#dynamic-perspective)
-   - [Physical](#physical-perspective)
    - [Use-case diagram:](#use-case-diagram)
    - [Entity relationship diagram](#entity-relationship-diagram)
 5. [Researches](#researches)
@@ -31,7 +30,7 @@
 ## Introduction <a name="introduction"></a>
 
 The purpose of this document is to provide a comprehensive overview of the requirements for the
-development of a developer contribution assessment tool. It serves as a guide for
+development of a tool for estimating developer contributions to a project, as well as estimating project labor costs. It serves as a guide for
 stakeholders, developers, and project teams involved in the design, development, and implementation phases.
 design, development, and implementation. The SRS describes the functional and
 non-functional requirements that define the expected behavior and performance of the
@@ -50,17 +49,22 @@ The following conventions are used throughout this document:
 ### Project Description <a name="project-description"></a>
 
 The Developer Contribution Assessment Tool is designed to analyze repositories of
-software repositories and provide metrics for evaluating developer contributions to a particular project.
-a specific project. This tool will help stakeholders to make
-informed decisions related to resource allocation, project management, and performance measurement.
-performance evaluation. It includes a number of metrics including commit analysis,
-code quality, collaboration patterns, and more.
-Inclusions:
+software repositories and provide metrics for evaluating developer contributions to a specific project.
+specific project. This tool will help stakeholders make
+informed decisions related to resource allocation, project management, and performance evaluation.
 
-- Analysis of commit metrics (frequency, size, messages).
-  Exclusions:
-- Detailed project management features (e.g., task tracking).
-- Integration with external project management tools
+The tool includes 2 key functionalities:
+
+- **Analyze Developer Contributions.**
+
+This functionality uses Churn metrics.
+The system analyzes commits for a specified period, analyzes files in commits and changes in these files.
+Thus the system collects data about who wrote how much code and displays it in the form of a graph.
+
+- **Labor intensity estimation according to COCOMO-2 methodology.**
+
+This functionality is a tool for estimating a project based on the number of lines of code, type of room and additional coefficients.
+The user can specify all necessary data about the analyzed project and get the planned project cost.
 
 ### Links <a name="links"></a>
 
@@ -68,8 +72,6 @@ This document refers to the following documents, prototypes, and resources:
 
 - [TatMobileAnalyzer repository](https://github.com/NikRam822/TatMobileAnalyzer)
 - [Figma Prototype](https://www.figma.com/file/OE0pQL3mn4wlcng6o10AK3/ServiceDesign?type=design&node-id=264%3A1251&mode=design&t=XG83iR2C8fcI6gXF-1)
-- [Toggle Report](https://track.toggl.com/shared-report/33a4e4c4755942c8ec8be3ea4c776dda)
-- [Artifacts of 1st meeting](https://drive.google.com/drive/folders/1vgXjxCtzi7MA1MaR5vUygWJd_Ts-4vJQ?usp=drive_link)
 - [Role Table](https://docs.google.com/spreadsheets/d/1XhRbq4rEerV7g63WXSJjuF9qFM0C1nxG2EsSbE144wI/edit?usp=sharing)
 - [Other Artifacts](https://drive.google.com/drive/folders/1RKxz5tozCQmqkwWamR1bCjz847XtSwqx?usp=sharing)
 
@@ -127,23 +129,24 @@ The next section deals with the problem of metrics for analyzing the productivit
 of a programmer. A separate table presents a list of metrics with their description (purpose of using the metric) and disadvantages/advantages of using them.
 of using the metric) and disadvantages/problems related to these metrics.
 
-| Title                                                                                        | Description                                                                                                                                        | Metrics                                                                                                                                                                                                | Pros                                                                                                    | Minuses                                                      |
-| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| [Code Quality Report Analyzer](https://github.com/roshni-joshi/code-quality-report-analyzer) | A web application developed as a microservice architecture (React, Springboot and Python) to evaluate and visualize odor types in a git repository | 1. Architecture, <br/>2. Design, <br/>3. Implementation, <br/>4. Test, and <br/>5. Testability Smells                                                                                                  | 1. The system has a ready-made UI with ready-made dashboards. <br/>2. There is detailed documentation   | It's hard to customize to your solution                      |
-| [GitLab Analytics](https://github.com/NDHWAlliance/gitlab-analytics)                         | Tool (system) for analyzing developer activity GitLab repository                                                                                   | 1. commits <br/>2. wikis <br/>3. issues <br/>4. comments <br/>5. merge-request                                                                                                                         | Simple, easy to understand project with startup instructions                                            | No detailed documentation, tool gives error during operation |
-| [GitLab Commit Statics](https://github.com/ccbuildpro/GitLabCommitStatics/tree/master)       | A very simple script to collect project statistics in GitLab                                                                                       | metrics from GitLab API                                                                                                                                                                                | Simple code                                                                                             | In Chinese                                                   |
-| [New Relic GitLab Exporter](https://github.com/newrelic-experimental/gitlab)                 | A Gitlab exporter that sends metrics, logs, and traces to New Relic                                                                                | CI/CD metrics                                                                                                                                                                                          | As an example of integration                                                                            | Poor documentation                                           |
-| [GitLab Prometheus solution](https://github.com/owentl/gitlab-prometheus/tree/main)          | Prometheus metrics generator based on gitlab issues                                                                                                | issue_weight, issue_status, time_estimate, time_spent and other 21 values                                                                                                                              | Simple code, there is a dockerfile                                                                      | No                                                           |
-| [DORA Metrics](https://about.gitlab.com/solutions/value-stream-management/dora/#overview)    | A solution for analysts and devops engineers                                                                                                       | 1. deployment frequency, <br/>2. the time to execute the changes, <br/>3. average recovery time <br/>4. change failure rates and other CI/CD metrics                                                   | Commercial solution, easy to connect. API with a large number of metrics                                | No                                                           |
-| [GitLab DevOps Metrics on Go](https://github.com/denniskribl/gitlab-devops-metrics)          | Tool for collecting metrics about CI/CDs                                                                                                           | commits & deployments                                                                                                                                                                                  | GOLANG                                                                                                  | Not a lot of code                                            |
-| [Extract GitLab Merge Metrics](https://github.com/hadisfr/extract-gitlab-merge-metrics)      | A tool for collecting GitLab merge metrics                                                                                                         | merge (time, hash and so on)                                                                                                                                                                           | There is an example of using api (in code)                                                              | Pet project                                                  |
-| [Git Commit Metrics](https://github.com/llbit/git-commit-metrics)                            | A tool for counting commits and adds (GitHub)                                                                                                      | 1. Commit Count, <br/>2. Inserted, <br/>3. Removed.                                                                                                                                                    | A very simple example of working with GitHub                                                            | Pet project                                                  |
-| [GH Metrics Collector](https://github.com/davelosert/gh-metrics-collector)                   | Collect some Github Committer and Pull-Requests metrics from the API GitHub                                                                        | 1. commitDate, <br/>2. commitSHA, <br/>3. commitAuthor, <br/>4. repository, <br/>5. organisation.<br/>Same for pull-requests                                                                           | Outputs the result in a csv file, tightening the integration with excel                                 | Small project                                                |
-| [WHIP](https://github.com/slincastro/whip/tree/main)                                         | Collects the default GitHub metrics                                                                                                                | GitHub commit info                                                                                                                                                                                     | Just as an example, okay.                                                                               | Pet project                                                  |
-| [Radon](https://github.com/rubik/radon)                                                      | A code parser that collects various Python metrics                                                                                                 | 1. cyclomatic complexity, <br/>2. raw metrics (these include SLOC, comment lines, blank lines, &c.)<br/>3. Halstead metrics (all of them)<br/>4. Maintainability Index (the one used in Visual Studio) | A very good example of how to do this project in Python. Also the project provides normal documentation | Indirect solution                                            |
-| [CK](https://github.com/mauricioaniche/ck)                                                   | Static code parser that collects Java metrics                                                                                                      | About 36 meters!                                                                                                                                                                                       | Open source, the project is supported by the community                                                  | No documentation                                             |
-| [DesigniteJava](https://github.com/tushartushar/DesigniteJava)                               | Static code parser that analyzes code quality for Java                                                                                             | Collects about 40 values!                                                                                                                                                                              | Open source code, documentation available                                                               | Indirect solution                                            |
-
+| Title                                                                                        | Description                                                                                                                                        | Metrics                                                                                                                                                                                               | Pros                                                                                                    | Minuses                                                           |
+| -------------------------------------------------------------------------------------------- |----------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------|
+| [Code Quality Report Analyzer](https://github.com/roshni-joshi/code-quality-report-analyzer) | A web application developed as a microservice architecture (React, Springboot and Python) to evaluate and visualize odor types in a git repository | 1. Architecture, <br/>2. Design, <br/>3. Implementation, <br/>4. Test, and <br/>5. Testability Smells                                                                                                 | 1. The system has a ready-made UI with ready-made dashboards. <br/>2. There is detailed documentation   | It's hard to customize to your solution                           |
+| [GitLab Analytics](https://github.com/NDHWAlliance/gitlab-analytics)                         | Tool (system) for analyzing developer activity GitLab repository                                                                                   | 1. commits <br/>2. wikis <br/>3. issues <br/>4. comments <br/>5. merge-request                                                                                                                        | Simple, easy to understand project with startup instructions                                            | No detailed documentation, tool gives error during operation      |
+| [GitLab Commit Statics](https://github.com/ccbuildpro/GitLabCommitStatics/tree/master)       | A very simple script to collect project statistics in GitLab                                                                                       | metrics from GitLab API                                                                                                                                                                               | Simple code                                                                                             | In Chinese                                                        |
+| [New Relic GitLab Exporter](https://github.com/newrelic-experimental/gitlab)                 | A Gitlab exporter that sends metrics, logs, and traces to New Relic                                                                                | CI/CD metrics                                                                                                                                                                                         | As an example of integration                                                                            | Poor documentation                                                |
+| [GitLab Prometheus solution](https://github.com/owentl/gitlab-prometheus/tree/main)          | Prometheus metrics generator based on gitlab issues                                                                                                | issue_weight, issue_status, time_estimate, time_spent and other 21 values                                                                                                                             | Simple code, there is a dockerfile                                                                      | No                                                                |
+| [DORA Metrics](https://about.gitlab.com/solutions/value-stream-management/dora/#overview)    | A solution for analysts and devops engineers                                                                                                       | 1. deployment frequency, <br/>2. the time to execute the changes, <br/>3. average recovery time <br/>4. change failure rates and other CI/CD metrics                                                  | Commercial solution, easy to connect. API with a large number of metrics                                | No                                                                |
+| [GitLab DevOps Metrics on Go](https://github.com/denniskribl/gitlab-devops-metrics)          | Tool for collecting metrics about CI/CDs                                                                                                           | commits & deployments                                                                                                                                                                                 | GOLANG                                                                                                  | Not a lot of code                                                 |
+| [Extract GitLab Merge Metrics](https://github.com/hadisfr/extract-gitlab-merge-metrics)      | A tool for collecting GitLab merge metrics                                                                                                         | merge (time, hash and so on)                                                                                                                                                                          | There is an example of using api (in code)                                                              | Pet project                                                       |
+| [Git Commit Metrics](https://github.com/llbit/git-commit-metrics)                            | A tool for counting commits and adds (GitHub)                                                                                                      | 1. Commit Count, <br/>2. Inserted, <br/>3. Removed.                                                                                                                                                   | A very simple example of working with GitHub                                                            | Pet project                                                       |
+| [GH Metrics Collector](https://github.com/davelosert/gh-metrics-collector)                   | Collect some Github Committer and Pull-Requests metrics from the API GitHub                                                                        | 1. commitDate, <br/>2. commitSHA, <br/>3. commitAuthor, <br/>4. repository, <br/>5. organisation.<br/>Same for pull-requests                                                                          | Outputs the result in a csv file, tightening the integration with excel                                 | Small project                                                     |
+| [WHIP](https://github.com/slincastro/whip/tree/main)                                         | Collects the default GitHub metrics                                                                                                                | GitHub commit info                                                                                                                                                                                    | Just as an example, okay.                                                                               | Pet project                                                       |
+| [Radon](https://github.com/rubik/radon)                                                      | A code parser that collects various Python metrics                                                                                                 | 1. cyclomatic complexity, <br/>2. raw metrics (these include SLOC, comment lines, blank lines, &c.)<br/>3. Halstead metrics (all of them)<br/>4. Maintainability Index (the one used in Visual Studio) | A very good example of how to do this project in Python. Also the project provides normal documentation | Indirect solution                                                 |
+| [CK](https://github.com/mauricioaniche/ck)                                                   | Static code parser that collects Java metrics                                                                                                      | About 36 meters!                                                                                                                                                                                      | Open source, the project is supported by the community                                                  | No documentation                                                  |
+| [DesigniteJava](https://github.com/tushartushar/DesigniteJava)                               | Static code parser that analyzes code quality for Java                                                                                             | Collects about 40 values!                                                                                                                                                                             | Open source code, documentation available                                                               | Indirect solution                                                 |
+| [COCOMO II - Constructive Cost Model](http://softwarecost.org/tools/COCOMO/)                               | Analysis of projects based on COCOMO 2                                                                                                                 | Not a code base analysis tool, only provides COCOMO 2 based calculation.                                                                                                          | Online tool, easy accessibility                                                                         | Not controllable, no source code. It looks complicated, there's no explanation |
+| [Constructive Cost Model](https://cocomo.vercel.app/)                               | Analysis of projects based on COCOMO 2                                                                                                                 | Not a code base analysis tool, only provides COCOMO 2 based calculation.                                                                                                          | Online tool, easy accessibility. Very simple, everything is described in great detail.                             | Not controllable, no source code                                  |
 ### Metrics <a name="metrics"></a>
 
 Estimating programmer productivity using code and commit metrics faces
@@ -167,120 +170,46 @@ quality. The unpredictability of external factors, such as changes in requiremen
 also introduces uncertainty into productivity estimates, making them less reliable and
 objective.
 
-We have formed the following table as an analysis:
-
-| Metric                      | Description                                                                                                              | Minuses                                                                                                                                                                                       | Pros                                                                                                                                                                                                                                           |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Commits Count               | Counts the number of commits made by a particular user                                                                   | Developers can make lots of small, inconsequential commits to improve their performance                                                                                                       | 1. easy to understand and calculate. <br/>2. Provides an overview of the developer's involvement in the project. <br/>3. Useful for tracking trends in developer activity over time.                                                           |
-| Commit Size                 | Measures the size or lines of code changed on each commit.                                                               | Programmers may start artificially increasing the amount of code.                                                                                                                             | 1. Helps you determine the scope of changes made by the developer to each commit. <br/>2. May indicate whether the developer makes a major or minor contribution. <br/>3. Useful for understanding the complexity and impact of change.        |
-| Commit Frequency            | Checks how often the developer makes changes to the repository.                                                          | 1. An excessive number of small commits can clutter the repository and hide meaningful changes. <br/>2. Does not take into account different development approaches (daily vs weekly commits) | 1. Provides insight into the consistency and work habits of the developer. <br/>2. Helps identify periods of high or low activity. <br/>3. Useful for understanding development workflow patterns.                                             |
-| Commit Messages             | Evaluates the quality and informativeness of commit messages.                                                            | It is impossible to assess the quality of the descriptions.                                                                                                                                   | 1. Helps you evaluate the clarity and purpose of each commit. <br/>2. Promotes better understanding and cooperation among team members. <br/>3. Supports effective documentation of changes.                                                   |
-| Branch Management           | Checks how well the developer handles branching, merging, and conflict resolution.                                       | 1. Improper branch management can have a negative impact on performance. <br/>2. merg is done only by team leaders.                                                                           | 1. Indicates the developer's knowledge of version control techniques. <br/>2. reflects collaborative skills and the ability to work in parallel with others. <br/>3. can highlight areas where improvements in code integration may be needed. |
-| Lines of Code (LOC)         | Measures the number of lines of code added, modified, or deleted by the developer.                                       | You can manipulate by writing detailed code or creating unnecessary lines.                                                                                                                    | 1. easy to understand and calculate. <br/>2. Provides an overview of the developer's involvement in the project. <br/>3. Useful for tracking trends in developer activity over time.                                                           |
-| Code outflow                | Monitors the frequency of code changes (addition, modification, deletion) by the developer.                              | High churn may indicate that there is no need , but not necessarily the productivity of the developer.                                                                                        | 1. You can point to a trial lesson in the code. <br/>2. Bring out a trial lesson in trebling. <br/>3. Helps to determine the competence of the developer.                                                                                      |
-| Feedback on the code review | Specifies the quality of remote communication, the transfer discharge during code verification.                          | Lack of functionality; quality may vary depending on the renzent.                                                                                                                             | 1. It is possible for use in a team (friendly, etc.). <br/>2. It helps to identify active abilities.                                                                                                                                           |
-| Code duplication            | It is used only for duplicating code in the repository.                                                                  | Pre-duplication or additional code libraries are not taken into account.                                                                                                                      | 1. You can talk about the weaknesses of the code. <br/>2. Perhaps in the analysis of the developer's contribution and competence.                                                                                                              |
-| Test coverage               | Measures the skipping of code hidden by automated tests.                                                                 | High coverage is not a guarantee of code quality, and critical paths may be surprised out of sight.                                                                                           | 1. You can find out who contributed to the quality improvement. <br/>2. It is possible to analyze the trend of code closure.                                                                                                                   |
-| Difficulty code             | Evaluates the complexity of the code using indicators such as cyclomatic complexity.                                     | May punish developers for solving complex problems; does not take into account readability.                                                                                                   | 1. Perhaps in the analysis of the developer's contribution and competence. <br/>2. It might be worth noting a trial lesson.                                                                                                                    |
-| Halsted indicators          | The Halsted complexity score is used to measure the complexity of the software without running the program itself.       | It's hard to count (takes up some resources). There is also a high risk of misinterpreting the metric.                                                                                        | 1. Perhaps in the analysis of the developer's contribution and competence. <br/>2. Perhaps to mark a trial lesson. <br/>3. It can highlight effective sections of the code.                                                                    |
-| Speed of error correction   | Measures the time it takes to delete downloaded files.                                                                   | Adjusts the firmware effort; can simulate rapid changes in space over long periods.                                                                                                           | Allows you to track the effectiveness and speed of the developer in correcting errors, which can be an indicator of the quality of his work.                                                                                                   |
-| Error detection rate        | Number of problems                                                                                                       | You can automatically report the appearance of corrections.                                                                                                                                   | It is possible to determine who found the errors and how quickly the errors are detected.                                                                                                                                                      |
-| Collaboration indicators    | Remote collaborations are monitored, such as reviewing inclusion requests, discussing, and interacting with other users. | No distinguishes between positional and negative impacts; cannot account for individual contributions.                                                                                        | evaluates the level of cooperation and interaction between the developer and other team members                                                                                                                                                |
-| Implementation of functions | Measures the success of introducing new features or user stories.                                                        | Ignores bug fixes and improvements; may prefer quantity over quality.                                                                                                                         | helps to evaluate the developer's performance and contribution to product development.                                                                                                                                                         |
+The project is primarily focused on Churn metrics, so the main unit of measurement and analysis is code lines. We would like to warn you that it is a big mistake to estimate developer's labor costs only by lines. We provide only an auxiliary metric for analyzing the project.
 
 [Addition](https://github.com/fidelfsd/github-contribution-metrics-calculator) to add a contribution:
-![Alternative text](URL or file path)
+
 
 ## Requirements <a name="requirements"></a>
 
 ### User stories and interviews <a name="user stories"></a>
 
-We spent [interview](https://docs.google.com/document/d/1pwAjxJPs9LU4H7_KMHYaM-hU8M7mZpCa0NgpfP91AxQ/edit?usp=sharing) with the customer, having prepared the following set of [questions](https://docs.google.com/document/d/1dITTNL3w4Nm5OYabG7NFlqX_Moi9ChzRL9fGyZD6MTE/edit). We have saved them as
-as a guideline to gain a full understanding of the project context and
-customer expectations. From the interview, we highlighted the following requirements:
+1. Developer contribution analysis (required):
 
-1. As a client, I want to receive a report in csv, json files (required):
+- As a project manager, I want to analyze the contribution of each developer to the project in terms of lines of code written, so that I can assess individual productivity and workload distribution.
 
-- As an analyst or client, I want to select a repository and receive analytics in csv format,
-  json or output to the terminal.
+2. GitHub and GitLab repository analysis (required):
 
-2. The ability to run the service locally (required):
+- As a development team lead, I want the system to analyze both GitHub and GitLab repositories, so that I can use it regardless of our version control platform.
 
-- As a developer, I want to provide the ability to run the service locally on my computer.
-  a laptop for easy development and testing.
+3. Branch selection for analysis (required):
 
-3. Instructions for improving the service (required documentation/README):
+- As a developer, I want to select specific branches for analysis, so that I can focus on relevant parts of the project or compare different development streams.
 
-- As a development engineer, I want to provide instructions for improving the service for
-  Frontend developers to simplify the integration process.
+4. Date range selection for analysis (required):
 
-4. Service availability in the cloud (possibly a deployed service):
-   - As a customer, I want to be able to access the service remotely.
-5. Integration of analysis with the GitHub version control system (required):
+- As a project analyst, I want to specify a date range for the analysis, so that I can examine project progress over specific time periods.
 
-- As a developer, I want the analysis system to be able to handle the GitHub repository.
+5. Graphical representation of analysis (required):
 
-6. Integration of the analysis with the GitLab version control system (required):
-   - As a developer, I want the analysis system to be able to handle the GitLab repository.
-7. Processing unique lines of code (required):
+- As a stakeholder, I want to view the analysis results in a graphical format, so that I can easily interpret and present the data.
 
-- As a manager, I want to be able to analyze unique lines of code (without
-  duplication between commits).
+6. COCOMO II project estimation (required):
 
-8. Accounting for the frequency of commits and their content (required):
+- As a project manager, I want to use COCOMO II model to estimate project costs and duration, so that I can make informed decisions about resource allocation and scheduling.
 
-- As an analysis system, I want to take into account not only the number of commits, but also their content,
-  in order to evaluate not only the activity of the developer, but also the quality of his work.
+7. Comparison of estimated vs. actual project costs (required):
 
-9. User roles and data access (required):
-   - As a system administrator, I want to manage user roles and their access to
-     data to ensure the security and confidentiality of information.
-10. Integration with the existing user interface (there must be an API server or database): - As a developer, I want to integrate performance analytics into an existing
-    User Interface to provide a single point of access to functionality.
-11. Accounting for different modes of operation of VCS (must):
+- As a financial analyst, I want to compare the estimated project costs (using COCOMO II) with the actual costs, so that I can improve future estimations and identify discrepancies.
 
-- As a manager, I want the system to take into account different modes of operation with VCS
-  a version control system (for example, the accumulation of commits or their regular sending, perhaps
-  writing a wiki) to account for the behavior of developers.
+8. Two interface variants for COCOMO II (required):
 
-12. Visualization of the analysis results: (must be web or UI/UX)
-
-- As a user, I want to see the analysis results in a convenient visual form (graphs,
-  diagrams) in order to quickly assess the effectiveness of projects and developers.
-
-13. Development of flexible visualizations and reports (should):
-
-- As a user, I want to have access to flexible visualizations and reports for
-  analyze the performance of projects and developers in a convenient way.
-
-14. Develop an algorithm that takes into account the complexity of the code (Should - Epic):
-
-- As a programmer, I want to develop an algorithm that takes into account not only the total number
-  of lines of code, but also the complexity and uniqueness of code structures to obtain more accurate estimates.
-
-15. Support for various repository formats (should):
-
-- As a developer, I want to provide support for various repository formats
-  (open and closed) to meet the needs of different users.
-
-16. Aggregation of changes in the scope of the code (Could - web or UI/UX):
-
-- As a project manager, I want to see how the scope of the source code changes during
-  a certain period of time to assess the dynamics of development.
-
-17. Filtering and aggregation of data by the developer (possibly web or UI/UX):
-
-- As a manager, I want to be able to filter and aggregate data
-  by developers in order to get statistics of their contribution to the project.
-
-18. Accounting for the quality of the code for bugs and defects (Could - Epic):
-    - As a manager, I want to add functionality in the future to account for the quality of the code for bugs and defects.
-      defects to improve the analysis.
-19. Considering the need for an API in the future (Could be an API endpoint consultant with stakeholders):
-
-- As a technical supervisor, I want to take into account the possibility of developing an API for
-  interacting with the user interface in the future to provide a more flexible
-  integration. The need for API documentation
+- As a user, I want to choose between a simple and an advanced interface for COCOMO II estimation, so that I can use the appropriate level of detail based on my expertise and project requirements.
 
 ### Use Cases <a name="use-cases"></a>
 
@@ -328,18 +257,8 @@ customer expectations. From the interview, we highlighted the following requirem
 | Main Event stream: | 1. The manager sets up filters for aggregating data by developers. 2. The system aggregates data according to the selected filters. |
 | Postconditions:    | The manager received statistics on the contribution of developers to the project                                                    |
 
-##### 5. Analysis of unique lines of code.
 
-|                    | Description                                                                                                                            |
-| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
-| Name:              | Analyzing unique lines of code                                                                                                         |
-| Description:       | The manager analyzes unique lines of code (without duplicates) to assess the quality of development.                                   |
-| Actors:            | Manager                                                                                                                                |
-| Preconditions:     | The manager has access to the data analysis system.                                                                                    |
-| Main Event stream: | 1. The manager starts analyzing unique lines of code. 2. The system analyzes unique lines of code, excluding duplicates among commits. |
-| Postconditions:    | The manager has received information about unique lines of code.                                                                       |
-
-##### 6. Visualization of the analysis results.
+##### 5. Visualization of the analysis results.
 
 |                    | Description                                                                                                                                                 |
 | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -350,7 +269,7 @@ customer expectations. From the interview, we highlighted the following requirem
 | Main Event stream: | 1. The manager reviews the results of the analysis. 2. The system generates graphs, charts and other visualizations to display the results of the analysis. |
 | Postconditions:    | The manager assessed the effectiveness of the projects and developers.                                                                                      |
 
-##### 7. Accounting for different models of working with VCS.
+##### 6. Accounting for different models of working with VCS.
 
 |                    | Description                                                                                                                                                                    |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -361,7 +280,7 @@ customer expectations. From the interview, we highlighted the following requirem
 | Main Event stream: | 1. The analysis system analyzes the number of commits and their contents. 2. The analysis system takes into account various models of working with the version control system. |
 | Postconditions:    | The analysis system is adapted to various models of working with VCS.                                                                                                          |
 
-##### 8. Development of flexible visualizations and reports.
+##### 7. Development of flexible visualizations and reports.
 
 |                            | Description                                                                                                            |
 | -------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
@@ -372,18 +291,7 @@ customer expectations. From the interview, we highlighted the following requirem
 | The main stream of events: | 1. The manager creates flexible visualizations and reports to analyze the effectiveness of projects and developers.    |
 | Postconditions:            | The manager received the information in a convenient form for analysis.                                                |
 
-##### 9. Accounting for the quality of the code for errors and defects.
-
-|                    | Description                                                                                                              |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------ |
-| Name:              | Code quality accounting                                                                                                  |
-| Description:       | The analyst adds the functionality of accounting for the quality of code for errors and defects to improve the analysis. |
-| Actors:            | Analyst                                                                                                                  |
-| Preconditions:     | Access to data about errors and defects in the code.                                                                     |
-| Main Event stream: | 1. The analyst adds the functionality of accounting for the quality of code for errors and defects.                      |
-| Postconditions:    | The analysis system takes into account the quality of the code for errors and defects.                                   |
-
-##### 10. User roles and data access.
+##### 8. User roles and data access.
 
 |                  | Description                                                                                                  |
 | ---------------- | ------------------------------------------------------------------------------------------------------------ |
@@ -394,7 +302,7 @@ customer expectations. From the interview, we highlighted the following requirem
 | Main event flow: | 1. The administrator manages user roles and their access to data.                                            |
 | Postconditions:  | User roles and access to data have been updated according to the administrator settings.                     |
 
-##### 11. Integration with the existing UI.
+##### 9. Integration with the existing UI.
 
 |                    | Description                                                                                                                |
 | ------------------ | -------------------------------------------------------------------------------------------------------------------------- |
@@ -458,6 +366,7 @@ The following are the architectural drivers for the developer contribution asses
 ### Static <a name="static-perspective"></a>
 
 #### Module diagram
+[PlantUML code](https://www.plantuml.com/plantuml/uml/dLHHIyCm47xFhmZpUIy-IzdMeHGS7LG56Jx4BTQmj94aLQRPVpVjsTfRrmZs8PIxxvBlydsNcR5CswgGXBonxPxbd4uM_eUNEveTZEN5X7uHwhykdLbcXR5YooITbqmUZ31qfNQLv1DwSIloLxkG5M_AuDlqIjgAM9LMAocvVWhYbdTf6E1FvZ8CoRX-5riEe6EpufRYD4vNAKsIapvkDETbln40NcBoE8S8jy6E90wF4TinovwPySoMyDSnUkHIgey-fHf1CwiqoxkDZZqrhxKdMyk9MrkBSl-ppURUS4qJZz8lh6MpcQ-J9fPhPeKg8GgdFGXJCIa-8L6VzeV2T3gDHjNzJp6MDP24we1lnbDGYQ-N31q0EAH-08HbFmqW5B3eC25IM4003GKSH00Nllsngc6B8pJEEOP8djUMrBKJ6sEvM4cb7NZKGUZgzp69tBbN1-5WM2FNpJBEmk14hXqedAsd8NBjg3ZY5w18oColLI6_0G00)
 
 ![static](media/static.svg)
 
@@ -469,23 +378,20 @@ The following are the architectural drivers for the developer contribution asses
 
 #### Sequence diagram
 
-[PlantUML code](https://www.plantuml.com/plantuml/uml/lPF1JiCm38RlUGfhzxq01pHA1UB4DBG7i59NirYJaBW3tXulbBQ9E76WXyQA-zd__qlT9S4eut26P4yqe44hFi8nKJH1Esmve1DuYDu9kQwuRD2-rdURHnQuspzj01DehMNPRr5GoKJvYxOnvheCjhVpZXjuqJTqA5aENr1e4V1JA349KE10RoCbAPbPttGgCIbQ0F4m2LwmIVNt0TlrdYo-ZtwOgOugRhsjRTGBNgZIfQRRfXnyxrtFSK1Xxy3ta9JIsMjadbj4TQ0Kl4i4xoodl6UDPQO8JU5htcg5KpZZPuqiGHiV19wT9M07wfe_g8D0aNrdG9zVKjtdBbk8_nRlCQY1FmGyPgwAEDisEptqZ_W2)
+[PlantUML code](https://www.plantuml.com/plantuml/uml/dP91JiCm44NtESMe6rQz00jKqWZ40b8LzG2ZU08MYHtiIGktnpPktPXA4TqapiJF__lhhooZuR7l2cnO6zXPCiNWHhAH0og61wCLanAJOOdDHpvRF4g6-ytJ0j22Mxlbz7-5Z8wq57PKPL5uCLZUdJHkuTKzGI2ZjoFto9GC71UUy0O2iANFaIndpD5VV3iYEae0QuY64nPT_xvWUQuJpBT6zoTAKCQTgrMbkmlkAVFbBbsLquFNMhNIzCXIAz0jM4UbipsIpfr4jIKxQ6K93fBVWyuv5faKceTztkugqWuTVkT82hhG0qEj6WAf0A6LNoHW82ErA000BgIw2Nzb0-Pll1x9e_ApkPWJBUWIdyMz6mHo37mYMPNXUoxuCV2PdeT393VmGWVez9jieDK6rlMwVgwXrsBiV4vCnZDQvQLE7OtCDVLEw4pBgz8pR2JjAK5p5KpxhcXUelzPm8oyqCELUuvzzmC0)
 
-![sequence diagram](media/sequence_diagram.png)
-
-### Physical <a name="physical-perspective"></a>
-
-Soon
+![sequence diagram](media/sequence_diagram.svg)
 
 ### Use-case diagram <a name="use-case-diagram"></a>
 
+[PlantUML code](https://www.plantuml.com/plantuml/uml/LP11QmCX48NlyoiUkMSXxhqaxA6dif2ItcMT98BHu8oKfVI_rqrTI0u3J_a-dxeNjLdBBL3Wiq8JihzS5SvddjIdI7RIb74IpaJBdesNmFYSHVc67mA08ZnPOMns7GxEuSZt9BvgymPMS1fshvZfS2pn2SCXsZ2BbyQRLxxlyENvkmfIWgvGJxz4oxsmtRuzIkgqRAXEops8Ob9kBqldXul_8z-plL_NnJ0EuyTerXxYwB2OjA-f_j4V)
 ![use case diagram](media/useCaseDiagram.svg)
 
 ### Entity relationship diagram <a name="entity-relationship-diagram"></a>
 
 Database model based on multitenant architecture
 
-![statuc](media/ERdiagram.png))
+![statuc](media/ERdiagram.png)
 
 ## Researches <a name="researches"></a>
 
@@ -494,4 +400,5 @@ Database model based on multitenant architecture
 - [GitHub API Research](https://docs.google.com/document/d/15Igu6dCziBG-8ZnpGVz-e2CEmNE1FiWU-ww2rb4NJPs/edit?usp=drive_link)
 - [GitHub Research on data Pagination](https://docs.google.com/document/d/1ru0m5S0KVRK0qL7OHI5eUc1Yw4FrYyxgCsc_vPG6FXU/edit#heading=h.bm8wzw7ge9v9)
 - [Data Storage Analysis](https://docs.google.com/document/d/1ru0m5S0KVRK0qL7OHI5eUc1Yw4FrYyxgCsc_vPG6FXU/edit?usp=drive_link)
-- [!IN PROGRESS! Risk cases to the system](https://docs.google.com/document/d/1TSd8iSaXevZByvwJCiV5CzDeVhR6sPA-QrsVgDPzbu8/edit?usp=drive_link)
+- [Metrics and its Benefits](https://docs.google.com/document/d/1fX-X30Bix67Ag7hzjXbCW-ovcPwxdQ-5e8yXNbTc1Fo/edit)
+

@@ -439,19 +439,19 @@
 
 #### Module diagram
 
-![static](media/static.svg)
+![static](../media/outdated/OutdatedStatic.svg)
 
 ### Dynamic <a name="dynamic-perspective"></a>
 
 #### General models diagram
 
-![componenet](media/ArchitectureSchema.svg)
+![componenet](../media/ArchitectureSchema.svg)
 
 #### Sequence diagram
 
 [PlantUML code](https://www.plantuml.com/plantuml/uml/lPF1JiCm38RlUGfhzxq01pHA1UB4DBG7i59NirYJaBW3tXulbBQ9E76WXyQA-zd__qlT9S4eut26P4yqe44hFi8nKJH1Esmve1DuYDu9kQwuRD2-rdURHnQuspzj01DehMNPRr5GoKJvYxOnvheCjhVpZXjuqJTqA5aENr1e4V1JA349KE10RoCbAPbPttGgCIbQ0F4m2LwmIVNt0TlrdYo-ZtwOgOugRhsjRTGBNgZIfQRRfXnyxrtFSK1Xxy3ta9JIsMjadbj4TQ0Kl4i4xoodl6UDPQO8JU5htcg5KpZZPuqiGHiV19wT9M07wfe_g8D0aNrdG9zVKjtdBbk8_nRlCQY1FmGyPgwAEDisEptqZ_W2)
 
-![sequence diagram](media/sequence_diagram.png)
+![sequence diagram](../media/outdated/OutdatedSequence_diagram.png)
 
 ### Physical <a name="physical-perspective"></a>
 
@@ -459,13 +459,13 @@ Soon
 
 ### Use-case diagram <a name="use-case-diagram"></a>
 
-![use case diagram](media/useCaseDiagram.svg)
+![use case diagram](../media/outdated/OutdatedUseCaseDiagram.svg)
 
 ### Entity relationship diagram <a name="entity-relationship-diagram"></a>
 
 Database model based on multitenant architecture
 
-![ERD](media/ERdiagram.png))
+![ERD](../media/ERdiagram.png))
 
 ## Researches <a name="researches"></a>
 
