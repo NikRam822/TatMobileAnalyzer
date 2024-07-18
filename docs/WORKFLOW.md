@@ -1,161 +1,160 @@
-# Правила GitHub Workflow
+# GitHub Workflow Rules
 
-## Оглавление
+## Table of contents
 
-1. [Процедура Спринта](#sprint)
-   - [Обзор](#obzor)
-   - [Sprint review - Обзор спринта](#review)
-   - [Sprint planning - Планирование спринта](#planning)
-2. [Внесение Изменений](#сontributing)
-   - [Наименование ветки](#branch-naming)
-   - [Создание pull request](#pull-request)
-   - [Мониторинг pull request](#tracking)
-   - [Проверка merge](#merge-check)
-   - [Завершение](#done)
-3. [Работа с GitHub Projects](#description)
-   - [Создание задачи](#ticket)
-   - [Kanban доска](#kanban)
-   - [Спринт](#sprint)
+1. [Sprint Procedure]
+   - [Overview](#obzor)
+   - [Sprint review](#review)
+   - [Sprint planning](#planning)
+2. [Contributing Changes](#contributing)
+   - [Branch-naming](#branch-naming)
+   - [Create pull request](#pull-request)
+   - [Monitoring pull request](#tracking)
+   - [merge-check](#merge-check)
+   - [Completion](#done)
+3. [Working with GitHub Projects](#description)
+   - [Task creation](#ticket)
+   - [Kanban board](#kanban)
+   - [Sprint](#sprint)
 
-## Процедура спринта <a name="sprint"></a>
+## Sprint procedure <a name="sprint"></a>
 
-В нашей команде мы следуем структурированной процедуре спринта, чтобы обеспечить эффективное сотрудничество и отслеживание прогресса. В этом документе описываются наши спринт активности.
+In our team, we follow a structured sprint procedure to ensure effective collaboration and progress tracking. This document describes our sprint activities.
 
-### Обзор <a name="obzor"></a>
+### Overview <a name="obzor"></a>
 
-Наш процесс спринта состоит из двух основных действий: обзора спринта (sprint review) и планирования спринта (sprint planning). Эти мероприятия происходят в начале каждой недели, обычно по понедельникам.
+Our sprint process consists of two main activities: sprint review and sprint planning. These activities take place at the beginning of each week, usually on Mondays.
 
-### Sprint review - Обзор спринта <a name="review"></a>
+### Sprint review <a name="review"></a>
 
-Обзор спринта служит ретроспективой достижений предыдущего спринта и сеансом планирования предстоящего спринта. Во время этой встречи члены команды обсуждают свой индивидуальный вклад и достижения предыдущего спринта. Обзор спринта включает в себя следующие шаги:
+The sprint review serves as a retrospective of the previous sprint's accomplishments and as a planning session for the upcoming sprint. During this meeting, team members discuss their individual contributions and accomplishments from the previous sprint. The sprint review includes the following steps:
 
-1. **Введение и определение повестки дня.** Лицо, ответственное за повестку дня и регулирование собрания, открывает собрание, определяет повестку дня и следит за тем, чтобы обсуждение продолжалось.
+1. **Introduction and Agenda Setting.** The person responsible for the agenda and regulation of the meeting opens the meeting, sets the agenda, and ensures that the discussion continues.
 
-2. **Индивидуальные обновления.** Каждый член команды подробно рассказывает о своем вкладе и работе, выполненной во время предыдущего спринта. Сюда входят успехи, возникшие проблемы и извлеченные уроки.
+2. **Individual updates.** Each team member details their contributions and work accomplished during the previous sprint. This includes successes, challenges encountered, and lessons learned.
 
-3. **Документирование результатов спринта.** Назначенный член команды отвечает за документирование результатов обзора спринта. Это включает в себя подведение итогов обсуждений, принятых решений и действий, определенных для предстоящего спринта.
+3. **Documenting Sprint Results.** A designated team member is responsible for documenting the results of the Sprint Review. This includes summarizing the discussions, decisions made, and actions identified for the upcoming sprint.
 
-### Sprint planning - Планирование спринта <a name="planning"></a>
+### Sprint planning<a name="planning"></a>
 
-После обзора спринта команда приступает к планированию спринта, чтобы определить задачи и цели следующего спринта. Планирование спринта включает в себя следующие шаги:
+After reviewing the sprint, the team begins sprint planning to determine the objectives and goals for the next sprint. Sprint planning includes the following steps:
 
-1. **Просмотр журнала невыполненных задач.** Члены команды просматривают журнал невыполненных задач, который содержит список потенциальных задач, которые необходимо выполнить. Любые незавершенные задачи предыдущего спринта также рассматриваются для включения в предстоящий спринт.
+1. **Review the Uncompleted Tasks Log.** Team members review the Uncompleted Tasks Log, which contains a list of potential tasks that need to be completed. Any uncompleted tasks from the previous sprint are also considered for inclusion in the upcoming sprint.
 
-2. **Выбор задач.** Члены команды совместно выбирают задачи из невыполненной работы для включения в предстоящий спринт на основе приоритета, осуществимости и доступных ресурсов.
+2. **Task Selection.** Team members collaboratively select tasks from the backlog for inclusion in the upcoming sprint based on priority, feasibility, and available resources.
 
-3. **Назначение задач.** Задачи, выбранные для спринта, назначаются отдельным членам команды в зависимости от их опыта и доступности.
+3. **Task Assignment.** Tasks selected for the sprint are assigned to individual team members based on their experience and availability.
 
-4. **Установка целей спринта.** Команда коллективно определяет цели и задачи предстоящего спринта, обеспечивая их соответствие срокам и приоритетам проекта.
+4. **Sprint goal setting.** The team collectively defines the goals and objectives of the upcoming sprint, ensuring that they are aligned with the project timeline and priorities.
+
+## Making Changes <a name="сontributing"></a>
+
+Before you can make changes to the `master` master branch, you must go through the following steps:
+1. Create a new branch, before doing so, see the [**branch-naming**](#branch-naming) rule.
+2. Create a pull request (PR) to the master branch, in github this is done by [**this**](#pull-request).
+3. Start tracking the PR (see what [**cases**](#tracking), for which [**cases**](#tracking) options will work):
+   - attach a PR to an existing issue,
+   - or create an issue and then attach the PR to the issue,
+   - or add the PR to a github project,
+   - or create a github issue, add the PR to the github project and attach it to the issue.
+4. Add changes\commits.
+5. Request [review](https://docs.github.com/ru/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/requesting-a-pull-request-review) from developers.
+6. After the review, change the names and merge message.
+7. Check merge by: [**check merge**](#merge-check).
+8. Group all commits (squash commits) and do the merge.
+9. Check that everything is [**completed**](#done).
+
+### Branch name <a name="branch-naming"></a>
+
+New branches should be named according to the following scheme: `{noun}/{verb_or_noun}`. Thus,
+branches for documentation should be named with the prefix `document` and a brief description of the change, separated by a hyphen.
+Example: `document/change-srs` means change specification document. The following prefixes are currently allocated
+the following prefixes: `feature`, `fix`, and `document`.
+
+### Creating a pull request <a name="pull-request"></a>
+
+A PR should be created from the new branch so that other developers know what tasks are being worked on
+are being worked on. A PR can be created [like this](https://docs.github.com/ru/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request).
+
+- The header of the PR should contain a brief description of the planned changes.
+- The PR description should describe the planned changes and their purpose in detail.
+
+### Monitoring pull request <a name="tracking"></a>
+
+Our team uses github projects to monitor all tasks. So it's important to us that
+code work is visible on our board. We use issues to refer to code-related tasks, issues
+can be small (small task) or large (epic). Therefore, four scenarios are described for PR monitoring.
+The rules for our github projects can be found [here](#description).
+
+1. Attach a PR to an existing issue.
+
+>If you want to close an existing issue that is not epic (i.e., the issue has no subtasks),
+then you need to attach the PR to the existing issue.
+
+2. Create an issue and then attach the PR to the issue.
+
+>If you want to add a change that is not represented in issues, then create a new task in github project,
+then convert it to an issue. Then follow the instructions above to attach the PR to the issue.
+
+>Another option is also possible, it is described below.
+
+3. Add PR to github project.
+
+>If you want to add a change that is not represented in issues, then add the PR to github projects. GitHub projects
+will then add the PR to the issues board itself.
+
+4. Create a github issue, add the PR to github projects and attach it to the issue.
+
+>If you want to add a change that is not represented in issues, and that will be part of something big (a module,
+epic), then create an issue with a description of the global task (create module, borrow epic). After that, attach
+your future tasks as PRs to the new issue.
 
 
-## Внесение Изменений <a name="сontributing"></a>
+Important: when creating a PR that closes a previously created issue, add a link to that issue in the description of the PR (For example: create a module, create epic).
+issue in the PR description (For example: `Closes #123` or `Fixes: #123`).
 
-Перед тем как внести изменения в главную ветку `master`, необходимо пройти через следующие шаги:
-1. Создать новую ветку, перед этим посмотри правило [**наименование ветки**](#branch-naming).
-2. Создать pull request (PR) в главную ветку, в github это делается [**так**](#pull-request).
-3. Начать следить за PR (посмотри для каких [**случаев**](#tracking), какие варианты подойдут): 
-   - прикрепить PR к существующему issue, 
-   - или создать issue и потом прикрепить PR к issue, 
-   - либо добавить PR в github project, 
-   - или же создать github issue, добавить PR в github project и прикрепить его к issue.
-4. Добавить изменения\коммиты.
-5. Запросить [ревью](https://docs.github.com/ru/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/requesting-a-pull-request-review) от разработчиков.
-6. После ревью поменять названия и сообщение mergе.
-7. Проверь merge по пунктам: [**проверка merge**](#merge-check).
-8. Сгруппировать все коммиты (squash commits) и сделать merge.
-9. Проверить, что все [**завершено**](#done).
+### Checking merge <a name="merge-check"></a>
 
-### Наименование ветки <a name="branch-naming"></a>
+The following items must be done before merge:
+- get approval from the two developers,
+- check the merge name against the format `{Verb} {object} {desc}``, where ``desc`` contains information on the
+  issue (``Fixes #123``) that this merge closes.
 
-Новые ветки следуют называть по следующей схеме: `{noun}/{verb_or_noun}`. Таким образом, 
-ветви для документации должны быть названы с префиксом `document` и кратким описанием изменения, разделенным дефисом.
-Пример: `document/change-srs` значит изменить specification документ. На данный момент выделены
-следующие префиксы: `feature`, `fix`, и `document`.
+### Completion <a name="done"></a>
 
-### Создание pull request <a name="pull-request"></a>
+At the end, you should check
+- whether the issue is closed,
+- whether PR is closed,
+- whether the issue is completed in the project.
 
-С новой ветки необходимо создать PR, чтобы другие разработчики знали, над какими задачами
-ведется работа. Создать PR можно [так](https://docs.github.com/ru/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request).
+## Working with GitHub Projects <a name="description"></a>
 
-- В заголовке PR должно быть краткое описание планируемых изменения.
-- В описании PR необходимо подробно описать планируемые изменения и их цель.
+### Task creation (Ticket)
 
-### Мониторинг pull request <a name="tracking"></a>
+To create a new task (Ticket) in GitHub Projects, follow these steps:
+1. Open GitHub Projects and select the appropriate project.
+2. Click on the "Add cards" button in the desired column to create a new task.
+3. Fill in the task information:
+   - **Title**: Short and descriptive title of the task.
+   - **Description**: A detailed description of the task, including requirements and expected outcome.
+   - **Size**: Used to estimate the complexity of the task. It can be specified as S (small), M (medium) or L (large), which corresponds to story points (1, 3, 5).
+   - **Estimate**: The estimated number of hours required to complete the task.
+   - **Priority**: The level of importance of the task. Can be labeled as P0 (very important), P1 (important), or P2 (less important).
+   - **Other Labels**: Additional labels that can help categorize the task (e.g., task type, category, etc.).
+   
+### Kanban board
 
-Наша команда использует github projects для мониторинга всех задач. Поэтому нам важно, чтобы
-работа с кодом была видна у нас на доске. Мы используем issues для обозначения задач связанных с кодом, issues
-могут быть маленькими (small task) и большими (epic). Поэтому для мониторинга PR описаны четыре сценария. 
-С правилами работы в нашем github projects можно ознакомиться [здесь](#description).
+Our Kanban board consists of the following columns:
 
-1. Прикрепить PR к существующему issue.
-    
->Если вы хотите закрыть существующий issue, который не является epic (то есть, задача не имеет подзадач), 
-то вам необходимо привязать PR к существующему issue.
+- **To Do**: Tasks that have not yet been started and are pending (project backlog).
+- **Current Sprint**: Tasks scheduled for the current sprint.
+- **In Progress**: Tasks that are currently being worked on.
+- **In Review**: Tasks that have been completed and are awaiting review or revision.
+- **Done**: Completed tasks that are ready to be released or sent to production.
 
-2. Создать issue и потом прикрепить PR к issue.
+### Sprint planning
 
->Если вы хотите добавить изменение, которое не представлено в issues, то создайте новую задачу в github project, 
-после конвертируйте его в issue. Дальше по инструкции выше прикрепите PR к issue.
+A sprint is a fixed period of time, ours takes 2 weeks, during which the team works on a specific set of tasks. Sprint planning includes the following steps:
 
->Также возможен другой вариант, он описан ниже.
-
-3. Добавить PR в github project.
-
->Если вы хотите добавить изменение, которое не представлено в issues, то добавьте PR в github projects. GitHub projects
-потом сам добавит PR на доску задач.
-
- 4. Создать github issue, добавить PR в github project и прикрепить его к issue.
-
->Если вы хотите добавить изменение, которое не представлено в issues, и которое будет частью чего-то большого (модуля, 
-epicа), то создайте issue с описанием глобальной задачи (создать модуль, заимлепентировать epic). После прикрепляйте 
-свои будущие задачи в виде PR к новому issue.
-
-
-Важно: при создании PR, закрывающего ранее созданное issue, добавьте ссылку на этот 
-issue в описании PR (Например: `Closes #123` или `Fixes: #123`).
-
-### Проверка merge <a name="merge-check"></a>
-
-Перед merge необходимо выполнить следующие пункты:
-- получить approve от двух разработчиков,
-- проверить merge название на соответствие с форматом `{Verb} {object} {desc}`, где в `desc` содержит информацию по 
-issue (`Fixes #123`), который этот merge закрывает. 
-
-### Завершение <a name="done"></a>
-
-В конце следует проверить:
-- закрыт ли issue,
-- закрыт ли PR,
-- завершен ли issue в project.
-
-## Работа с GitHub Projects <a name="description"></a>
-
-### Создание задачи (Ticket)
-
-Для создания новой задачи (Ticket) в GitHub Projects, выполните следующие шаги:
-1. Откройте GitHub Projects и выберите соответствующий проект.
-2. Нажмите на кнопку "Add cards" в нужной колонке, чтобы создать новую задачу.
-3. Заполните информацию о задаче:
-   - **Название**: Краткое и описательное название задачи.
-   - **Описание**: Подробное описание задачи, включая требования и ожидаемый результат.
-   - **Size (размер)**: Используется для оценки сложности задачи. Может быть указан как S (маленький), M (средний) или L (большой), что соответствует story points (1, 3, 5).
-   - **Estimate (оценка)**: Предполагаемое количество часов, необходимых для завершения задачи.
-   - **Priority (приоритет)**: Уровень важности задачи. Может быть обозначен как P0 (очень важно), P1 (важно) или P2 (менее важно).
-   - **Другие метки**: Дополнительные метки, которые могут помочь классифицировать задачу (например, тип задачи, категория и т.д.).
-
-### Kanban доска
-
-Наша Kanban доска состоит из следующих колонок:
-
-- **To Do**: Задачи, которые еще не начаты и ожидают выполнения (backlog проекта).
-- **Current Sprint**: Задачи, запланированные на текущий спринт.
-- **In Progress**: Задачи, над которыми в данный момент ведется работа.
-- **In Review**: Задачи, завершенные и ожидающие проверки или ревью.
-- **Done**: Завершенные задачи, готовые к выпуску или отправке в production.
-
-### Спринт планирование
-
-Спринт - это фиксированный период времени, у нас занимает 2 недели, в течение которого команда работает над определенным набором задач. Планирование спринта включает следующие шаги:
-
-1. **Назначение спринт тега**: Каждый тикет должен быть помечен соответствующим тегом спринта, чтобы обозначить, в каком спринте он будет выполнен.
-2. **Начало и конец тикета**: Важно отметить дату начала и завершения работы над каждым тикетом в рамках спринта, чтобы учитывать прогресс и планировать следующие шаги.
+1. **Designation of sprint tag**: Each ticket should be labeled with the appropriate sprint tag to designate which sprint it will be completed in.
+2. **Start and End of Ticket**: It is important to note the start and end date of each ticket within a sprint to keep track of progress and plan next steps.
