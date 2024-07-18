@@ -20,12 +20,15 @@ jobs:
           java-version: '17'
           cache: 'maven'
 
-      - name: Initialize env.properties
+      - name: Initialize environment
         run: |
           echo "Initializing env.properties file"
           echo "ACCESS_TOKEN_GITHUB=github" > src/main/resources/env.properties
           echo "ACCESS_TOKEN_GITLAB=gitlab" >> src/main/resources/env.properties
           echo "FRONTEND_HOST=front" >> src/main/resources/env.properties
+          echo "DB_USER=test_db_user" > .env
+          echo "DB_PASSWORD=test_db_password" >> .env
+          echo "DB_URL=jdbc:postgresql://test_db_address:5432/test_db" >> .env
 
       - name: Build with Maven
         run: mvn clean install
