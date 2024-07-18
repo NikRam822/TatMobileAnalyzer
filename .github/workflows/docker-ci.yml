@@ -26,15 +26,12 @@ jobs:
           echo "ACCESS_TOKEN_GITHUB=github" > src/main/resources/env.properties
           echo "ACCESS_TOKEN_GITLAB=gitlab" >> src/main/resources/env.properties
           echo "FRONTEND_HOST=front" >> src/main/resources/env.properties
-          echo "DB_USER=test_db_user" >> src/main/resources/env.properties
-          echo "DB_PASSWORD=test_db_password" >> src/main/resources/env.properties
-          echo "DB_URL=jdbc:postgresql://test_db_address:5432/test_db" >> src/main/resources/env.properties
 
       - name: Build with Maven
         run: mvn clean install
 
       - name: Run Tests
-        run: mvn test
+        run: mvn test -Dspring.profiles.active=test
 
   deploy:
     needs: test
