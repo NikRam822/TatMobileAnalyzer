@@ -11,18 +11,14 @@ Welcome to our documentation! This guide will help you find your way around the 
 ### Folders and Docs:
 
 1. [Media Folder](#media)
-2. [Reviews](#reviews)
-3. [English Specification](#specs-en)
-4. [Workflow](#workflow)
-5. [Outdated](#outdated)
+2. [English Specification](#specs-en)
+3. [Workflow](#workflow)
+4. [Outdated Folder](#outdated)
+
 
 ### Media Folder <a name="media"></a>
 
  - The `media` folder contains multimedia assets such as images, videos, and other resources. You can explore this folder to find relevant media files. Also in `media` there is a folder `outdated` where there are irrelevant files that we used before.
-
-### Reviews <a name="reviews"></a>
-
-- reviews.md: Insights and feedback from users or stakeholders.
 
 ### English Specification <a name="specs-en"></a>
 
@@ -32,8 +28,9 @@ Welcome to our documentation! This guide will help you find your way around the 
 
 - WORKFLOW.md: Workflow guidelines and best practices.
 
-### Outdated <a name="outdated"></a>
+### Outdated Folder <a name="outdated"></a>
 
  - You can see all inactive documents in the `outdated` folder. It contains a lot of artifacts that are currently outdated but previously used.
+
 
 Feel free to explore these files and dive deeper into the details. If you have any questions, don't hesitate to ask!
