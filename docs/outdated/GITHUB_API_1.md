@@ -71,7 +71,7 @@ Enterprise Cloud.
 
 ### 2. Содержание Объекта с информацией о коммите
 
-![](./media/git_commit_info.png)
+![](../media/git_commit_info.png)
 
 #### Самое важное:
 
@@ -89,7 +89,7 @@ Enterprise Cloud.
 
 #### В самом низу под значением files указана подробная информация об изменениях.
 
-![](./media/git_file_info.png)
+![](../media/git_file_info.png)
 
 filename - имя измененного файла
 
@@ -107,7 +107,7 @@ changes - общее кол-во изменений (additions + deletions)
 Значением ключа patch являются подробные изменения. Там указаны данные
 которые могут служить например для представления как в GitHub:
 
-![](./media/git_changes_info.png)
+![](../media/git_changes_info.png)
 
 ```angular2html
 *\"patch\": \"@@ -1,7 +1,7 @@\\n qwe\\n

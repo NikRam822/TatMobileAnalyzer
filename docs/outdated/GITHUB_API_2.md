@@ -2,7 +2,7 @@
 
 Original Docs GitHub API: [Using pagination in the REST API - GitHub Docs](https://docs.github.com/en/rest/using-the-rest-api/using-pagination-in-the-rest-api?apiVersion=2022-11-28)
 
-Предыдущий ресерч по теме получения коммитов репозитория: [Research on GitHub API: Получение полной информации по коммиту, включая внесенные изменения](./GITHUB_API_1.md)
+Предыдущий ресерч по теме получения коммитов репозитория: [Research on GitHub API: Получение полной информации по коммиту, включая внесенные изменения](GITHUB_API_1.md)
 
 ### 1. Изменение размера страницы
 
@@ -55,7 +55,7 @@ https://api.github.com/repos/torvalds/linux/commits?per_page=100&page=3
 
 Его можно найти открыв панель разработчика в браузере, во вкладке `сеть > адрес запроса > заголовки`
 
-![](./media/git_link_header.png)
+![](../media/git_link_header.png)
 
 Он содержит ссылки:
 * На следующую страницу: rel="next"
