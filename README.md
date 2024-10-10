@@ -68,9 +68,7 @@ Below are the instructions for running `docker-compose`:
 <details>
 <summary>Click to see more</summary>
 
-1. Ensure that you have `jdk-17` with `maven` for building projects, `npm` and
-   latest `postgres` database installed on your system.
-2. Create two `env.properties` files:
+1. Create two `env.properties` files:
    - In the root folder create `env.properties` file with next content:
    ```text
    ACCESS_TOKEN_GITHUB=your_github_access_token
@@ -88,12 +86,12 @@ Below are the instructions for running `docker-compose`:
    ```text
    VUE_APP_HOST_ADDRESS=http://localhost:8080/patch/statistic
    ```
-3. Build jar file `mvn clean package`. The builder will generate jar file in target directory:
+2. Build jar file `mvn clean package`. The builder will generate jar file in target directory:
    `target/TatMobileAnalyzer-0.0.1-SNAPSHOT.jar`
-4. Go to target `cd target` and run backend `java -jar TatMobileAnalyzer-0.0.1-SNAPSHOT.jar`.
-5. The backend will be available by this link `http://localhost:8080/swagger-ui.html`.
-6. Run `cd tat-mobile-front && npm install`. It will download all dependencies.
-7. Start frontend `npm run dev`. The website will be available by this link `http://localhost:3000`.
+3. Go to target `cd target` and run backend `java -jar TatMobileAnalyzer-0.0.1-SNAPSHOT.jar`.
+4. The backend will be available by this link `http://localhost:8080/swagger-ui.html`.
+5. Run `cd tat-mobile-front && npm install`. It will download all dependencies.
+6. Start frontend `npm run dev`. The website will be available by this link `http://localhost:3000`.
 </details>
 
 ## Other
